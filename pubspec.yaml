@@ -33,9 +33,11 @@ dependencies:
   draggable_home: ^1.0.5
   firebase_auth: ^5.1.0
   firebase_core: ^3.0.0
+  firebase_database: ^11.0.1
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.10+1
+  google_sign_in: ^6.2.1
   provider: ^6.1.2
   shared_preferences: ^2.2.3
 

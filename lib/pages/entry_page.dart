@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:travio/pages/phone_number_login.dart';
 import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 
@@ -58,40 +59,45 @@ class EntryPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: TTthemeClass().ttDardPrimary,
-                        style: BorderStyle.solid,
-                        width: 1,
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberScreen(),));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: TTthemeClass().ttDardPrimary,
+                          style: BorderStyle.solid,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    height: 60,
-                    padding: const EdgeInsets.only(left: 30),
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.phone_android,
-                          size: 30,
-                        ),
-                        const SizedBox(width: 20),
-                        Text(
-                          'Continue with Mobile Number',
-                          style: TextStyle(
-                            color: TTthemeClass().ttLightFourth,
-                            fontSize: 18,
+                      height: 60,
+                      padding: const EdgeInsets.only(left: 30),
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.phone_android,
+                            size: 30,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 20),
+                          Text(
+                            'Continue with Mobile Number',
+                            style: TextStyle(
+                              color: TTthemeClass().ttLightFourth,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () =>
                         Provider.of<AuthProvider>(context, listen: false)
-                            .signInWithGoogle(),
+                            .signInWithGoogle(context),
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -122,6 +128,40 @@ class EntryPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // GestureDetector(
+                  //   onTap: () =>
+                  //       Provider.of<AuthProvider>(context, listen: false)
+                  //           .signInWithGoogle(),
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       border: Border.all(
+                  //         color: TTthemeClass().ttDardPrimary,
+                  //         style: BorderStyle.solid,
+                  //         width: 1,
+                  //       ),
+                  //       borderRadius: BorderRadius.circular(30),
+                  //     ),
+                  //     height: 60,
+                  //     padding: const EdgeInsets.only(left: 30),
+                  //     alignment: Alignment.center,
+                  //     child: Row(
+                  //       children: [
+                  //         const Icon(
+                  //           Icons.mail,
+                  //           size: 30,
+                  //         ),
+                  //         const SizedBox(width: 20),
+                  //         Text(
+                  //           'Continue with Google',
+                  //           style: TextStyle(
+                  //             color: TTthemeClass().ttLightFourth,
+                  //             fontSize: 18,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
                   Container(
                     decoration: BoxDecoration(
@@ -166,7 +206,8 @@ class EntryPage extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        style: TextButton.styleFrom(padding: const EdgeInsets.all(6)),
+                        style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(6)),
                         onPressed: () {},
                         child: Text(
                           'Sign up',
