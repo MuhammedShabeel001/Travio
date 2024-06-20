@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:travio/pages/phone%20number/otp_page.dart';
 
 import 'package:travio/utils/theme.dart';
 
@@ -90,7 +91,23 @@ class NumberPage extends StatelessWidget {
               )),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const OtpPage(),));
+        },
+        backgroundColor: TTthemeClass().ttThird,
+        // elevation:,
+        elevation: 0,
 
+        label:Row(
+            children: [
+              Text('Continue',style: TextStyle(fontSize: 16,color: TTthemeClass().ttLightPrimary,fontWeight: FontWeight.w600),),
+              const SizedBox(width: 8), // Add some space between text and icon
+              Icon(Icons.arrow_forward_ios,color: TTthemeClass().ttLightPrimary,),
+            ],
+          ),
+        // icon: Icon(Icons.abc),
+      ),
       
     );
   }
