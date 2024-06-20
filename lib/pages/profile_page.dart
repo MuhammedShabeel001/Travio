@@ -91,7 +91,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      Provider.of<AuthProvider>(context, listen: false).signOut();
+                      Provider.of<AuthProvider>(context, listen: false).signOut(context);
                     },
                     leading: Icon(Icons.logout, color: TTthemeClass().ttLightText),
                     title: Text('Log out', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: TTthemeClass().ttLightText)),

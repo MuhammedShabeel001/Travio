@@ -11,6 +11,9 @@ class TTthemeClass {
 
   Color ttSecondary = const Color.fromRGBO(238, 233, 241, 1);
   Color ttThird = const Color.fromRGBO(128, 90, 241, 1);
+  Color ttThirdOpacity = Color.fromARGB(80, 128, 90, 241);
+  
+  
   Color ttButton = const Color.fromRGBO(128, 90, 241, 1);
   Color ttButtonText = const Color.fromRGBO(250, 249, 246, 1);
 

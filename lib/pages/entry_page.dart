@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/pages/phone_number_login.dart';
+import 'package:travio/pages/phone%20number/number_page.dart';
+// import 'package:travio/pages/phone_number_login.dart';
 import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 
@@ -61,7 +62,7 @@ class EntryPage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PhoneNumberScreen(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => NumberPage(),));
                     },
                     child: Container(
                       decoration: BoxDecoration(

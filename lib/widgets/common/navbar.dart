@@ -8,7 +8,7 @@ import 'package:travio/pages/trip_plan_page.dart';
 import 'package:travio/utils/theme.dart';
 
 class TTnavBar extends StatefulWidget {
-  const TTnavBar({Key? key}) : super(key: key);
+  const TTnavBar({super.key});
 
   @override
   State<TTnavBar> createState() => _TTnavBarState();
@@ -18,11 +18,11 @@ class _TTnavBarState extends State<TTnavBar> {
   int currentIndex = 0;
 
   final List<Widget> _tabs = [
-    HomePage(),
-    SearchPage(),
-    TripPlanPage(),
-    ItinararyPage(),
-    ProfilePage()
+    const HomePage(),
+    const SearchPage(),
+    const TripPlanPage(),
+    const ItinararyPage(),
+    const ProfilePage()
   ];
 
   @override
@@ -41,7 +41,7 @@ class _TTnavBarState extends State<TTnavBar> {
               // scrollController: _,
               // hideOnScroll: true,
               backgroundColor: TTthemeClass().ttLightPrimary,
-              animationDuration: Duration(milliseconds: 300),
+              animationDuration:const Duration(milliseconds: 300),
               animationCurve: Curves.ease,
               indicatorColor: TTthemeClass().ttThird,
               height: 70,
