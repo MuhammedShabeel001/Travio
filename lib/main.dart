@@ -3,8 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/firebase/firebase_options.dart';
 
-import 'package:travio/providers/auth_provider.dart';
+// import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/pages/entry_page.dart';
+import 'package:travio/pages/splash_page.dart';
+import 'package:travio/providers/authprovider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const EntryPage(),
+        home: const SplashScreen(),
       ),
     );
   }

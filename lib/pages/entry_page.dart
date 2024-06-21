@@ -96,9 +96,9 @@ class EntryPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () =>
-                        Provider.of<AuthProvider>(context, listen: false)
-                            .signInWithGoogle(context),
+                    onTap: () {},
+                        // Provider.of<AuthProvider>(context, listen: false)
+                            // .signInWithGoogle(context),
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
