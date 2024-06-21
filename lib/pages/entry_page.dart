@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/pages/phone%20number/number_page.dart';
+import 'package:travio/pages/sign%20up/sign_up_page.dart';
 // import 'package:travio/pages/phone_number_login.dart';
 import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/providers/authprovider.dart';
@@ -212,7 +213,9 @@ class EntryPage extends StatelessWidget {
                       TextButton(
                         style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(6)),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage(),));
+                        },
                         child: Text(
                           'Sign up',
                           style: TextStyle(color: TTthemeClass().ttThird),

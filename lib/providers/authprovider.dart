@@ -11,6 +11,15 @@ class AuthProvider extends ChangeNotifier {
 
   String verificationId = '';
 
+  bool _isChecked = false;
+
+  bool get isChecked => _isChecked;
+
+  void toggleCheckBox() {
+    _isChecked = !_isChecked;
+    notifyListeners();
+  }
+
   Future<void> verifyPhoneNumber(String phoneNumber) async {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,

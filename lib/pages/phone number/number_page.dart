@@ -97,7 +97,7 @@ class NumberPage extends StatelessWidget {
                     ),
                     onChanged: (phone) {
                       // Update phoneController text with formatted phone number
-                      phoneController.text = phone.completeNumber!;
+                      phoneController.text = phone.completeNumber;
                     },
                     onCountryChanged: (phone) {
                       // Handle country code change if needed
