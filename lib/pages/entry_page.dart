@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:travio/pages/phone%20number/number_page.dart';
 // import 'package:travio/pages/phone_number_login.dart';
 import 'package:travio/providers/auth_provider.dart';
+import 'package:travio/providers/authprovider.dart';
 import 'package:travio/utils/theme.dart';
 
 class EntryPage extends StatelessWidget {
@@ -96,7 +97,9 @@ class EntryPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                await Provider.of<AuthProvider>(context, listen: false).loginWithGoogle(context);
+              },
                         // Provider.of<AuthProvider>(context, listen: false)
                             // .signInWithGoogle(context),
                     child: Container(

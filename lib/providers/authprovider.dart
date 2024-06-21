@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travio/widgets/common/navbar.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -63,4 +66,43 @@ class AuthProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> loginWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        // Sign in to Firebase with the Google credential
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+        final User? user = userCredential.user;
+
+        if (user != null) {
+          print('User logged in: ${user.uid}');
+          // Save login status to SharedPreferences
+          final SharedPreferences _sharedPref = await SharedPreferences.getInstance();
+          await _sharedPref.setBool(keyValue, true);
+          // Navigator.pushAndRemoveUntil(context, newRoute, predicate)
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TTnavBar(),), (route) => false,);
+
+          // Handle successful sign-in (e.g., navigate to next screen)
+        } else {
+          print('User sign-in failed');
+        }
+      }
+    } catch (e) {
+      print('Error signing in with Google: $e');
+    }
+    notifyListeners();
+  }
+  
 }
