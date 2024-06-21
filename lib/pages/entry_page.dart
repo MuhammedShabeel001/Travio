@@ -3,13 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/pages/phone%20number/number_page.dart';
 import 'package:travio/pages/sign%20up/sign_up_page.dart';
-// import 'package:travio/pages/phone_number_login.dart';
-import 'package:travio/providers/auth_provider.dart';
+
 import 'package:travio/providers/authprovider.dart';
 import 'package:travio/utils/theme.dart';
 
 class EntryPage extends StatelessWidget {
-  const EntryPage({Key? key}) : super(key: key);
+  const EntryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +62,12 @@ class EntryPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => NumberPage(),));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NumberPage(),
+                          ));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -99,10 +102,9 @@ class EntryPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () async {
-                await Provider.of<AuthProvider>(context, listen: false).loginWithGoogle(context);
-              },
-                        // Provider.of<AuthProvider>(context, listen: false)
-                            // .signInWithGoogle(context),
+                      await Provider.of<AuthProvider>(context, listen: false)
+                          .loginWithGoogle(context);
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -133,40 +135,6 @@ class EntryPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // GestureDetector(
-                  //   onTap: () =>
-                  //       Provider.of<AuthProvider>(context, listen: false)
-                  //           .signInWithGoogle(),
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       border: Border.all(
-                  //         color: TTthemeClass().ttDardPrimary,
-                  //         style: BorderStyle.solid,
-                  //         width: 1,
-                  //       ),
-                  //       borderRadius: BorderRadius.circular(30),
-                  //     ),
-                  //     height: 60,
-                  //     padding: const EdgeInsets.only(left: 30),
-                  //     alignment: Alignment.center,
-                  //     child: Row(
-                  //       children: [
-                  //         const Icon(
-                  //           Icons.mail,
-                  //           size: 30,
-                  //         ),
-                  //         const SizedBox(width: 20),
-                  //         Text(
-                  //           'Continue with Google',
-                  //           style: TextStyle(
-                  //             color: TTthemeClass().ttLightFourth,
-                  //             fontSize: 18,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(height: 20),
                   Container(
                     decoration: BoxDecoration(
@@ -214,7 +182,11 @@ class EntryPage extends StatelessWidget {
                         style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(6)),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignUpPage(),
+                              ));
                         },
                         child: Text(
                           'Sign up',

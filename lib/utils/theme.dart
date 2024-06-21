@@ -11,9 +11,8 @@ class TTthemeClass {
 
   Color ttSecondary = const Color.fromRGBO(238, 233, 241, 1);
   Color ttThird = const Color.fromRGBO(128, 90, 241, 1);
-  Color ttThirdOpacity = Color.fromARGB(80, 128, 90, 241);
-  
-  
+  Color ttThirdOpacity = const Color.fromARGB(80, 128, 90, 241);
+
   Color ttButton = const Color.fromRGBO(128, 90, 241, 1);
   Color ttButtonText = const Color.fromRGBO(250, 249, 246, 1);
 
@@ -26,7 +25,7 @@ class TTthemeClass {
     ),
   );
 
-static ThemeData ttDarkTheme = ThemeData(
+  static ThemeData ttDarkTheme = ThemeData(
     primaryColor: ThemeData.dark().scaffoldBackgroundColor,
     colorScheme: const ColorScheme.dark().copyWith(
       primary: _tthemeClass.ttDardPrimary,
@@ -34,7 +33,6 @@ static ThemeData ttDarkTheme = ThemeData(
       tertiary: _tthemeClass.ttThird,
     ),
   );
-
 }
 
 TTthemeClass _tthemeClass = TTthemeClass();

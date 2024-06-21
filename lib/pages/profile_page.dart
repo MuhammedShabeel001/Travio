@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travio/pages/entry_page.dart';
-import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 import 'package:travio/widgets/common/appbar.dart';
 
@@ -144,7 +142,6 @@ class ProfilePage extends StatelessWidget {
                   ListTile(
                     onTap: () {
                       signout(context);
-                      // Provider.of<AuthProvider>(context, listen: false).signOut(context);
                     },
                     leading:
                         Icon(Icons.logout, color: TTthemeClass().ttLightText),
@@ -171,9 +168,10 @@ class ProfilePage extends StatelessWidget {
   }
 
   void signout(BuildContext context) async {
-    final _sharedPref = await SharedPreferences.getInstance();
-    await _sharedPref.clear();
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.clear();
 
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context1) => const EntryPage()),
       (route) => false,

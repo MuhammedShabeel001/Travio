@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:provider/provider.dart';
 import 'package:travio/pages/phone%20number/otp_page.dart';
 import 'package:travio/providers/authprovider.dart';
@@ -12,7 +11,6 @@ class NumberPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final authProvider = Provider.of<AuthProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final phoneController = TextEditingController();
 
@@ -26,7 +24,7 @@ class NumberPage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               width: double.infinity,
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -34,7 +32,7 @@ class NumberPage extends StatelessWidget {
                     'Welcome back to',
                     style: TextStyle(
                       fontSize: 19,
-                      color: const Color.fromARGB(153, 255, 255, 255),
+                      color: Color.fromARGB(153, 255, 255, 255),
                     ),
                   ),
                   Text(
@@ -96,71 +94,52 @@ class NumberPage extends StatelessWidget {
                       ),
                     ),
                     onChanged: (phone) {
-                      // Update phoneController text with formatted phone number
                       phoneController.text = phone.completeNumber;
                     },
-                    onCountryChanged: (phone) {
-                      // Handle country code change if needed
-                    },
+                    onCountryChanged: (phone) {},
                   ),
-                  // const SizedBox(height: 20),
-                  // ElevatedButton(
-                  //   onPressed: () async {
-                  //     // Ensure phone number is in E.164 format before proceeding
-                  //     final completePhoneNumber = phoneController.text.trim();
-                  //     if (completePhoneNumber.isNotEmpty) {
-                  //       final formattedPhoneNumber = '+${phoneController.text}';
-                  //       await authProvider.verifyPhoneNumber(formattedPhoneNumber);
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(builder: (context) => const OtpPage()),
-                  //       );
-                  //     } else {
-                  //       // Handle case where phone number is empty
-                  //       ScaffoldMessenger.of(context).showSnackBar(
-                  //         SnackBar(content: Text('Please enter a valid phone number')),
-                  //       );
-                  //     }
-                  //   },
-                  //   child: const Text('Send OTP'),
-                  // ),
                 ],
               ),
             ),
           ),
         ],
       ),
-
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-                      // Ensure phone number is in E.164 format before proceeding
-                      final completePhoneNumber = phoneController.text.trim();
-                      if (completePhoneNumber.isNotEmpty) {
-                        final formattedPhoneNumber = '+${phoneController.text}';
-                        await authProvider.verifyPhoneNumber(formattedPhoneNumber);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const OtpPage()),
-                        );
-                      } else {
-                        // Handle case where phone number is empty
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please enter a valid phone number')),
-                        );
-                      }
-                    },
+          final completePhoneNumber = phoneController.text.trim();
+          if (completePhoneNumber.isNotEmpty) {
+            final formattedPhoneNumber = '+${phoneController.text}';
+            await authProvider.verifyPhoneNumber(formattedPhoneNumber);
+            Navigator.push(
+              // ignore: use_build_context_synchronously
+              context,
+              MaterialPageRoute(builder: (context) => const OtpPage()),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('Please enter a valid phone number')),
+            );
+          }
+        },
         backgroundColor: TTthemeClass().ttThird,
-        // elevation:,
         elevation: 0,
-
-        label:Row(
-            children: [
-              Text('Continue',style: TextStyle(fontSize: 16,color: TTthemeClass().ttLightPrimary,fontWeight: FontWeight.w600),),
-              const SizedBox(width: 8), // Add some space between text and icon
-              Icon(Icons.arrow_forward_ios,color: TTthemeClass().ttLightPrimary,),
-            ],
-          ),
-        // icon: Icon(Icons.abc),
+        label: Row(
+          children: [
+            Text(
+              'Continue',
+              style: TextStyle(
+                  fontSize: 16,
+                  color: TTthemeClass().ttLightPrimary,
+                  fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: TTthemeClass().ttLightPrimary,
+            ),
+          ],
+        ),
       ),
     );
   }

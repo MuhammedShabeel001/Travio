@@ -4,10 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:travio/providers/authprovider.dart';
 import 'package:travio/utils/theme.dart';
 import 'package:travio/widgets/common/navbar.dart';
-import '../../providers/auth_provider.dart';
 
 class OtpPage extends StatelessWidget {
-  const OtpPage({Key? key}) : super(key: key);
+  const OtpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -87,16 +86,13 @@ class OtpPage extends StatelessWidget {
                       children: [
                         OtpTextField(
                           numberOfFields: 6,
-                          fieldWidth: 53.0,
+                          fieldWidth: 50.0,
                           borderColor: TTthemeClass().ttThird,
                           showFieldAsBox: true,
                           fillColor: TTthemeClass().ttThirdOpacity,
                           filled: true,
-                          onCodeChanged: (String code) {
-                            // Handle OTP code input if needed
-                          },
+                          onCodeChanged: (String code) {},
                           onSubmit: (String verificationCode) async {
-                            // Example of how to submit OTP for verification
                             await authProvider.signInWithOTP(verificationCode);
                           },
                           textStyle: const TextStyle(
@@ -107,8 +103,8 @@ class OtpPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         TextButton(
                           onPressed: () async {
-                            // Example of how to resend OTP
-                            await authProvider.verifyPhoneNumber('+91${phoneController.text}');
+                            await authProvider.verifyPhoneNumber(
+                                '+91${phoneController.text}');
                           },
                           child: const Text(
                             'Resend OTP',
@@ -129,8 +125,13 @@ class OtpPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TTnavBar(),), (route) => false,);
-          // Handle logic for Continue button press
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TTnavBar(),
+            ),
+            (route) => false,
+          );
         },
         backgroundColor: TTthemeClass().ttThird,
         elevation: 0,

@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -24,21 +25,17 @@ class AuthProvider extends ChangeNotifier {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) {
-        // Handle automatic verification
-        print('Automatic Verification Completed: ${credential.smsCode}');
+        log('Automatic Verification Completed: ${credential.smsCode}');
         signInWithCredential(credential);
       },
       verificationFailed: (FirebaseAuthException e) {
-        // Handle verification failure
-        print('Verification Failed: ${e.message}');
+        log('Verification Failed: ${e.message}');
       },
       codeSent: (String verificationId, int? resendToken) {
-        // Save verification ID for later use
         this.verificationId = verificationId;
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        // Handle timeout
-        print('Verification ID timed out: $verificationId');
+        log('Verification ID timed out: $verificationId');
       },
     );
   }
@@ -51,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
       );
       await signInWithCredential(credential);
     } catch (e) {
-      print('Failed to sign in with OTP: $e');
+      log('Failed to sign in with OTP: $e');
     }
   }
 
@@ -61,17 +58,16 @@ class AuthProvider extends ChangeNotifier {
           await _auth.signInWithCredential(credential);
       final User? user = userCredential.user;
       if (user != null) {
-        print('User logged in: ${user.uid}');
-        // Save login status to SharedPreferences
-        final SharedPreferences _sharedPref = await SharedPreferences.getInstance();
-        await _sharedPref.setBool(keyValue, true);
+        log('User logged in: ${user.uid}');
 
-        // Handle successful sign-in (e.g., navigate to next screen)
+        final SharedPreferences sharedPref =
+            await SharedPreferences.getInstance();
+        await sharedPref.setBool(keyValue, true);
       } else {
-        print('User sign-in failed');
+        log('User sign-in failed');
       }
     } catch (e) {
-      print('Failed to sign in: $e');
+      log('Failed to sign in: $e');
     }
     notifyListeners();
   }
@@ -79,7 +75,8 @@ class AuthProvider extends ChangeNotifier {
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
@@ -90,28 +87,32 @@ class AuthProvider extends ChangeNotifier {
           idToken: googleSignInAuthentication.idToken,
         );
 
-        // Sign in to Firebase with the Google credential
         final UserCredential userCredential =
             await _auth.signInWithCredential(credential);
         final User? user = userCredential.user;
 
         if (user != null) {
-          print('User logged in: ${user.uid}');
-          // Save login status to SharedPreferences
-          final SharedPreferences _sharedPref = await SharedPreferences.getInstance();
-          await _sharedPref.setBool(keyValue, true);
-          // Navigator.pushAndRemoveUntil(context, newRoute, predicate)
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TTnavBar(),), (route) => false,);
+          log('User logged in: ${user.uid}');
 
-          // Handle successful sign-in (e.g., navigate to next screen)
+          final SharedPreferences sharedPref =
+              await SharedPreferences.getInstance();
+          await sharedPref.setBool(keyValue, true);
+
+          Navigator.pushAndRemoveUntil(
+            // ignore: use_build_context_synchronously
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TTnavBar(),
+            ),
+            (route) => false,
+          );
         } else {
-          print('User sign-in failed');
+          log('User sign-in failed');
         }
       }
     } catch (e) {
-      print('Error signing in with Google: $e');
+      log('Error signing in with Google: $e');
     }
     notifyListeners();
   }
-  
 }
