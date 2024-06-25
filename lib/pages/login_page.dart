@@ -16,7 +16,7 @@ class LogInScreen extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 50),
+            padding: const EdgeInsets.symmetric(vertical: 50),
             width: double.infinity,
             child: SizedBox(
               height: 150,
@@ -31,46 +31,46 @@ class LogInScreen extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: TTthemeClass().ttLightPrimary,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
                 ),
               ),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
                     child: ListView(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       children: [
                         tTextfield(
                           Labeltext: 'Email',
                           HintText: 'example@gmail.com',
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         tTextfield(
                           Labeltext: 'Password',
                           HintText: 'password',
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             tSignIn('assets/icons/google.svg'),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             tSignIn('assets/icons/phone.svg'),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Center(
                           child: RichText(
                             text: TextSpan(
                               children: [
-                                TextSpan(
+                                const TextSpan(
                                   text: "Don't have an account? ",
                                   style: TextStyle(
                                     fontSize: 16,
@@ -90,7 +90,9 @@ class LogInScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const SignUpPage(),
+                                              const SignUpPage(
+                                            isActive: false,
+                                          ),
                                         ),
                                       );
                                     },
@@ -102,23 +104,7 @@ class LogInScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: TTthemeClass().ttThird,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                    ),
-                    child: Text(
-                      'Sign up',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: TTthemeClass().ttLightPrimary,
-                      ),
-                    ),
-                  ),
+                  tActiveBottomButton('Login', true),
                 ],
               ),
             ),

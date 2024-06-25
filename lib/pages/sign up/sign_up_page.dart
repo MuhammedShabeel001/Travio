@@ -1,14 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:travio/pages/details_page.dart';
 import 'package:travio/pages/entry_page.dart';
 import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
-import 'package:travio/widgets/common/customs/custom_buttons.dart';
+// import 'package:travio/widgets/common/customs/custom_buttons.dart';
 import 'package:travio/widgets/common/customs/custom_textfield.dart';
+import 'package:travio/widgets/common/customs/welcome_bar.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+  final bool isActive;
+
+  const SignUpPage({super.key, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -18,32 +22,7 @@ class SignUpPage extends StatelessWidget {
         children: [
           Flexible(
             flex: 1,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              width: double.infinity,
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome to',
-                    style: TextStyle(
-                      fontSize: 19,
-                      color: Color.fromARGB(153, 255, 255, 255),
-                    ),
-                  ),
-                  Text(
-                    'travio',
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      height: 1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: tWelcome('Welcome to')
           ),
           Flexible(
             flex: 4,
@@ -137,9 +116,38 @@ fast method''',
                         ],
                       ),
                       const SizedBox(height: 0),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: tActiveBottomButton('Sign up',false)
+                      Consumer<AuthProvider>(
+                        builder: (context, model, child) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: ElevatedButton(
+                              onPressed: model.isChecked
+                                  ? () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const DetailsPage(),));
+                                      // Your onPressed code here
+                                    }
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: model.isChecked
+                                    ? TTthemeClass().ttThird
+                                    : TTthemeClass().ttThirdOpacity,
+                                minimumSize: const Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                              ),
+                              child: Text(
+                                'Sign up',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: model.isChecked
+                                      ? TTthemeClass().ttLightPrimary
+                                      : TTthemeClass().ttThirdHalf,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +181,7 @@ fast method''',
                         ],
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

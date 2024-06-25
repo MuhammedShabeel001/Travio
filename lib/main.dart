@@ -3,10 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/firebase/firebase_options.dart';
 import 'package:travio/pages/login_page.dart';
-import 'package:travio/pages/splash_page.dart';
 import 'package:travio/providers/auth_provider.dart';
-import 'package:travio/providers/theme_provider.dart';
-import 'package:travio/utils/routes.dart';
+import 'package:travio/providers/textcontroller_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,29 +19,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => TextControllerProvider()),
         ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
-        // theme: ThemeProvider.currentTheme,
-        // routes: TRoutes.tRoutes,
         theme: ThemeData(),
-        // onGenerateRoute: TRoutes.,
-        // home: SplashScreen(),
-        home: LogInScreen(),
+        home: const LogInScreen(),
       ),
     );
-
-    // ChangeNotifierProvider(
-    //   create: (_) => AuthProvider(),
-    //   child: MaterialApp(
-    //     title: 'Flutter Firebase Auth Demo',
-    //     theme: ThemeData(
-    //       primarySwatch: Colors.blue,
-    //       visualDensity: VisualDensity.adaptivePlatformDensity,
-    //     ),
-    //     home: const SplashScreen(),
-    //   ),
-    // );
   }
 }
