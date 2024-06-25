@@ -2,8 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/pages/entry_page.dart';
-import 'package:travio/providers/authprovider.dart';
+import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
+import 'package:travio/widgets/common/customs/custom_buttons.dart';
+import 'package:travio/widgets/common/customs/custom_textfield.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -13,7 +15,6 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: TTthemeClass().ttThird,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Flexible(
             flex: 1,
@@ -67,97 +68,26 @@ class SignUpPage extends StatelessWidget {
                       ),
                       children: [
                         const Text(
-                          'Create account with easy and fast method',
+                          '''Create account with easy and 
+fast method''',
                           style: TextStyle(
                             fontSize: 19,
                             color: Color.fromARGB(99, 0, 0, 0),
                           ),
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          'E mail',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'example@gmail.com',
-                            hintStyle: const TextStyle(
-                              color: Color.fromARGB(101, 0, 0, 0),
-                            ),
-                            fillColor: TTthemeClass().ttThirdOpacity,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 20.0,
-                              horizontal: 20.0,
-                            ),
-                          ),
-                        ),
+                        tTextfield(
+                            Labeltext: 'Email', HintText: 'example@gmail.com'),
                         const SizedBox(
                           height: 15,
                         ),
-                        const Text(
-                          'Password',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'password',
-                            hintStyle: const TextStyle(
-                              color: Color.fromARGB(101, 0, 0, 0),
-                            ),
-                            fillColor: TTthemeClass().ttThirdOpacity,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 20.0,
-                              horizontal: 20.0,
-                            ),
-                          ),
-                        ),
+                        tTextfield(Labeltext: 'Password', HintText: 'password'),
                         const SizedBox(
                           height: 15,
                         ),
-                        const Text(
-                          'Conform Password',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'password',
-                            hintStyle: const TextStyle(
-                              color: Color.fromARGB(101, 0, 0, 0),
-                            ),
-                            fillColor: TTthemeClass().ttThirdOpacity,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 20.0,
-                              horizontal: 20.0,
-                            ),
-                          ),
-                        ),
+                        tTextfield(
+                            Labeltext: 'Confirm Password',
+                            HintText: 'password'),
                       ],
                     ),
                   ),
@@ -209,23 +139,7 @@ class SignUpPage extends StatelessWidget {
                       const SizedBox(height: 0),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: TTthemeClass().ttThird,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          ),
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: TTthemeClass().ttLightPrimary,
-                            ),
-                          ),
-                        ),
+                        child: tActiveBottomButton('Sign up',false)
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

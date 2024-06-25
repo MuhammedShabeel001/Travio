@@ -3,11 +3,11 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 
 import 'package:provider/provider.dart';
 import 'package:travio/pages/phone%20number/otp_page.dart';
-import 'package:travio/providers/authprovider.dart';
+import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 
 class NumberPage extends StatelessWidget {
-  const NumberPage({Key? key}) : super(key: key);
+  const NumberPage({super.key});
 
   @override
   Widget build(BuildContext context) {

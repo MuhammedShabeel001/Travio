@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:travio/pages/phone%20number/number_page.dart';
 import 'package:travio/pages/sign%20up/sign_up_page.dart';
 
-import 'package:travio/providers/authprovider.dart';
+import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 
 class EntryPage extends StatelessWidget {

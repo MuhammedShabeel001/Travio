@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/providers/authprovider.dart';
+import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 import 'package:travio/widgets/common/navbar.dart';
 
