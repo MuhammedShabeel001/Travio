@@ -93,7 +93,7 @@ class OtpPage extends StatelessWidget {
                           filled: true,
                           onCodeChanged: (String code) {},
                           onSubmit: (String verificationCode) async {
-                            await authProvider.signInWithOTP(verificationCode);
+                            // await authProvider.signInWithOTP(verificationCode);
                           },
                           textStyle: const TextStyle(
                             fontSize: 20,
@@ -103,8 +103,8 @@ class OtpPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         TextButton(
                           onPressed: () async {
-                            await authProvider.verifyPhoneNumber(
-                                '+91${phoneController.text}');
+                            // await authProvider.verifyPhoneNumber(
+                            //     '+91${phoneController.text}');
                           },
                           child: const Text(
                             'Resend OTP',

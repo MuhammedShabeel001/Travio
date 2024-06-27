@@ -90,7 +90,7 @@ class LogInScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const SignUpPage(
+                                               SignUpPage(
                                             isActive: false,
                                           ),
                                         ),

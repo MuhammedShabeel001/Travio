@@ -109,7 +109,7 @@ class NumberPage extends StatelessWidget {
           final completePhoneNumber = phoneController.text.trim();
           if (completePhoneNumber.isNotEmpty) {
             final formattedPhoneNumber = '+${phoneController.text}';
-            await authProvider.verifyPhoneNumber(formattedPhoneNumber);
+            // await authProvider.verifyPhoneNumber(formattedPhoneNumber);
             Navigator.push(
               // ignore: use_build_context_synchronously
               context,

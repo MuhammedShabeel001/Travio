@@ -185,7 +185,7 @@ class EntryPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SignUpPage(isActive: false,),
+                                builder: (context) =>  SignUpPage(isActive: false,),
                               ));
                         },
                         child: Text(

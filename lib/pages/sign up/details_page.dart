@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/providers/textcontroller_provider.dart';
 import 'package:travio/utils/theme.dart';
 import 'package:travio/widgets/common/customs/custom_buttons.dart';
@@ -7,11 +8,13 @@ import 'package:travio/widgets/common/customs/custom_textfield.dart';
 import 'package:travio/widgets/common/customs/welcome_bar.dart';
 
 class DetailsPage extends StatelessWidget {
-  const DetailsPage({super.key});
+   DetailsPage({super.key});
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final textControllers = Provider.of<TextControllerProvider>(context);
+    final textControllers = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       backgroundColor: TTthemeClass().ttThird,

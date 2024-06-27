@@ -1,29 +1,27 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/pages/details_page.dart';
+import 'package:travio/pages/sign%20up/details_page.dart';
 import 'package:travio/pages/entry_page.dart';
 import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
-// import 'package:travio/widgets/common/customs/custom_buttons.dart';
 import 'package:travio/widgets/common/customs/custom_textfield.dart';
 import 'package:travio/widgets/common/customs/welcome_bar.dart';
 
 class SignUpPage extends StatelessWidget {
   final bool isActive;
 
-  const SignUpPage({super.key, required this.isActive});
+  SignUpPage({super.key, required this.isActive});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       backgroundColor: TTthemeClass().ttThird,
       body: Column(
         children: [
-          Flexible(
-            flex: 1,
-            child: tWelcome('Welcome to')
-          ),
+          Flexible(flex: 1, child: tWelcome('Welcome to')),
           Flexible(
             flex: 4,
             child: Container(
@@ -55,18 +53,96 @@ fast method''',
                           ),
                         ),
                         const SizedBox(height: 20),
-                        tTextfield(
-                            Labeltext: 'Email', HintText: 'example@gmail.com'),
-                        const SizedBox(
-                          height: 15,
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Email',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
+                                  }
+                                  // Email format validation using regex
+                                  bool validEmail = RegExp(
+                                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                    caseSensitive: false,
+                                    multiLine: false,
+                                  ).hasMatch(value);
+                                  if (!validEmail) {
+                                    return 'Please enter a valid email address';
+                                  }
+                                  return null;
+                                },
+                                controller: authProvider.emailController,
+                                decoration: InputDecoration(
+                                  hintText: 'example@gmail.com',
+                                  hintStyle: const TextStyle(
+                                    color: Color.fromARGB(101, 0, 0, 0),
+                                  ),
+                                  fillColor: TTthemeClass().ttThirdOpacity,
+                                  filled: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 20.0,
+                                    horizontal: 20.0,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              const Text(
+                                'Password',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your password';
+                                  }
+                                  // Add password validation logic here if needed
+                                  return null;
+                                },
+                                controller: authProvider.passwordController,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  hintText: '*************',
+                                  hintStyle: const TextStyle(
+                                    color: Color.fromARGB(101, 0, 0, 0),
+                                  ),
+                                  fillColor: TTthemeClass().ttThirdOpacity,
+                                  filled: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 20.0,
+                                    horizontal: 20.0,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              tTextfield(Labeltext: 'Password', HintText: 'password'),
+                              const SizedBox(height: 15),
+                              tTextfield(Labeltext: 'Confirm Password', HintText: 'password'),
+                            ],
+                          ),
                         ),
-                        tTextfield(Labeltext: 'Password', HintText: 'password'),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        tTextfield(
-                            Labeltext: 'Confirm Password',
-                            HintText: 'password'),
                       ],
                     ),
                   ),
@@ -122,9 +198,16 @@ fast method''',
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: ElevatedButton(
                               onPressed: model.isChecked
-                                  ? () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const DetailsPage(),));
-                                      // Your onPressed code here
+                                  ? () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        await authProvider.signup(context);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>  DetailsPage(),
+                                          ),
+                                        );
+                                      }
                                     }
                                   : null,
                               style: ElevatedButton.styleFrom(
