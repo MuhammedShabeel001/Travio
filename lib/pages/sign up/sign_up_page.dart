@@ -137,9 +137,42 @@ fast method''',
                                 ),
                               ),
                               const SizedBox(height: 15),
-                              tTextfield(Labeltext: 'Password', HintText: 'password'),
-                              const SizedBox(height: 15),
-                              tTextfield(Labeltext: 'Confirm Password', HintText: 'password'),
+                              const Text(
+                                'Confirm Password',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please confirm your password';
+                                  }
+                                  // Add password validation logic here if needed
+                                  return null;
+                                },
+                                // controller: authProvider.passwordController,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  hintText: '*************',
+                                  hintStyle: const TextStyle(
+                                    color: Color.fromARGB(101, 0, 0, 0),
+                                  ),
+                                  fillColor: TTthemeClass().ttThirdOpacity,
+                                  filled: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 20.0,
+                                    horizontal: 20.0,
+                                  ),
+                                ),
+                              ),
+                              
                             ],
                           ),
                         ),

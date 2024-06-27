@@ -1,22 +1,31 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travio/models/user_model.dart';
+import 'package:travio/pages/login_page.dart';
 import 'package:travio/pages/sign%20up/details_page.dart';
-import 'package:travio/providers/textcontroller_provider.dart';
 import 'package:travio/widgets/common/navbar.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   final String keyValue = 'loggedIn';
 
   String verificationId = '';
 
   bool _isChecked = false;
   bool _isLoading = false;
+
+  UserModel? _user;
+  UserModel? get user => _user;
 
   bool get isChecked => _isChecked;
   bool get isLoading => _isLoading;
@@ -27,6 +36,9 @@ class AuthProvider extends ChangeNotifier {
   final TextEditingController pronounController = TextEditingController();
   final TextEditingController photoController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  ValueNotifier<String?> imageTemporary = ValueNotifier<String?>(null);
+  ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
   void toggleCheckBox() {
     _isChecked = !_isChecked;
@@ -169,6 +181,73 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
+  Future<void> getImage(ValueNotifier<String?> image) async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage == null) return;
+    image.value = pickedImage.path;
+  }
+
+  Future<String?> uploadImage(File image, ValueNotifier<bool> loading) async {
+    try {
+      loading.value = true;
+      String fileName = basename(image.path);
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child('uploads/$fileName');
+      UploadTask uploadTask = firebaseStorageRef.putFile(image);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      loading.value = false;
+      return downloadUrl;
+    } catch (e) {
+      loading.value = false;
+      return null;
+    }
+  }
+
+  Future<void> addUser(BuildContext context) async {
+    try {
+      UserModel user = UserModel(
+        name: nameController.text,
+        email: _auth.currentUser!.email,
+        profile: photoController.text,
+        phonenumber: int.parse(phoneController.text),
+        password: passwordController.text,
+        id: _auth.currentUser!.uid,
+        pronouns: pronounController.text,
+      );
+      await db.collection("users").doc(_auth.currentUser?.uid).set(user.toMap());
+      // Navigator.push(context, MaterialPageRoute(builder: (context) => const TTnavBar()));
+    } catch (e) {
+       _showSnackBar(context, "Failed to add user: $e");
+    }
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      User? firebaseUser = _auth.currentUser;
+      if (firebaseUser != null) {
+        DocumentSnapshot userDoc =
+            await db.collection('users').doc(firebaseUser.uid).get();
+        _user = UserModel.fromMap(userDoc);
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.clear();
+    await _auth.signOut();
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context1) => LogInScreen()),
+      (route) => false,
+    );
+  }
+
   void _navigateToSignupDetail(BuildContext context) {
     Navigator.push(
       context,
@@ -184,6 +263,8 @@ class AuthProvider extends ChangeNotifier {
     pronounController.dispose();
     photoController.dispose();
     passwordController.dispose();
+    imageTemporary.dispose();
+    loading.dispose();
     super.dispose();
   }
 }
