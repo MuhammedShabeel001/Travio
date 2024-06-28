@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travio/pages/entry_page.dart';
+import 'package:travio/pages/login_page.dart';
 import 'package:travio/utils/theme.dart';
 import 'package:travio/widgets/common/navbar.dart';
 
@@ -46,7 +47,7 @@ class _SplashState extends State<SplashScreen> {
 
   void navigateToLogin() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const EntryPage()),
+      MaterialPageRoute(builder: (context) => LogInScreen()),
     );
   }
 

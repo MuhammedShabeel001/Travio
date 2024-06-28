@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:travio/pages/login_page.dart';
 import 'package:travio/pages/sign%20up/details_page.dart';
 import 'package:travio/pages/entry_page.dart';
 import 'package:travio/providers/auth_provider.dart';
@@ -285,7 +286,7 @@ fast method''',
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const EntryPage(),
+                                  builder: (context) => LogInScreen(),
                                 ),
                               );
                             },

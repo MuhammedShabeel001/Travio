@@ -9,10 +9,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:get/get.dart'; // Add this if you're using GetX for navigation and snackbar
 import 'package:travio/models/user_model.dart';
 import 'package:travio/pages/login_page.dart';
 import 'package:travio/pages/sign%20up/details_page.dart';
 import 'package:travio/widgets/common/navbar.dart';
+// import 'package:travio/exception_handler.dart'; // Ensure this file exists with the handleExceptions method
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -37,9 +39,14 @@ class AuthProvider extends ChangeNotifier {
   final TextEditingController photoController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  // Add these for login
+  final TextEditingController loginEmailController = TextEditingController();
+  final TextEditingController loginPasswordController = TextEditingController();
+
   ValueNotifier<String?> imageTemporary = ValueNotifier<String?>(null);
   ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
+  // Authentication Methods
   void toggleCheckBox() {
     _isChecked = !_isChecked;
     notifyListeners();
@@ -181,9 +188,9 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
+  // Image Handling
   Future<void> getImage(ValueNotifier<String?> image) async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage == null) return;
     image.value = pickedImage.path;
   }
@@ -192,8 +199,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       loading.value = true;
       String fileName = basename(image.path);
-      Reference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child('uploads/$fileName');
+      Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
       UploadTask uploadTask = firebaseStorageRef.putFile(image);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
@@ -205,6 +211,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // User Data Management
   Future<void> addUser(BuildContext context) async {
     try {
       UserModel user = UserModel(
@@ -219,7 +226,7 @@ class AuthProvider extends ChangeNotifier {
       await db.collection("users").doc(_auth.currentUser?.uid).set(user.toMap());
       // Navigator.push(context, MaterialPageRoute(builder: (context) => const TTnavBar()));
     } catch (e) {
-       _showSnackBar(context, "Failed to add user: $e");
+      _showSnackBar(context, "Failed to add user: $e");
     }
   }
 
@@ -227,8 +234,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       User? firebaseUser = _auth.currentUser;
       if (firebaseUser != null) {
-        DocumentSnapshot userDoc =
-            await db.collection('users').doc(firebaseUser.uid).get();
+        DocumentSnapshot userDoc = await db.collection('users').doc(firebaseUser.uid).get();
         _user = UserModel.fromMap(userDoc);
         notifyListeners();
       }
@@ -237,6 +243,24 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // Sign in method
+  Future<void> signIn(BuildContext context) async {
+    try {
+      loading.value = true;
+      await _auth.signInWithEmailAndPassword(
+          email: loginEmailController.text,
+          password: loginPasswordController.text);
+      await _setLoginStatus(true);
+      loading.value = false;
+      _navigateToHome(context);
+    } catch (e) {
+      _showSnackBar(context, "Error: $e");
+      print("$e ................................");
+      loading.value = false;
+    }
+  }
+
+  // Sign out
   Future<void> signOut(BuildContext context) async {
     final sharedPref = await SharedPreferences.getInstance();
     await sharedPref.clear();
@@ -248,10 +272,11 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
+  // Navigation
   void _navigateToSignupDetail(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  DetailsPage()),
+      MaterialPageRoute(builder: (context) => DetailsPage()),
     );
   }
 
@@ -263,6 +288,8 @@ class AuthProvider extends ChangeNotifier {
     pronounController.dispose();
     photoController.dispose();
     passwordController.dispose();
+    loginEmailController.dispose(); // Dispose login controllers
+    loginPasswordController.dispose();
     imageTemporary.dispose();
     loading.dispose();
     super.dispose();

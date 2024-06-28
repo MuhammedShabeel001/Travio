@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 import 'package:travio/widgets/common/appbar.dart';
+import 'package:travio/widgets/profile/logout_alert.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -12,22 +14,7 @@ class ProfilePage extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      body: ttAppBar(
-        context,
-        'Profile',
-        FutureBuilder(
-          future: authProvider.fetchUserData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error fetching user data'));
-            } else {
-              return listView(context, authProvider);
-            }
-          },
-        ),
-      ),
+      body: ttAppBar(context, 'Profile', listView(context, authProvider)),
     );
   }
 
@@ -39,38 +26,55 @@ class ProfilePage extends StatelessWidget {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: SizedBox(
-                height: 150,
-                width: 150,
-                child: authProvider.user?.profile != null
-                    ? Image.network(authProvider.user!.profile!)
-                    : Image.asset('assets/images/lisa image.png'),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              authProvider.user?.name ?? 'Loading...',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 26,
-                color: TTthemeClass().ttLightText,
-              ),
-            ),
-            Text(
-              authProvider.user?.pronouns ?? '',
-              style: const TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(0, 0, 0, 0.5),
-              ),
-            ),
-            Text(
-              authProvider.user?.email ?? '',
-              style: const TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(0, 0, 0, 0.5),
-              ),
+            FutureBuilder(
+              future: authProvider.fetchUserData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error fetching user data'));
+                } else {
+                  return SizedBox(
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: SizedBox(
+                            height: 150,
+                            width: 150,
+                            child: authProvider.user?.profile != null
+                                ? Image.network(authProvider.user!.profile!)
+                                : Image.asset('assets/images/lisa image.png'),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          authProvider.user?.name ?? 'Loading...',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 26,
+                            color: TTthemeClass().ttLightText,
+                          ),
+                        ),
+                        Text(
+                          authProvider.user?.pronouns ?? '',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                          ),
+                        ),
+                        Text(
+                          authProvider.user?.email ?? '',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Color.fromRGBO(0, 0, 0, 0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
             ),
             const SizedBox(height: 30),
             Container(
@@ -88,7 +92,8 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.bookmark, color: TTthemeClass().ttLightText),
+                    leading:
+                        SvgPicture.asset('assets/icons/wishlist.svg'),
                     title: Text(
                       'Wishlist',
                       style: TextStyle(
@@ -97,10 +102,11 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.history, color: TTthemeClass().ttLightText),
+                    leading:
+                        SvgPicture.asset('assets/icons/recent.svg'),
                     title: Text(
                       'History',
                       style: TextStyle(
@@ -109,10 +115,10 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.color_lens, color: TTthemeClass().ttLightText),
+                    leading: SvgPicture.asset('assets/icons/theme.svg'),
                     title: Text(
                       'Theme',
                       style: TextStyle(
@@ -121,10 +127,12 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: Icon(Icons.arrow_forward_ios,
+                        color: TTthemeClass().ttLightText),
                   ),
                   ListTile(
-                    leading: Icon(Icons.edit, color: TTthemeClass().ttLightText),
+                    leading:
+                        SvgPicture.asset('assets/icons/edit.svg'),
                     title: Text(
                       'Edit profile',
                       style: TextStyle(
@@ -133,10 +141,11 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.lock, color: TTthemeClass().ttLightText),
+                    leading:
+                        SvgPicture.asset('assets/icons/privacyPolicy.svg'),
                     title: Text(
                       'Privacy Policy',
                       style: TextStyle(
@@ -145,10 +154,10 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.edit_document, color: TTthemeClass().ttLightText),
+                    leading:SvgPicture.asset('assets/icons/termsOfService.svg'),
                     title: Text(
                       'Terms of Service',
                       style: TextStyle(
@@ -157,10 +166,11 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.delete, color: TTthemeClass().ttLightText),
+                    leading:
+                        SvgPicture.asset('assets/icons/delete.svg'),
                     title: Text(
                       'Delete my account',
                       style: TextStyle(
@@ -169,13 +179,17 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     onTap: () {
-                      authProvider.signOut(context);
+                      showDialog(
+                        context: context,
+                        builder: (context) => tLogOut(context),
+                      );
                     },
-                    leading: Icon(Icons.logout, color: TTthemeClass().ttLightText),
+                    leading:
+                        SvgPicture.asset('assets/icons/log-out.svg'),
                     title: Text(
                       'Log out',
                       style: TextStyle(
@@ -184,11 +198,13 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                   trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   const SizedBox(height: 30),
-                  Text('version', style: TextStyle(color: TTthemeClass().ttLightText)),
-                  Text('1.01.001', style: TextStyle(color: TTthemeClass().ttLightText)),
+                  Text('version',
+                      style: TextStyle(color: TTthemeClass().ttLightText)),
+                  Text('1.01.001',
+                      style: TextStyle(color: TTthemeClass().ttLightText)),
                 ],
               ),
             ),

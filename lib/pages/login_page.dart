@@ -1,7 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:travio/pages/phone%20number/number_page.dart';
+import 'package:travio/pages/restpassword.dart';
 import 'package:travio/pages/sign%20up/sign_up_page.dart';
+import 'package:travio/providers/auth_provider.dart';
 import 'package:travio/utils/theme.dart';
 import 'package:travio/widgets/common/customs/custom_buttons.dart';
 import 'package:travio/widgets/common/customs/custom_textfield.dart';
@@ -11,6 +15,7 @@ class LogInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       backgroundColor: TTthemeClass().ttThirdHalf,
       body: Column(
@@ -45,22 +50,136 @@ class LogInScreen extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       children: [
-                        tTextfield(
-                          Labeltext: 'Email',
-                          HintText: 'example@gmail.com',
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'E mail',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: authProvider.loginEmailController,
+                              decoration: InputDecoration(
+                                hintText: 'example@gmail.com',
+                                hintStyle: const TextStyle(
+                                  color: Color.fromARGB(101, 0, 0, 0),
+                                ),
+                                fillColor: TTthemeClass().ttThirdOpacity,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 20.0,
+                                  horizontal: 20.0,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 15),
-                        tTextfield(
-                          Labeltext: 'Password',
-                          HintText: 'password',
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Password',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                              ),
+                            ),
+                            TextFormField(
+                              obscureText: true,
+                              controller: authProvider.loginPasswordController,
+                              decoration: InputDecoration(
+                                hintText: 'Password',
+                                hintStyle: const TextStyle(
+                                  color: Color.fromARGB(101, 0, 0, 0),
+                                ),
+                                fillColor: TTthemeClass().ttThirdOpacity,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 20.0,
+                                  horizontal: 20.0,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(onPressed: (){
+
+                                  // Navigator.push(context,  MaterialPageRoute(builder: (context) => ResetPasswordScreen(),));
+                                }, child: Text('Forgot password '))
+                              ],
+                            )
+                          ],
                         ),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            tSignIn('assets/icons/google.svg'),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: TTthemeClass()
+                                    .ttLightPrimary, // Custom background color
+                                borderRadius: BorderRadius.circular(
+                                    25), // Custom border radius
+                                border: Border.all(
+                                  color: TTthemeClass()
+                                      .ttSecondary, // Custom border color
+                                  width: 2, // Custom border width
+                                ),
+                              ),
+                              child: IconButton(
+                                iconSize: 30, // Custom icon size
+                                icon: SvgPicture.asset(
+                                    'assets/icons/google.svg'), // Icon with custom color
+                                onPressed: () async {
+                      await Provider.of<AuthProvider>(context, listen: false)
+                          .loginWithGoogle(context);
+                    },
+                              ),
+                            ),
+                            // tSignIn('assets/icons/google.svg'),
                             const SizedBox(width: 20),
-                            tSignIn('assets/icons/phone.svg'),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: TTthemeClass()
+                                    .ttLightPrimary, // Custom background color
+                                borderRadius: BorderRadius.circular(
+                                    25), // Custom border radius
+                                border: Border.all(
+                                  color: TTthemeClass()
+                                      .ttSecondary, // Custom border color
+                                  width: 2, // Custom border width
+                                ),
+                              ),
+                              child: IconButton(
+                                iconSize: 30, // Custom icon size
+                                icon: SvgPicture.asset(
+                                    'assets/icons/phone.svg'), // Icon with custom color
+                                onPressed: () {
+                                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NumberPage(),
+                          ));
+                                  // Define your onPressed functionality here
+                                },
+                              ),
+                            ),
+                            // tSignIn('assets/icons/phone.svg'),
                           ],
                         ),
                         const SizedBox(
@@ -89,8 +208,7 @@ class LogInScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                               SignUpPage(
+                                          builder: (context) => SignUpPage(
                                             isActive: false,
                                           ),
                                         ),
@@ -104,7 +222,28 @@ class LogInScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  tActiveBottomButton('Login', true),
+                  // tActiveBottomButton('Login', true),
+                  ElevatedButton(
+                    onPressed: () {
+                      authProvider.signIn(context);
+                      authProvider.loginEmailController.clear();
+                      authProvider.loginPasswordController.clear();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TTthemeClass().ttThird,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: TTthemeClass().ttLightPrimary,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

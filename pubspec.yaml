@@ -33,6 +33,7 @@ dependencies:
   custom_text_form_field_plus: ^0.0.5
   dot_curved_bottom_nav: ^0.0.2
   draggable_home: ^1.0.5
+  exception_helper: ^1.0.4
   firebase_auth: ^5.1.0
   firebase_core: ^3.0.0
   firebase_database: ^11.0.1

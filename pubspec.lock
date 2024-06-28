@@ -121,6 +121,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  exception_helper:
+    dependency: "direct main"
+    description:
+      name: exception_helper
+      sha256: "3b0b5ed1a107c300bb5199f64ed9f360faa6449a5435b8580958cbf2e0bd33f5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   fake_async:
     dependency: transitive
     description:

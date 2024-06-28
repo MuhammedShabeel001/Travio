@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travio/pages/home_page.dart';
 import 'package:travio/pages/itinarary_page.dart';
 import 'package:travio/pages/profile_page.dart';
@@ -52,11 +53,16 @@ class _TTnavBarState extends State<TTnavBar> {
                 });
               },
               items: [
-                Icon(Icons.home,color: TTthemeClass().ttThird,), // Icon for Home page
-                Icon(Icons.search,color: TTthemeClass().ttThird,), // Icon for Search page
-                Icon(Icons.add,color: TTthemeClass().ttThird,), // Icon for Profile page
-                Icon(Icons.airplane_ticket_outlined,color: TTthemeClass().ttThird,), // Icon for Profile page
-                Icon(Icons.person,color: TTthemeClass().ttThird,), // Icon for Profile page
+                SvgPicture.asset('assets/icons/Home.svg',), // Icon for Home page
+                SvgPicture.asset('assets/icons/search.svg',), // Icon for Home page
+                SvgPicture.asset('assets/icons/add.svg',), // Icon for Home page
+                SvgPicture.asset('assets/icons/ticket.svg',), // Icon for Home page
+                SvgPicture.asset('assets/icons/profile.svg',),
+                 // Icon for Home page
+                // Icon(Icons.search,color: TTthemeClass().ttThird,), // Icon for Search page
+                // Icon(Icons.add,color: TTthemeClass().ttThird,), // Icon for Profile page
+                // Icon(Icons.airplane_ticket_outlined,color: TTthemeClass().ttThird,), // Icon for Profile page
+                // Icon(Icons.person,color: TTthemeClass().ttThird,), // Icon for Profile page
               ],
             ),
           ),
