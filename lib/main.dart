@@ -5,7 +5,7 @@ import 'package:travio/firebase/firebase_options.dart';
 import 'package:travio/pages/login_page.dart';
 import 'package:travio/pages/splash_page.dart';
 import 'package:travio/providers/auth_provider.dart';
-import 'package:travio/providers/textcontroller_provider.dart';
+// import 'package:travio/providers/textcontroller_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

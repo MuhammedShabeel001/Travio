@@ -212,7 +212,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> fetchUserData(String userId) async {
     try {
       // isLoadingFetchUser = true;
-      DocumentSnapshot userDoc = await db.collection('users').doc("EMeaqSyFA7UlVlJ0fGzYRrHdmEt2").get();
+      DocumentSnapshot userDoc = await db.collection('users').doc(userId).get();
 // var erooooooooor = userDoc.
       _user = UserModel.fromMap(userDoc);
 
@@ -268,6 +268,20 @@ class AuthProvider with ChangeNotifier {
       MaterialPageRoute(builder: (context1) => LogInScreen()),
       (route) => false,
     );
+  }
+
+  Future<void> resetPassword(BuildContext context) async {
+    try {
+      loading.value = true;
+      await _auth.sendPasswordResetEmail(email: emailController.text);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Email sent successfully")));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LogInScreen()));
+      loading.value = false;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+      loading.value = false;
+    }
+    notifyListeners();
   }
 
   void _navigateToSignupDetail(BuildContext context) {

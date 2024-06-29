@@ -119,7 +119,7 @@ class LogInScreen extends StatelessWidget {
                               children: [
                                 TextButton(onPressed: (){
 
-                                  // Navigator.push(context,  MaterialPageRoute(builder: (context) => ResetPasswordScreen(),));
+                                   Navigator.push(context,  MaterialPageRoute(builder: (context) => ResentPassword(),));
                                 }, child: Text('Forgot password '))
                               ],
                             )

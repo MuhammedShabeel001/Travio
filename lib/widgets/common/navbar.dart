@@ -3,7 +3,7 @@ import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travio/pages/home_page.dart';
 import 'package:travio/pages/itinarary_page.dart';
-import 'package:travio/pages/profile_fake.dart';
+// import 'package:travio/pages/profile_fake.dart';
 import 'package:travio/pages/profile_page.dart';
 import 'package:travio/pages/search_page.dart';
 import 'package:travio/pages/trip_plan_page.dart';
