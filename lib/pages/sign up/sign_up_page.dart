@@ -121,7 +121,7 @@ fast method''',
                                 controller: authProvider.passwordController,
                                 obscureText: true,
                                 decoration: InputDecoration(
-                                  hintText: '*************',
+                                  hintText: 'Password',
                                   hintStyle: const TextStyle(
                                     color: Color.fromARGB(101, 0, 0, 0),
                                   ),
@@ -157,7 +157,7 @@ fast method''',
                                 // controller: authProvider.passwordController,
                                 obscureText: true,
                                 decoration: InputDecoration(
-                                  hintText: '*************',
+                                  hintText: 'Password',
                                   hintStyle: const TextStyle(
                                     color: Color.fromARGB(101, 0, 0, 0),
                                   ),

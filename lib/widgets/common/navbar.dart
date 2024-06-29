@@ -3,6 +3,7 @@ import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travio/pages/home_page.dart';
 import 'package:travio/pages/itinarary_page.dart';
+import 'package:travio/pages/profile_fake.dart';
 import 'package:travio/pages/profile_page.dart';
 import 'package:travio/pages/search_page.dart';
 import 'package:travio/pages/trip_plan_page.dart';
@@ -22,6 +23,7 @@ class _TTnavBarState extends State<TTnavBar> {
     const HomePage(),
     const SearchPage(),
     const TripPlanPage(),
+    // ProfileScreen(),
     const ItinararyPage(),
     const ProfilePage()
   ];
@@ -38,7 +40,7 @@ class _TTnavBarState extends State<TTnavBar> {
            bottom: -15,
             left: 0,
             right: 0,
-            child: DotCurvedBottomNav(
+            child: DotCurvedBottomNav(          
               // scrollController: _,
               // hideOnScroll: true,
               backgroundColor: TTthemeClass().ttLightPrimary,

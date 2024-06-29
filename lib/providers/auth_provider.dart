@@ -9,14 +9,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:get/get.dart'; // Add this if you're using GetX for navigation and snackbar
 import 'package:travio/models/user_model.dart';
 import 'package:travio/pages/login_page.dart';
 import 'package:travio/pages/sign%20up/details_page.dart';
 import 'package:travio/widgets/common/navbar.dart';
-// import 'package:travio/exception_handler.dart'; // Ensure this file exists with the handleExceptions method
 
-class AuthProvider extends ChangeNotifier {
+class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final String keyValue = 'loggedIn';
@@ -24,13 +22,14 @@ class AuthProvider extends ChangeNotifier {
   String verificationId = '';
 
   bool _isChecked = false;
-  bool _isLoading = false;
+  bool isLoading = false;
+  bool isLoadingFetchUser = false;
 
   UserModel? _user;
   UserModel? get user => _user;
 
   bool get isChecked => _isChecked;
-  bool get isLoading => _isLoading;
+  // bool get isLoading => _isLoading;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -39,14 +38,12 @@ class AuthProvider extends ChangeNotifier {
   final TextEditingController photoController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // Add these for login
   final TextEditingController loginEmailController = TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();
 
   ValueNotifier<String?> imageTemporary = ValueNotifier<String?>(null);
   ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
-  // Authentication Methods
   void toggleCheckBox() {
     _isChecked = !_isChecked;
     notifyListeners();
@@ -93,7 +90,7 @@ class AuthProvider extends ChangeNotifier {
       final User? user = userCredential.user;
       if (user != null) {
         log('User logged in: ${user.uid}');
-
+        await fetchUserData(user.uid);
         final SharedPreferences sharedPref = await SharedPreferences.getInstance();
         await sharedPref.setBool(keyValue, true);
         _showSnackBar(context, 'User logged in: ${user.uid}');
@@ -126,10 +123,9 @@ class AuthProvider extends ChangeNotifier {
 
         if (user != null) {
           log('User logged in: ${user.uid}');
-
+          await fetchUserData(user.uid);
           final SharedPreferences sharedPref = await SharedPreferences.getInstance();
           await sharedPref.setBool(keyValue, true);
-
           _navigateToHome(context);
         } else {
           log('User sign-in failed');
@@ -145,7 +141,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> signup(BuildContext context) async {
     try {
-      _isLoading = true;
+      isLoading = true;
       notifyListeners();
 
       await _auth.createUserWithEmailAndPassword(
@@ -156,12 +152,13 @@ class AuthProvider extends ChangeNotifier {
       _navigateToSignupDetail(context);
       await verifyEmail(context);
       await _setLoginStatus(true);
+      await fetchUserData(_auth.currentUser!.uid);
 
-      _isLoading = false;
+      isLoading = false;
       notifyListeners();
     } catch (e) {
       _showSnackBar(context, "Error: $e");
-      _isLoading = false;
+      isLoading = false;
       notifyListeners();
     }
   }
@@ -188,7 +185,6 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
-  // Image Handling
   Future<void> getImage(ValueNotifier<String?> image) async {
     final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage == null) return;
@@ -211,7 +207,22 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // User Data Management
+  
+
+  Future<void> fetchUserData(String userId) async {
+    try {
+      // isLoadingFetchUser = true;
+      DocumentSnapshot userDoc = await db.collection('users').doc("EMeaqSyFA7UlVlJ0fGzYRrHdmEt2").get();
+// var erooooooooor = userDoc.
+      _user = UserModel.fromMap(userDoc);
+
+      notifyListeners();
+     
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
   Future<void> addUser(BuildContext context) async {
     try {
       UserModel user = UserModel(
@@ -230,26 +241,14 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchUserData() async {
-    try {
-      User? firebaseUser = _auth.currentUser;
-      if (firebaseUser != null) {
-        DocumentSnapshot userDoc = await db.collection('users').doc(firebaseUser.uid).get();
-        _user = UserModel.fromMap(userDoc);
-        notifyListeners();
-      }
-    } catch (e) {
-      print('Error fetching user data: $e');
-    }
-  }
-
-  // Sign in method
   Future<void> signIn(BuildContext context) async {
     try {
       loading.value = true;
       await _auth.signInWithEmailAndPassword(
-          email: loginEmailController.text,
-          password: loginPasswordController.text);
+        email: loginEmailController.text,
+        password: loginPasswordController.text,
+      );
+      await fetchUserData(_auth.currentUser!.uid);
       await _setLoginStatus(true);
       loading.value = false;
       _navigateToHome(context);
@@ -260,7 +259,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // Sign out
   Future<void> signOut(BuildContext context) async {
     final sharedPref = await SharedPreferences.getInstance();
     await sharedPref.clear();
@@ -272,7 +270,6 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
-  // Navigation
   void _navigateToSignupDetail(BuildContext context) {
     Navigator.push(
       context,
@@ -288,7 +285,7 @@ class AuthProvider extends ChangeNotifier {
     pronounController.dispose();
     photoController.dispose();
     passwordController.dispose();
-    loginEmailController.dispose(); // Dispose login controllers
+    loginEmailController.dispose();
     loginPasswordController.dispose();
     imageTemporary.dispose();
     loading.dispose();
