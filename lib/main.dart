@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/firebase/firebase_options.dart';
-import 'package:travio/pages/login_page.dart';
-import 'package:travio/pages/splash_page.dart';
-import 'package:travio/providers/auth_provider.dart';
-// import 'package:travio/providers/textcontroller_provider.dart';
+import 'package:travio/controller/firebase/firebase_options.dart';
+
+import 'package:travio/view/pages/splash_page.dart';
+import 'package:travio/controller/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,13 +19,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // ChangeNotifierProvider(create: (context) => TextControllerProvider()),
         ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(),
-        // home: const LogInScreen(),
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
