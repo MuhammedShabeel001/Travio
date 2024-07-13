@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/core/theme/theme.dart';
 
 Column tTextfield(
     // ignore: non_constant_identifier_names

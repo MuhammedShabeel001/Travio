@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/core/theme/theme.dart';
 
 ElevatedButton tActiveBottomButton(String text, bool isActive) {
   return ElevatedButton(

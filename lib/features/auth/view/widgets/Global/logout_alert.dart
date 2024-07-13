@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/controller/providers/auth_provider.dart';
+import 'package:travio/features/auth/controller/auth_provider.dart';
 
 AlertDialog tLogOut(BuildContext context) {
   return AlertDialog(
@@ -13,7 +15,9 @@ AlertDialog tLogOut(BuildContext context) {
       ),
       TextButton(
         onPressed: () {
-          Provider.of<AuthProvider>(context, listen: false).signOut(context);
+          Provider.of<AuthProvider>(context, listen: false).signOut(onSuccess: (){
+            log('Sign out successfully');
+          });
         },
         child: const Text('Sign Out'),
       ),

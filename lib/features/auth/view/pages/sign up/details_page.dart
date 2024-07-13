@@ -1,12 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/controller/providers/auth_provider.dart';
-import 'package:travio/controller/utils/theme.dart';
-
-import 'package:travio/view/widgets/Global/custom_textfield.dart';
+import 'package:travio/features/auth/controller/auth_provider.dart';
+import 'package:travio/core/theme/theme.dart';
+import 'package:travio/features/auth/view/widgets/Global/custom_textfield.dart';
 import 'package:travio/core/common/welcome_bar.dart';
 import 'package:travio/core/common/navbar.dart';
 
@@ -121,15 +119,24 @@ class DetailsPage extends StatelessWidget {
                             authProvider.photoController.text = imageUrl;
                             log('Image uploaded successfully: $imageUrl');
 
-                            // ignore: use_build_context_synchronously
-                            authProvider.addUser(context);
-
-                            Navigator.pushAndRemoveUntil(
-                              // ignore: use_build_context_synchronously
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const TTnavBar()),
-                              (route) => false,
+                            // Perform signup
+                            authProvider.signup(
+                              onSuccess: () {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const TTnavBar()),
+                                  (route) => false,
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Sign up successful")),
+                                );
+                              },
+                              onError: (message) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(message)),
+                                );
+                              },
                             );
                           } else {
                             log('Failed to upload image');

@@ -1,6 +1,6 @@
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/core/theme/theme.dart';
 
 DraggableHome ttAppBar(BuildContext context, String title, body) {
   return DraggableHome(

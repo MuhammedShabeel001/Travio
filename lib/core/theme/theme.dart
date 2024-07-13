@@ -1,44 +1,39 @@
-// import 'package:flutter/material.dart';
-// import 'package:travio/utils/constants/colors.dart';
+import 'package:flutter/material.dart';
 
-// class TAppTheme {
-//   TAppTheme._();
+class TTthemeClass {
+  Color ttLightPrimary = const Color.fromRGBO(250, 249, 246, 1);
+  Color ttLightFourth = const Color.fromRGBO(11, 18, 21, 1);
+  Color ttLightText = const Color.fromRGBO(11, 18, 21, 1);
 
-// // +++++++---------------------------- LIGHT THEME ----------------------------+++++++
+  Color ttDardPrimary = const Color.fromRGBO(11, 18, 21, 1);
+  Color ttDardFourth = const Color.fromRGBO(250, 249, 246, 1);
+  Color ttDardText = const Color.fromRGBO(250, 249, 246, 1);
 
-//   static ThemeData lightTheme = ThemeData(
-//     useMaterial3: true,
-//     fontFamily: 'Poppins',
-//     disabledColor: TColor.grey,
-//     brightness: Brightness.light,
-//     primaryColor: TColor.primary,
-//     textTheme: TTextTheme.lightTextTheme,
-//     chipTheme: TChipTheme.lightChipTheme,
-//     scaffoldBackgroundColor: TColor.white,
-//     appBarTheme: TAppBarTheme.lightAppBarTheme,
-//     checkboxTheme: TCheckboxTheme.lightCheckboxTheme,
-//     bottomSheetTheme: TBottomSheetTheme.lightBottomSheetTheme,
-//     elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
-//     outlinedButtonTheme: TOutlinedButtonTheme.lightOutlinedButtonTheme,
-//     inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,
-//   );
+  Color ttSecondary = const Color.fromRGBO(238, 233, 241, 1);
+  Color ttThird = const Color.fromRGBO(128, 90, 241, 1);
+  Color ttThirdHalf = const Color.fromRGBO(128, 90, 241, 0.5);
+  Color ttThirdOpacity = const Color.fromARGB(80, 128, 90, 241);
 
-// // +++++++----------------------------- DARK THEME -----------------------------+++++++
+  Color ttButton = const Color.fromRGBO(128, 90, 241, 1);
+  Color ttButtonText = const Color.fromRGBO(250, 249, 246, 1);
 
-//   static ThemeData darkTheme = ThemeData(
-//     useMaterial3: true,
-//     fontFamily: 'Poppins',
-//     disabledColor: TColor.grey,
-//     brightness: Brightness.dark,
-//     primaryColor: TColor.primary,
-//     textTheme: TTextTheme.darkTextTheme,
-//     chipTheme: TChipTheme.darkChipTheme,
-//     scaffoldBackgroundColor: TColor.black,
-//     appBarTheme: TAppBarTheme.darkAppBarTheme,
-//     checkboxTheme: TCheckboxTheme.darkCheckboxTheme,
-//     bottomSheetTheme: TBottomSheetTheme.darkBottomSheetTheme,
-//     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,
-//     outlinedButtonTheme: TOutlinedButtonTheme.darkOutlinedButtonTheme,
-//     inputDecorationTheme: TTextFormFieldTheme.darkInputDecorationTheme,
-//   );
-// }
+  static ThemeData ttLightTheme = ThemeData(
+    primaryColor: ThemeData.light().scaffoldBackgroundColor,
+    colorScheme: const ColorScheme.light().copyWith(
+      primary: _tthemeClass.ttLightPrimary,
+      secondary: _tthemeClass.ttSecondary,
+      tertiary: _tthemeClass.ttThird,
+    ),
+  );
+
+  static ThemeData ttDarkTheme = ThemeData(
+    primaryColor: ThemeData.dark().scaffoldBackgroundColor,
+    colorScheme: const ColorScheme.dark().copyWith(
+      primary: _tthemeClass.ttDardPrimary,
+      secondary: _tthemeClass.ttSecondary,
+      tertiary: _tthemeClass.ttThird,
+    ),
+  );
+}
+
+TTthemeClass _tthemeClass = TTthemeClass();

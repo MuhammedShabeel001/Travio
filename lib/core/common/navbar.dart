@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:travio/view/pages/home/home_page.dart';
-import 'package:travio/view/pages/profile/profile_page.dart';
-import 'package:travio/view/pages/search/search_page.dart';
-import 'package:travio/view/pages/my%20trips/trip_plan_page.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/features/auth/view/pages/home/home_page.dart';
+import 'package:travio/features/auth/view/pages/profile/profile_page.dart';
+import 'package:travio/features/auth/view/pages/search/search_page.dart';
+import 'package:travio/features/auth/view/pages/my%20trips/trip_plan_page.dart';
+import 'package:travio/core/theme/theme.dart';
 
 class TTnavBar extends StatefulWidget {
   const TTnavBar({super.key});

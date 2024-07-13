@@ -1,19 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/view/pages/login/login_page.dart';
-import 'package:travio/view/pages/sign%20up/details_page.dart';
-
-import 'package:travio/controller/providers/auth_provider.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/features/auth/view/pages/sign%20up/details_page.dart';
+import 'package:travio/features/auth/controller/auth_provider.dart';
+import 'package:travio/core/theme/theme.dart';
 
 import 'package:travio/core/common/welcome_bar.dart';
 
 class SignUpPage extends StatelessWidget {
   // final bool isActive;
 
-  SignUpPage({super.key, 
-  //required this.isActive
+  SignUpPage({
+    
+    super.key,
+    //required this.isActive
   });
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -232,11 +232,9 @@ fast method''',
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: ElevatedButton(
                               onPressed: model.isChecked
-                                  ? () async {
+                                  ? () {
                                       if (_formKey.currentState!.validate()) {
-                                        await authProvider.signup(context);
                                         Navigator.push(
-                                          // ignore: use_build_context_synchronously
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => DetailsPage(),
@@ -284,12 +282,7 @@ fast method''',
                               padding: const EdgeInsets.all(6),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LogInScreen(),
-                                ),
-                              );
+                              Navigator.pop(context);
                             },
                             child: Text(
                               'Log in',

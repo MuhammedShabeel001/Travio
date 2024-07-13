@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/controller/providers/auth_provider.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/features/auth/controller/auth_provider.dart';
+import 'package:travio/core/theme/theme.dart';
 import 'package:travio/core/common/appbar.dart';
-import 'package:travio/view/widgets/Global/logout_alert.dart';
+import 'package:travio/features/auth/view/widgets/Global/logout_alert.dart';
 
 class ProfilePage extends StatelessWidget {
   // ignore: use_key_in_widget_constructors

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:travio/pages/entry_page.dart';
-import 'package:travio/view/pages/login/login_page.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/features/auth/view/pages/login/login_page.dart';
+import 'package:travio/core/theme/theme.dart';
 import 'package:travio/core/common/navbar.dart';
 
 class SplashScreen extends StatefulWidget {

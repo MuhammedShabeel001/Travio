@@ -1,9 +1,7 @@
-// import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:travio/pages/login_page.dart';
-import 'package:travio/controller/providers/auth_provider.dart';
-import 'package:travio/controller/utils/theme.dart';
+import 'package:travio/features/auth/controller/auth_provider.dart';
+import 'package:travio/core/theme/theme.dart';
 import 'package:travio/core/common/welcome_bar.dart';
 
 class ResentPassword extends StatelessWidget {
@@ -11,10 +9,8 @@ class ResentPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final authProvider = Provider.of<AuthProvider>(context);
-    return  Scaffold(
-
+    return Scaffold(
       backgroundColor: TTthemeClass().ttThird,
       body: Column(
         children: [
@@ -22,7 +18,7 @@ class ResentPassword extends StatelessWidget {
           Flexible(
             flex: 4,
             child: Container(
-              padding:const EdgeInsets.only(bottom: 15),
+              padding: const EdgeInsets.only(bottom: 15),
               decoration: BoxDecoration(
                 color: TTthemeClass().ttLightPrimary,
                 borderRadius: const BorderRadius.only(
@@ -35,17 +31,15 @@ class ResentPassword extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    
                     child: ListView(
                       padding: const EdgeInsets.only(
                         top: 15,
                         left: 20,
                         right: 20,
-                        
                       ),
                       children: [
                         const Text(
-                          '''Enter your E mail here''',
+                          'Enter your E mail here',
                           style: TextStyle(
                             fontSize: 19,
                             color: Color.fromARGB(99, 0, 0, 0),
@@ -100,8 +94,6 @@ class ResentPassword extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 15),
-                             
-                              
                             ],
                           ),
                         ),
@@ -114,22 +106,28 @@ class ResentPassword extends StatelessWidget {
                       return Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ElevatedButton(
-                          onPressed:  () async {
-                            authProvider.resetPassword(context);
-                                  // if (_formKey.currentState!.validate()) {
-                                  //   await authProvider.signup(context);
-                                  //   Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>  DetailsPage(),
-                                  //     ),
-                                  //   );
-                                  // }
-                                },
-                              // : null,
+                          onPressed: () async {
+                            authProvider.resetPassword(
+                              onSuccess: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Password reset email sent"),
+                                  ),
+                                );
+                                // Optionally navigate back to login page or another page
+                                // Navigator.pop(context);
+                              },
+                              onError: (message) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(message),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: TTthemeClass().ttThird,
-                                // : TTthemeClass().ttThirdOpacity
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
@@ -140,7 +138,6 @@ class ResentPassword extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20,
                               color: TTthemeClass().ttLightPrimary,
-                                  // : TTthemeClass().ttThirdHalf,
                             ),
                           ),
                         ),
