@@ -15,14 +15,17 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final String userId = authProvider.user?.id ?? ''; // Assuming user ID is accessible in authProvider
+    final String userId = authProvider.user?.id ??
+        ''; // Assuming user ID is accessible in authProvider
 
     return Scaffold(
-      body: ttAppBar(context, 'Profile', listView(context, authProvider, userId)),
+      body:
+          ttAppBar(context, 'Profile', listView(context, authProvider, userId)),
     );
   }
 
-  ListView listView(BuildContext context, AuthProvider authProvider, String userId) {
+  ListView listView(
+      BuildContext context, AuthProvider authProvider, String userId) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -35,20 +38,21 @@ class ProfilePage extends StatelessWidget {
               builder: (context, snapshot) {
                 if (authProvider.isLoadingFetchUser) {
                   return const Center(child: CircularProgressIndicator());
-                } else 
-                if (snapshot.hasError) {
+                } else if (snapshot.hasError) {
                   return const Center(child: Text('Error fetching user data'));
                 } else {
                   return SizedBox(
+                    // height: 30,
                     child: Column(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.0),
+                          
                           child: SizedBox(
                             height: 150,
                             width: 150,
                             child: authProvider.user?.profile != null
-                                ? Image.network(authProvider.user!.profile!)
+                                ? Image.network(authProvider.user!.profile!, fit: BoxFit.fitWidth,)
                                 : Image.asset('assets/images/lisa image.png'),
                           ),
                         ),
@@ -106,7 +110,8 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing:
+                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/recent.svg'),
@@ -118,7 +123,8 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing:
+                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/theme.svg'),
@@ -130,7 +136,8 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
+                    trailing: Icon(Icons.arrow_forward_ios,
+                        color: TTthemeClass().ttLightText),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/edit.svg'),
@@ -142,7 +149,8 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing:
+                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/privacyPolicy.svg'),
@@ -154,10 +162,12 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing:
+                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
-                    leading: SvgPicture.asset('assets/icons/termsOfService.svg'),
+                    leading:
+                        SvgPicture.asset('assets/icons/termsOfService.svg'),
                     title: Text(
                       'Terms of Service',
                       style: TextStyle(
@@ -166,7 +176,8 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing:
+                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/delete.svg'),
@@ -178,7 +189,8 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing:
+                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     onTap: () {
@@ -196,11 +208,14 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing:
+                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   const SizedBox(height: 30),
-                  Text('version', style: TextStyle(color: TTthemeClass().ttLightText)),
-                  Text('1.01.001', style: TextStyle(color: TTthemeClass().ttLightText)),
+                  Text('version',
+                      style: TextStyle(color: TTthemeClass().ttLightText)),
+                  Text('1.01.001',
+                      style: TextStyle(color: TTthemeClass().ttLightText)),
                 ],
               ),
             ),

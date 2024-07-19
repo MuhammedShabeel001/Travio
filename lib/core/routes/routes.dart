@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travio/features/auth/view/pages/home/home_page.dart';
+import 'package:travio/features/auth/view/pages/home/pages/home_page.dart';
 import 'package:travio/features/auth/view/pages/login/login_page.dart';
 import 'package:travio/features/auth/view/pages/login/restpassword.dart';
 import 'package:travio/features/auth/view/pages/my%20trips/trip_plan_page.dart';
