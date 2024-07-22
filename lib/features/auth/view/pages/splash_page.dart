@@ -14,6 +14,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashState extends State<SplashScreen> {
+  
   final String keyValue = 'loggedIn';
 
   @override
@@ -52,6 +53,7 @@ class _SplashState extends State<SplashScreen> {
   }
 
   void navigateToHome() {
+    
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const TTnavBar()),
     );

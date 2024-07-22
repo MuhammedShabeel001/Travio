@@ -1,5 +1,3 @@
-// import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -9,23 +7,23 @@ import 'package:travio/core/common/appbar.dart';
 import 'package:travio/features/auth/view/widgets/Global/logout_alert.dart';
 
 class ProfilePage extends StatelessWidget {
-  // ignore: use_key_in_widget_constructors
-  const ProfilePage({Key? key});
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final String userId = authProvider.user?.id ??
-        ''; // Assuming user ID is accessible in authProvider
+    final String userId = authProvider.auth?.currentUser!.uid ?? '';
 
     return Scaffold(
-      body:
-          ttAppBar(context, 'Profile', listView(context, authProvider, userId)),
+      body: ttAppBar(
+        context,
+        'Profile',
+        listView(context, authProvider, userId),
+      ),
     );
   }
 
-  ListView listView(
-      BuildContext context, AuthProvider authProvider, String userId) {
+  Widget listView(BuildContext context, AuthProvider authProvider, String userId) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -41,24 +39,23 @@ class ProfilePage extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   return const Center(child: Text('Error fetching user data'));
                 } else {
+                  final user = authProvider.user;
                   return SizedBox(
-                    // height: 30,
                     child: Column(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.0),
-                          
                           child: SizedBox(
                             height: 150,
                             width: 150,
-                            child: authProvider.user?.profile != null
-                                ? Image.network(authProvider.user!.profile!, fit: BoxFit.fitWidth,)
+                            child: user?.profile != null
+                                ? Image.network(user!.profile!, fit: BoxFit.cover)
                                 : Image.asset('assets/images/lisa image.png'),
                           ),
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          authProvider.user?.name ?? 'Loading...',
+                          user?.name ?? 'Loading...',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 26,
@@ -66,14 +63,14 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          authProvider.user?.pronouns ?? '',
+                          user?.pronouns ?? '',
                           style: const TextStyle(
                             fontSize: 15,
                             color: Color.fromRGBO(0, 0, 0, 0.5),
                           ),
                         ),
                         Text(
-                          authProvider.user?.email ?? '',
+                          user?.email ?? '',
                           style: const TextStyle(
                             fontSize: 15,
                             color: Color.fromRGBO(0, 0, 0, 0.5),
@@ -110,8 +107,7 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing:
-                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/recent.svg'),
@@ -123,8 +119,7 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing:
-                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/theme.svg'),
@@ -136,8 +131,7 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios,
-                        color: TTthemeClass().ttLightText),
+                    trailing: Icon(Icons.arrow_forward_ios, color: TTthemeClass().ttLightText),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/edit.svg'),
@@ -149,8 +143,7 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing:
-                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/privacyPolicy.svg'),
@@ -162,12 +155,10 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing:
-                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
-                    leading:
-                        SvgPicture.asset('assets/icons/termsOfService.svg'),
+                    leading: SvgPicture.asset('assets/icons/termsOfService.svg'),
                     title: Text(
                       'Terms of Service',
                       style: TextStyle(
@@ -176,8 +167,7 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing:
-                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     leading: SvgPicture.asset('assets/icons/delete.svg'),
@@ -189,14 +179,13 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing:
-                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   ListTile(
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (context) => tLogOut(context),
+                        builder: (context) => tLogOut(context, authProvider),
                       );
                     },
                     leading: SvgPicture.asset('assets/icons/log-out.svg'),
@@ -208,14 +197,11 @@ class ProfilePage extends StatelessWidget {
                         color: TTthemeClass().ttLightText,
                       ),
                     ),
-                    trailing:
-                        SvgPicture.asset('assets/icons/forward-arrow.svg'),
+                    trailing: SvgPicture.asset('assets/icons/forward-arrow.svg'),
                   ),
                   const SizedBox(height: 30),
-                  Text('version',
-                      style: TextStyle(color: TTthemeClass().ttLightText)),
-                  Text('1.01.001',
-                      style: TextStyle(color: TTthemeClass().ttLightText)),
+                  Text('version', style: TextStyle(color: TTthemeClass().ttLightText)),
+                  Text('1.01.001', style: TextStyle(color: TTthemeClass().ttLightText)),
                 ],
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/core/firebase/firebase_options.dart';
+import 'package:travio/features/auth/controller/location_provider.dart';
 
 import 'package:travio/features/auth/view/pages/splash_page.dart';
 import 'package:travio/features/auth/controller/auth_provider.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => LocationProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(),

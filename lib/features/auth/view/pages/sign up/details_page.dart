@@ -129,7 +129,7 @@ class DetailsPage extends StatelessWidget {
                                   (route) => false,
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Sign up successful")),
+                                  const SnackBar(content: Text("Sign up successful")),
                                 );
                               },
                               onError: (message) {

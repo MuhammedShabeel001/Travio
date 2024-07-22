@@ -35,7 +35,7 @@ class GoogleLogin extends StatelessWidget {
               .loginWithGoogle(onSuccess: (){
                 log('logged in successfully');
               }, onError: (e){
-                log('$e');
+                log(e);
               });
         },
       ),

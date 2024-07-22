@@ -20,9 +20,9 @@ class InterestTabs extends StatelessWidget {
                 ),
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(17)),
-            padding: EdgeInsets.all(13),
+            padding: const EdgeInsets.all(13),
             child: Icon(icon, size: 30)),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(label),
       ],
     );

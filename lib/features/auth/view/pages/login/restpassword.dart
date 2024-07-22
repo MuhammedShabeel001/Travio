@@ -110,7 +110,7 @@ class ResentPassword extends StatelessWidget {
                             authProvider.resetPassword(
                               onSuccess: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     content: Text("Password reset email sent"),
                                   ),
                                 );

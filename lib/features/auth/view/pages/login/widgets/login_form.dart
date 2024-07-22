@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/features/auth/controller/auth_provider.dart';
+import 'package:travio/features/auth/view/pages/home/pages/home_page.dart';
 import 'package:travio/features/auth/view/pages/login/restpassword.dart';
 import 'package:travio/features/auth/view/pages/login/widgets/google_login.dart';
 import 'package:travio/features/auth/view/pages/login/widgets/login_footer.dart';
@@ -121,8 +122,9 @@ class LoginForm extends StatelessWidget {
               if (formKey.currentState!.validate()) {
                 authProvider.signIn(
                   onSuccess: () {
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage(),),  (route) => false,);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text("Successfully signed in"),
                       ),
                     );

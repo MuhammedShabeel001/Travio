@@ -1,21 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:travio/core/common/appbar.dart';
+import 'package:travio/features/auth/controller/location_provider.dart';
+import 'package:travio/features/auth/view/pages/home/widgets/explore_item.dart';
 import 'package:travio/features/auth/view/pages/home/widgets/interest_tabs.dart';
+import 'package:travio/features/auth/view/pages/home/widgets/location_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: ttAppBar(context, 'Home', HomeCenter(context)));
+    return Scaffold(
+      body: ttAppBar(context, 'Home', HomeCenter(context)),
+    );
   }
 
   // ignore: non_constant_identifier_names
   SingleChildScrollView HomeCenter(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -34,134 +39,75 @@ class HomePage extends StatelessWidget {
                 InterestTabs(icon: Icons.grid_view_rounded, label: 'More'),
               ],
             ),
-            const SizedBox(
-              height: 30,
+            const SizedBox(height: 30),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Explore the world',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                Text('More'),
+              ],
             ),
-            const Text(
-              'Explore the world',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
+            const SizedBox(height: 15),
             SizedBox(
               height: 150,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                children: [
-                  buildExploreItem('Dubai', 'assets/images/entry_pic.png'),
-                  buildExploreItem('Bhutan', 'assets/images/entry_pic.png'),
-                  buildExploreItem('Paris', 'assets/images/entry_pic.png'),
-                  buildExploreItem('Japan', 'assets/images/entry_pic.png')
+                children: const [
+                  ExploreItem(
+                      image: 'assets/images/entry_pic.png', label: 'Dubai'),
+                  ExploreItem(
+                      image: 'assets/images/entry_pic.png', label: 'Paris'),
+                  ExploreItem(
+                      image: 'assets/images/entry_pic.png', label: 'London'),
+                  ExploreItem(
+                      image: 'assets/images/entry_pic.png', label: 'Japan'),
+                  ExploreItem(
+                      image: 'assets/images/entry_pic.png', label: 'Korea'),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 30,
+            const SizedBox(height: 30),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'India',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                Text('More')
+              ],
             ),
-            const Text(
-              'India',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            const SizedBox(height: 15),
+            SizedBox(
+              height: 200,
+              child: Consumer<LocationProvider>(
+                builder: (context, locationProvider, child) {
+                  if (locationProvider.places.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    children: locationProvider.places.map((place) {
+                      return LocationCard(
+                        image: place.images.isNotEmpty
+                            ? place.images[0]
+                            : 'assets/images/placeholder.png',
+                        label: place.name,
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            // ListView(
-            //   scrollDirection: Axis.horizontal,
-            //   shrinkWrap: true,
-            //   children: [
-            //     buildExploreItem('Palakkad', 'assets/images/entry_pic.png'),
-            //     buildExploreItem('Malappuram', 'assets/images/entry_pic.png'),
-            //     buildExploreItem('Kozhicode', 'assets/images/entry_pic.png'),
-            //     buildExploreItem('Trivandram', 'assets/images/entry_pic.png')
-            //   ],
-            // ),
           ],
         ),
       ),
     );
   }
-// Widget buildInterestItem(IconData icon, String label) {
-//     return ;
-//   }
-
-  Widget buildExploreItem(String label, String imagePath) {
-    return Row(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16.0),
-          child: Stack(
-            children: [
-              Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
-                width: 200,
-                height: 200,
-              ),
-              Positioned.fill(
-                child: Center(
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10.0,
-                          color: Colors.black,
-                          offset: Offset(2.0, 2.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: 15,)
-      ],
-    );
-  }
-
-
-
-
-
-
-  //  Widget buildExploreItem(String label, String imagePath) {
-  //   return Row(
-  //     children: [
-  //       Container(
-  //         decoration: BoxDecoration(
-  //             color: Colors.white, borderRadius: BorderRadius.circular(18)),
-  //         width: 200,
-  //         // height: 300,
-  //         child: Column(
-  //           children: [
-  //             ClipRRect(
-  //               borderRadius: BorderRadius.circular(18),
-  //               child: Image.asset(
-  //                 imagePath,
-  //                 fit: BoxFit.cover,
-  //                 height: 160,
-  //                 width: double.infinity,
-  //               ),
-  //             ),
-  //             SizedBox(height: 8),
-  //             Text(
-  //               label,
-  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       SizedBox(
-  //         width: 15,
-  //       )
-  //     ],
-  //   );
-  // }
 }
