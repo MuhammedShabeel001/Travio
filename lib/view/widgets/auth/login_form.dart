@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
-import 'package:travio/view/pages/home/home_page.dart';
 import 'package:travio/view/pages/auth/login/restpassword.dart';
 import 'package:travio/view/widgets/auth/google_login.dart';
 import 'package:travio/view/widgets/auth/login_footer.dart';
 import 'package:travio/utils/validations/validation.dart';
+import 'package:travio/view/widgets/global/navbar.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({
     super.key,
     required this.authProvider,
   });
+
   final formKey = GlobalKey<FormState>();
   final AuthProvider authProvider;
 
@@ -117,46 +118,59 @@ class LoginForm extends StatelessWidget {
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                authProvider.signIn(
-                  onSuccess: () {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage(),),  (route) => false,);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Successfully signed in"),
+          ValueListenableBuilder<bool>(
+            valueListenable: authProvider.loading,
+            builder: (context, isLoading, child) {
+              return isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          authProvider.signIn(
+                            onSuccess: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const TTnavBar(),
+                                ),
+                                (route) => false,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Successfully signed in"),
+                                ),
+                              );
+                              // Navigate to the next page or home page
+                              // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+                            },
+                            onError: (message) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                ),
+                              );
+                            },
+                          );
+                          authProvider.loginEmailController.clear();
+                          authProvider.loginPasswordController.clear();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: TTthemeClass().ttThird,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: TTthemeClass().ttLightPrimary,
+                        ),
                       ),
                     );
-                    // Navigate to the next page or home page
-                    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
-                  },
-                  onError: (message) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message),
-                      ),
-                    );
-                  },
-                );
-                authProvider.loginEmailController.clear();
-                authProvider.loginPasswordController.clear();
-              }
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: TTthemeClass().ttThird,
-              minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-            ),
-            child: Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 20,
-                color: TTthemeClass().ttLightPrimary,
-              ),
-            ),
           ),
         ],
       ),

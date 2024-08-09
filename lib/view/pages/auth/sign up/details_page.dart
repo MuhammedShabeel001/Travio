@@ -105,69 +105,82 @@ class DetailsPage extends StatelessWidget {
                   ),
                   Container(
                     padding: const EdgeInsets.all(20),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (authProvider.imageTemporary.value != null &&
-                            File(authProvider.imageTemporary.value!)
-                                .existsSync()) {
-                          File imageFile =
-                              File(authProvider.imageTemporary.value!);
-                          String? imageUrl = await authProvider.uploadImage(
-                              imageFile, authProvider.loading);
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: authProvider.loading,
+                      builder: (context, isLoading, child) {
+                        return ElevatedButton(
+                          onPressed: isLoading ? null : () async {
+                            authProvider.loading.value = true;
+                            if (authProvider.imageTemporary.value != null &&
+                                File(authProvider.imageTemporary.value!)
+                                    .existsSync()) {
+                              File imageFile =
+                                  File(authProvider.imageTemporary.value!);
+                              String? imageUrl = await authProvider.uploadImage(
+                                  imageFile, authProvider.loading);
 
-                          if (imageUrl != null) {
-                            authProvider.photoController.text = imageUrl;
-                            log('Image uploaded successfully: $imageUrl');
+                              if (imageUrl != null) {
+                                authProvider.photoController.text = imageUrl;
+                                log('Image uploaded successfully: $imageUrl');
 
-                            // Perform signup
-                            authProvider.signup(
-                              onSuccess: () {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const TTnavBar()),
-                                  (route) => false,
+                                // Perform signup
+                                authProvider.signup(
+                                  onSuccess: () {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const TTnavBar()),
+                                      (route) => false,
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text("Sign up successful")),
+                                    );
+                                  },
+                                  onError: (message) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(message)),
+                                    );
+                                  },
                                 );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Sign up successful")),
-                                );
-                              },
-                              onError: (message) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(message)),
-                                );
-                              },
-                            );
-                          } else {
-                            log('Failed to upload image');
-                          }
-                        } else {
-                          log('No image selected or file does not exist');
-                        }
+                              } else {
+                                log('Failed to upload image');
+                              }
+                            } else {
+                              log('No image selected or file does not exist');
+                            }
 
-                        if (_formKey.currentState?.validate() ?? false) {
-                          authProvider.nameController.clear();
-                          authProvider.phoneController.clear();
-                          authProvider.emailController.clear();
-                          authProvider.passwordController.clear();
-                          authProvider.pronounController.clear();
-                          authProvider.photoController.clear();
-                        }
+                            if (_formKey.currentState?.validate() ?? false) {
+                              authProvider.nameController.clear();
+                              authProvider.phoneController.clear();
+                              authProvider.emailController.clear();
+                              authProvider.passwordController.clear();
+                              authProvider.pronounController.clear();
+                              authProvider.photoController.clear();
+                            }
+                            authProvider.loading.value = false;
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: TTthemeClass().ttThird,
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          child: isLoading
+                              ? CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    TTthemeClass().ttLightPrimary,
+                                  ),
+                                )
+                              : Text(
+                                  'Start',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: TTthemeClass().ttLightPrimary,
+                                  ),
+                                ),
+                        );
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: TTthemeClass().ttThird,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                      ),
-                      child: Text(
-                        'Start',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: TTthemeClass().ttLightPrimary,
-                        ),
-                      ),
                     ),
                   ),
                 ],
@@ -179,3 +192,4 @@ class DetailsPage extends StatelessWidget {
     );
   }
 }
+

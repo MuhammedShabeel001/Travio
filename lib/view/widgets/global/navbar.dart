@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dot_curved_bottom_nav/dot_curved_bottom_nav.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travio/view/pages/home/home_page.dart';
+// import 'package:travio/view/pages/profile/profile.dart';
 import 'package:travio/view/pages/profile/profile_page.dart';
 import 'package:travio/view/pages/search/search_page.dart';
 import 'package:travio/view/pages/my%20trips/trip_plan_page.dart';
@@ -15,12 +16,13 @@ class TTnavBar extends StatefulWidget {
 }
 
 class _TTnavBarState extends State<TTnavBar> {
-  int currentIndex = 0;
+  int currentIndex = 0; 
 
   final List<Widget> _tabs = [
     const HomePage(),
     const SearchPage(),
     const TripPlanPage(),
+    // Profile(),
     const ProfilePage()
   ];
 

@@ -422,18 +422,18 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> fetchUserData(String? userId) async {
-  if (userId != null && userId.isNotEmpty) {
-    try {
-      DocumentSnapshot userDoc = await db.collection('users').doc(userId).get();
-      _user = UserModel.fromMap(userDoc);
-      notifyListeners();
-    } catch (e) {
-      log('Error fetching user data: $e');
+    if (userId != null && userId.isNotEmpty) {
+      try {
+        DocumentSnapshot userDoc = await db.collection('users').doc(userId).get();
+        _user = UserModel.fromMap(userDoc);
+        notifyListeners();
+      } catch (e) {
+        log('Error fetching user data: $e');
+      }
+    } else {
+      log("Error: User ID is empty!");
     }
-  } else {
-  log("Error: User ID is empty!");
   }
-}
 
   Future<void> addUser({
     required Function(String) onError,
@@ -509,7 +509,8 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> signOut({
-    required VoidCallback onSuccess, required Null Function(dynamic error) onError,
+    required VoidCallback onSuccess,
+    required Null Function(dynamic error) onError,
   }) async {
     final sharedPref = await SharedPreferences.getInstance();
     await sharedPref.clear();

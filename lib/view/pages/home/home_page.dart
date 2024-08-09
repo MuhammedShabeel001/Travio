@@ -99,6 +99,7 @@ class HomePage extends StatelessWidget {
                             ? place.images[0]
                             : 'assets/images/placeholder.png',
                         label: place.name,
+                        location: place,
                       );
                     }).toList(),
                   );

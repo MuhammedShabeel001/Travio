@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:travio/core/firebase/firebase_options.dart';
 import 'package:travio/controller/provider/location_provider.dart';
 
-import 'package:travio/view/pages/Splash/splash_page.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
+import 'package:travio/view/widgets/global/navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +20,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(create: (context) => LocationProvider()),
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(),
-        home: const SplashScreen(),
+        // home: const SplashScreen(),
+        home: const TTnavBar(),
       ),
     );
   }
