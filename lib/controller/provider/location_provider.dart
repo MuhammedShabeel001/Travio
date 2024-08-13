@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travio/model/place_model.dart';
-// import 'package:your_project/models/place_model.dart'; // Replace with your actual file path
 
 class LocationProvider with ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
   List<PlaceModel> _places = [];
   List<PlaceModel> get places => _places;
+
+  int _currentIndex = 0;
+  int get currentIndex => _currentIndex;
 
   LocationProvider() {
     _fetchIndianLocations();
@@ -20,5 +22,10 @@ class LocationProvider with ChangeNotifier {
           .toList();
       notifyListeners();
     });
+  }
+
+  void updateIndex(int index) {
+    _currentIndex = index;
+    notifyListeners();
   }
 }

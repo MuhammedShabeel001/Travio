@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:travio/controller/provider/package_provider.dart';
 import 'package:travio/view/widgets/global/appbar.dart';
 import 'package:travio/controller/provider/location_provider.dart';
 import 'package:travio/view/widgets/home/explore_item.dart';
 import 'package:travio/view/widgets/home/interest_tabs.dart';
 import 'package:travio/view/widgets/home/location_card.dart';
+import 'package:travio/view/widgets/home/package/package_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    context.read<TripPackageProvider>().fetchAllPackages();
     return Scaffold(
       body: ttAppBar(context, 'Home', HomeCenter(context)),
     );
@@ -101,6 +105,49 @@ class HomePage extends StatelessWidget {
                         label: place.name,
                         location: place,
                       );
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'packages',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                Text('More')
+              ],
+            ),
+            const SizedBox(height: 15),
+            SizedBox(
+              height: 200,
+              child: Consumer<TripPackageProvider>(
+                builder: (context, packageProvider, child) {
+                  if (packageProvider.package.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    children: packageProvider.package.map((package) {
+                      return PackageCard(
+                       image: package.images.isNotEmpty
+                            ? package.images[0]
+                            : 'assets/images/placeholder.png',
+                        label: package.name,
+                        package: package,
+                      );
+                      // LocationCard(
+                      //   image: place.images.isNotEmpty
+                      //       ? place.images[0]
+                      //       : 'assets/images/placeholder.png',
+                      //   label: place.name,
+                      //   location: place,
+                      // );
                     }).toList(),
                   );
                 },
