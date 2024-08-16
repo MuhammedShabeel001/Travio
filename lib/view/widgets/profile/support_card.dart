@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
 
 import '../global/logout_alert.dart';
@@ -34,7 +33,7 @@ class SupportCard extends StatelessWidget {
               'Help',
               style: TextStyle(fontSize: 20),
             ),
-            leading: Icon(Icons.help_outline_rounded),
+            leading: const Icon(Icons.help_outline_rounded),
           ),
           ListTile(
             onTap: () {
@@ -49,7 +48,7 @@ class SupportCard extends StatelessWidget {
               
               style: TextStyle(fontSize: 20),
             ),
-            leading: Icon(Icons.contact_mail_outlined),
+            leading: const Icon(Icons.contact_mail_outlined),
           ),
           // ListTile(
           //   onTap: () {

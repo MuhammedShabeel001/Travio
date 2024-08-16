@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:travio/model/package_model.dart';
-import 'package:travio/model/place_model.dart';
 import 'package:travio/view/pages/home/package/package_detail_page.dart';
 
 

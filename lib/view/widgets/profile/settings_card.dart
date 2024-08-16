@@ -64,7 +64,7 @@ class SettingsCard extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
             // leading: SvgPicture.asset(''),
-            trailing: Text('1.01.001'),
+            trailing: const Text('1.01.001'),
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BookButton extends StatelessWidget {
-  const BookButton({Key? key}) : super(key: key);
+  const BookButton({super.key});
 
   @override
   Widget build(BuildContext context) {

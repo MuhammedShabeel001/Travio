@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
 
@@ -31,10 +32,12 @@ class LegalCard extends StatelessWidget {
               );
             },
             title: const Text(
-              'Help',
+              'Terms of Use',
               style: TextStyle(fontSize: 20),
             ),
-            leading: Icon(Icons.help_outline_rounded),
+            // leading: const Icon(Icons.help_outline_rounded),
+            leading: SvgPicture.asset('assets/icons/termsOfService.svg'),
+
           ),
           ListTile(
             onTap: () {
@@ -45,11 +48,13 @@ class LegalCard extends StatelessWidget {
               // );
             },
             title: const Text(
-              'Get in touch',
+              'Privacy Policy',
               
               style: TextStyle(fontSize: 20),
             ),
-            leading: Icon(Icons.contact_mail_outlined),
+            // leading: const Icon(Icons.contact_mail_outlined),
+            leading: SvgPicture.asset('assets/icons/privacyPolicy.svg'),
+
           ),
           // ListTile(
           //   onTap: () {

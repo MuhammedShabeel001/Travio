@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:travio/controller/provider/package_provider.dart';
 import 'package:travio/view/widgets/global/appbar.dart';
 import 'package:travio/controller/provider/location_provider.dart';
+import 'package:travio/view/widgets/global/custom_homebar.dart';
 import 'package:travio/view/widgets/home/explore_item.dart';
 import 'package:travio/view/widgets/home/interest_tabs.dart';
 import 'package:travio/view/widgets/home/location_card.dart';
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
 
     context.read<TripPackageProvider>().fetchAllPackages();
     return Scaffold(
-      body: ttAppBar(context, 'Home', HomeCenter(context)),
+      body: HomeBar(body: HomeCenter(context)),
     );
   }
 

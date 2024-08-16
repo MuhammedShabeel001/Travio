@@ -1,20 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 // import 'package:travio_admin/controller/package_provider.dart';
 // import 'package:travio_admin/view/widgets/global/shimmer_loading.dart';
 // // import 'package:travio_admin/widgets/global/shimmer_loading.dart';
 // import 'package:travio_admin/model/package_model.dart';
 
-import '../../../../controller/provider/package_provider.dart';
 import '../../../../model/package_model.dart';
 import '../../global/custom_image_loader.dart';
 
 class CarouselWidget extends StatelessWidget {
   final TripPackageModel tripPackage;
 
-  const CarouselWidget({Key? key, required this.tripPackage}) : super(key: key);
+  const CarouselWidget({super.key, required this.tripPackage});
 
   @override
   Widget build(BuildContext context) {

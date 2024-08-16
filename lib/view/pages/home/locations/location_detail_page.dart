@@ -14,12 +14,12 @@ import '../../../widgets/global/custom_image_loader.dart';
 class LocationDetailPage extends StatelessWidget {
   final PlaceModel location;
 
-  const LocationDetailPage({Key? key, required this.location}) : super(key: key);
+  const LocationDetailPage({super.key, required this.location});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 198, 157, 252), 
+      backgroundColor: const Color.fromARGB(255, 198, 157, 252), 
       body: SafeArea(
         child: Consumer<LocationProvider>(
           builder: (context, locationProvider, child) {
@@ -39,7 +39,7 @@ class LocationDetailPage extends StatelessWidget {
                       children: [
                         Container(
                           clipBehavior: Clip.antiAliasWithSaveLayer,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
                           ),
                           child: CarouselSlider(
@@ -85,10 +85,10 @@ class LocationDetailPage extends StatelessWidget {
                         AnimatedSmoothIndicator(
                           activeIndex: locationProvider.currentIndex,
                           count: location.images.length,
-                          effect: ScrollingDotsEffect(
+                          effect: const ScrollingDotsEffect(
                             activeDotColor: Colors.black,
                             fixedCenter: true,
-                            dotColor: const Color.fromARGB(255, 255, 255, 255),
+                            dotColor: Color.fromARGB(255, 255, 255, 255),
                             dotHeight: 8.0,
                             dotWidth: 8.0,
                           ),

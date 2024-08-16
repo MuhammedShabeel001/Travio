@@ -6,7 +6,7 @@ import '../../../../model/package_model.dart';
 class PackageInfoWidget extends StatelessWidget {
   final TripPackageModel tripPackage;
 
-  const PackageInfoWidget({Key? key, required this.tripPackage}) : super(key: key);
+  const PackageInfoWidget({super.key, required this.tripPackage});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class PackageInfoWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Day ${entry.key}: ',
+                    'Day ${entry.key + 1}: ',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

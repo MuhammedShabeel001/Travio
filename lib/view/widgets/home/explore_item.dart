@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+// import 'package:travio/view/pages/interest_detail_page.dart';
+
+// import '../../pages/home/interests/interest_detail_page.dart';
 
 class ExploreItem extends StatelessWidget {
   final String image;
   final String label;
+
   const ExploreItem({
     super.key, required this.image, required this.label,
   });
@@ -25,7 +29,7 @@ class ExploreItem extends StatelessWidget {
                 child: Center(
                   child: Text(
                     label,
-                    style:const TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -45,7 +49,7 @@ class ExploreItem extends StatelessWidget {
         ),
         const SizedBox(
           width: 15,
-        )
+        ),
       ],
     );
   }

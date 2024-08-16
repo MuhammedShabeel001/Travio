@@ -14,7 +14,7 @@ import '../../../widgets/home/package/review_details.dart';
 class TripPackageDetailPage extends StatelessWidget {
   final TripPackageModel tripPackage;
 
-  const TripPackageDetailPage({Key? key, required this.tripPackage}) : super(key: key);
+  const TripPackageDetailPage({super.key, required this.tripPackage});
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,10 @@ class TripPackageDetailPage extends StatelessWidget {
                       flexibleSpace: FlexibleSpaceBar(
                         background: CarouselWidget(tripPackage: tripPackage),
                       ),
-                      bottom: PreferredSize(
-                        preferredSize: const Size.fromHeight(100.0),
+                      bottom: const PreferredSize(
+                        preferredSize: Size.fromHeight(100.0),
                         child: Column(
-                          children: const [
+                          children: [
                             TabBar(
                               indicatorColor: Colors.white,
                               labelColor: Colors.white,
