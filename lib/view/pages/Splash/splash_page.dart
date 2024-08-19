@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:travio/pages/entry_page.dart';
@@ -67,10 +68,15 @@ class _SplashState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/lisa image.png',
-              height: 180,
-            ),
+            SizedBox(
+              height: 160, 
+              child: SvgPicture.asset('assets/logo/logo (l mode).svg')),
+            // Image.asset(
+            //   'assets/logo/Logo  (d mode).svg',
+            //   // 'assets/images/lisa image.png',
+            //   height: 180,
+            // ),
+
           ],
         ),
       ),

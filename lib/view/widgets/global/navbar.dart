@@ -20,7 +20,7 @@ class _TTnavBarState extends State<TTnavBar> {
 
   final List<Widget> _tabs = [
     const HomePage(),
-    const SearchPage(),
+     SearchPage(),
     const TripPlanPage(),
     // Profile(),
     const ProfilePage()

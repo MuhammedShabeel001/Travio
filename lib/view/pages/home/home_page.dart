@@ -1,161 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/controller/provider/package_provider.dart';
-import 'package:travio/view/widgets/global/appbar.dart';
-import 'package:travio/controller/provider/location_provider.dart';
+// import 'package:travio/view/home/interest_row.dart';
+// import 'package:travio/view/home/explore_list_view.dart';
+// import 'package:travio/view/home/location_carousel.dart';
+// import 'package:travio/view/home/package_carousel.dart';
 import 'package:travio/view/widgets/global/custom_homebar.dart';
-import 'package:travio/view/widgets/home/explore_item.dart';
-import 'package:travio/view/widgets/home/interest_tabs.dart';
-import 'package:travio/view/widgets/home/location_card.dart';
-import 'package:travio/view/widgets/home/package/package_card.dart';
+
+import '../../widgets/home/explore_listview.dart';
+import '../../widgets/home/interest_row.dart';
+import '../../widgets/home/location_carousal.dart';
+import '../../widgets/home/package_carousal.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     context.read<TripPackageProvider>().fetchAllPackages();
     return Scaffold(
-      body: HomeBar(body: HomeCenter(context)),
+      body: HomeBar(body: const HomeCenter()),
     );
   }
+}
 
-  // ignore: non_constant_identifier_names
-  SingleChildScrollView HomeCenter(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Discover by interests',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InterestTabs(icon: Icons.hiking_rounded, label: 'Hiking'),
-                InterestTabs(icon: Icons.terrain_rounded, label: 'Mountain'),
-                InterestTabs(icon: Icons.forest_rounded, label: 'Forest'),
-                InterestTabs(icon: Icons.beach_access_rounded, label: 'Sea'),
-                InterestTabs(icon: Icons.grid_view_rounded, label: 'More'),
-              ],
-            ),
-            const SizedBox(height: 30),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Explore the world',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Text('More'),
-              ],
-            ),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 150,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                children: const [
-                  ExploreItem(
-                      image: 'assets/images/entry_pic.png', label: 'Dubai'),
-                  ExploreItem(
-                      image: 'assets/images/entry_pic.png', label: 'Paris'),
-                  ExploreItem(
-                      image: 'assets/images/entry_pic.png', label: 'London'),
-                  ExploreItem(
-                      image: 'assets/images/entry_pic.png', label: 'Japan'),
-                  ExploreItem(
-                      image: 'assets/images/entry_pic.png', label: 'Korea'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'India',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Text('More')
-              ],
-            ),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 200,
-              child: Consumer<LocationProvider>(
-                builder: (context, locationProvider, child) {
-                  if (locationProvider.places.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+class HomeCenter extends StatelessWidget {
+  const HomeCenter({super.key});
 
-                  return ListView(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: locationProvider.places.map((place) {
-                      return LocationCard(
-                        image: place.images.isNotEmpty
-                            ? place.images[0]
-                            : 'assets/images/placeholder.png',
-                        label: place.name,
-                        location: place,
-                      );
-                    }).toList(),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 30),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'packages',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Text('More')
-              ],
-            ),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 200,
-              child: Consumer<TripPackageProvider>(
-                builder: (context, packageProvider, child) {
-                  if (packageProvider.package.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [ 
+          SectionHeader(title: 'Discover by Interests'),
+          SizedBox(height: 16),
+          InterestRow(),
+          SizedBox(height: 30),
+          SectionHeader(title: 'Explore the World'),
+          SizedBox(height: 15),
+          ExploreListView(),
+          SizedBox(height: 30),
+          SectionHeader(title: 'India'),
+          SizedBox(height: 15),
+          LocationCarousel(),
+          SizedBox(height: 30),
+          SectionHeader(title: 'Packages'),
+          SizedBox(height: 15),
+          PackageCarousel(),
+        ],
+      ),
+    );
+  }
+}
 
-                  return ListView(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: packageProvider.package.map((package) {
-                      return PackageCard(
-                       image: package.images.isNotEmpty
-                            ? package.images[0]
-                            : 'assets/images/placeholder.png',
-                        label: package.name,
-                        package: package,
-                      );
-                      // LocationCard(
-                      //   image: place.images.isNotEmpty
-                      //       ? place.images[0]
-                      //       : 'assets/images/placeholder.png',
-                      //   label: place.name,
-                      //   location: place,
-                      // );
-                    }).toList(),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+class SectionHeader extends StatelessWidget {
+  final String title;
+
+  const SectionHeader({required this.title, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const Text('More'),
+        ],
       ),
     );
   }
