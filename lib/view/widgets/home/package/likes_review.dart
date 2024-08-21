@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:travio_admin/model/package_model.dart';
-
+import 'package:provider/provider.dart';
+import '../../../../controller/provider/package_provider.dart';
 import '../../../../model/package_model.dart';
 
 class LikesAndReviewsWidget extends StatelessWidget {
@@ -10,30 +10,44 @@ class LikesAndReviewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return Consumer<TripPackageProvider>(
+      builder: (context, tripPackageProvider, child) {
+        // Fetch the latest package data from the provider if needed
+        final isLiked = tripPackageProvider.isLiked(tripPackage.id);
+        final likeCount = tripPackageProvider.package
+            .firstWhere((pkg) => pkg.id == tripPackage.id)
+            .likeCount; // Make sure `likeCount` is updated
+        final reviewCount = tripPackage.customerReviews.length;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Icon(Icons.favorite, color: Colors.red),
-            const SizedBox(width: 8),
-            Text(
-              '${tripPackage.likeCount} Likes',
-              style: const TextStyle(color: Colors.black87),
+            Row(
+              children: [
+                Icon(
+                  Icons.favorite,
+                  color: isLiked ? Colors.red : Colors.grey, // Highlight if liked
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '$likeCount Likes', // Update with actual likes count
+                  style: const TextStyle(color: Colors.black87),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Icon(Icons.star, color: Colors.amber),
+                const SizedBox(width: 8),
+                Text(
+                  '$reviewCount Reviews', // Display the number of reviews
+                  style: const TextStyle(color: Colors.black87),
+                ),
+              ],
             ),
           ],
-        ),
-        Row(
-          children: [
-            const Icon(Icons.star, color: Colors.amber),
-            const SizedBox(width: 8),
-            Text(
-              '${tripPackage.bookedCount} Reviews',
-              style: const TextStyle(color: Colors.black87),
-            ),
-          ],
-        ),
-      ],
+        );
+      },
     );
   }
 }

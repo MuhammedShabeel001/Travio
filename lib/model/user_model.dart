@@ -8,6 +8,7 @@ class UserModel {
   String? profile;
   int? phonenumber;
   String? pronouns;
+  List<String>? likedPackages; // Ensure this field matches your Firestore schema
 
   UserModel({
     this.id,
@@ -17,17 +18,19 @@ class UserModel {
     this.phonenumber,
     this.profile,
     this.pronouns,
+    this.likedPackages, // Ensure this field matches your Firestore schema
   });
 
   factory UserModel.fromMap(DocumentSnapshot map) {
     return UserModel(
       id: map.id,
-      name: map["name"],
-      email: map["email"],
-      password: map["password"],
-      profile: map['profile'],
-      phonenumber: map["phonenumber"],
-      pronouns: map["pronouns"],
+      name: map["name"] as String?,
+      email: map["email"] as String?,
+      password: map["password"] as String?,
+      profile: map['profile'] as String?,
+      phonenumber: map["phonenumber"] as int?,
+      pronouns: map["pronouns"] as String?,
+      likedPackages: List<String>.from(map["likedPackages"] ?? []),
     );
   }
 
@@ -40,6 +43,7 @@ class UserModel {
       'profile': profile,
       "phonenumber": phonenumber,
       "pronouns": pronouns,
+      "likedPackages": likedPackages ?? [], // Ensure this field matches your Firestore schema
     };
   }
 }

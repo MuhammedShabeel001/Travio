@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/widgets/search/filter_bottomsheet.dart';
+import '../../../model/package_model.dart'; // Import the package model
+import '../../../model/place_model.dart';   // Import the place model
 
 class ttSearchBar extends StatelessWidget {
-  Color? bgColor;
+  final Color? bgColor;
   final TextEditingController controller;
-//  final ValueChanged<String> onChanged;
   final void Function(String) onSearch;
+  final List<TripPackageModel> allPackages; // Add this to accept packages
+  final List<PlaceModel> allPlaces;         // Add this to accept places
 
   ttSearchBar({
     required this.onSearch,
     this.bgColor,
     required this.controller,
-    // required this.onChanged,
+    required this.allPackages, // Pass packages from the parent widget
+    required this.allPlaces,   // Pass places from the parent widget
   });
 
   @override
@@ -49,7 +53,6 @@ class ttSearchBar extends StatelessWidget {
           ),
           SizedBox(width: 8),
           Container(
-            // clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
                 color: bgColor,
                 border: Border.all(color: Colors.grey.shade300),
@@ -57,9 +60,15 @@ class ttSearchBar extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.filter_list),
               onPressed: () {
+                // Pass the full list of packages and places to the FilterBottomSheet
                 showModalBottomSheet(
                   context: context,
-                  builder: (context) => FilterBottomSheet(),
+                  builder: (context) {
+                    return FilterBottomSheet(
+                      allPackages: allPackages, // Pass packages here
+                      allPlaces: allPlaces,     // Pass places here
+                    );
+                  },
                 );
               },
             ),

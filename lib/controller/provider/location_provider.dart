@@ -106,7 +106,7 @@ class LocationProvider with ChangeNotifier {
       final packages = tripPackageProvider.package;
 
       // Perform combined search
-      searchProvider.searchCombined(packages, _places);
+      searchProvider.applyFilters(packages, _places);
       notifyListeners();
     });
   }

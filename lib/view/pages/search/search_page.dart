@@ -12,7 +12,7 @@ import '../../widgets/home/package/package_card.dart';
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Access the search provider
+    // Access the providers
     final searchProvider = Provider.of<SearchProvider>(context);
     final locationProvider = Provider.of<LocationProvider>(context);
     final tripPackageProvider = Provider.of<TripPackageProvider>(context);
@@ -26,11 +26,13 @@ class SearchPage extends StatelessWidget {
           onSearch: (term) {
             // Update search term and perform search
             searchProvider.updateSearchTerm(term);
-            searchProvider.searchCombined(
+            searchProvider.applyFilters(
               tripPackageProvider.package,
               locationProvider.places,
             );
           },
+          allPackages: tripPackageProvider.package, // Pass packages here
+          allPlaces: locationProvider.places, // Pass places here
         ),
         centerTitle: false,
         headerExpandedHeight: 0.15,
@@ -50,11 +52,13 @@ class SearchPage extends StatelessWidget {
                 onSearch: (term) {
                   // Update search term and perform search
                   searchProvider.updateSearchTerm(term);
-                  searchProvider.searchCombined(
+                  searchProvider.applyFilters(
                     tripPackageProvider.package,
                     locationProvider.places,
                   );
                 },
+                allPackages: tripPackageProvider.package, // Pass packages here
+                allPlaces: locationProvider.places, // Pass places here
               ),
             ],
           ),

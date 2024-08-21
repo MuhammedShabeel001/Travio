@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:travio_admin/model/package_model.dart';
-
+import 'package:provider/provider.dart';
+import '../../../../controller/provider/package_provider.dart';
 import '../../../../model/package_model.dart';
 
 class PackageInfoWidget extends StatelessWidget {
@@ -10,24 +10,35 @@ class PackageInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tripPackageProvider = Provider.of<TripPackageProvider>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              tripPackage.name,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+            SizedBox(
+              width: 300,
+              child: Text(
+                tripPackage.name,
+                overflow: TextOverflow.clip,
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.favorite_border, color: Colors.red),
-              onPressed: () {
-                // Handle favorite action
+              icon: Icon(
+                tripPackageProvider.isLiked(tripPackage.id)
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                color: Colors.red,
+              ),
+              onPressed: () async {
+                await tripPackageProvider.toggleLike(tripPackage.id);
               },
             ),
           ],
@@ -46,7 +57,7 @@ class PackageInfoWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                '\$${tripPackage.realPrice}',
+                '\₹${tripPackage.realPrice}',
                 style: const TextStyle(
                   fontSize: 16,
                   decoration: TextDecoration.lineThrough,
@@ -55,7 +66,7 @@ class PackageInfoWidget extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '\$${tripPackage.offerPrice}',
+                '\₹${tripPackage.offerPrice}',
                 style: const TextStyle(
                   fontSize: 28,
                   color: Colors.red,

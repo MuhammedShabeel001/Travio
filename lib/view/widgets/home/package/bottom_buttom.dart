@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travio/core/theme/theme.dart';
 
 class BookButton extends StatelessWidget {
   const BookButton({super.key});
@@ -12,8 +13,9 @@ class BookButton extends StatelessWidget {
           // Handle booking
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.orange,
+          backgroundColor: TTthemeClass().ttButton,
           padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), 
           textStyle: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

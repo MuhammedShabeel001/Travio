@@ -435,24 +435,49 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  // Future<void> addUser({
+  //   required Function(String) onError,
+  // }) async {
+  //   try {
+  //     UserModel user = UserModel(
+  //       name: nameController.text,
+  //       email: _auth.currentUser!.email,
+  //       profile: photoController.text,
+  //       phonenumber: int.parse(phoneController.text),
+  //       password: passwordController.text,
+  //       id: _auth.currentUser!.uid,
+  //       pronouns: pronounController.text,
+  //       // likedPackages: [],
+  //     );
+  //     await db.collection("users").doc(_auth.currentUser!.uid).set(user.toMap());
+  //   } catch (e) {
+  //     onError("Failed to add user: $e");
+  //   }
+  // }
+
   Future<void> addUser({
-    required Function(String) onError,
-  }) async {
-    try {
-      UserModel user = UserModel(
-        name: nameController.text,
-        email: _auth.currentUser!.email,
-        profile: photoController.text,
-        phonenumber: int.parse(phoneController.text),
-        password: passwordController.text,
-        id: _auth.currentUser!.uid,
-        pronouns: pronounController.text,
-      );
-      await db.collection("users").doc(_auth.currentUser!.uid).set(user.toMap());
-    } catch (e) {
-      onError("Failed to add user: $e");
-    }
+  required Function(String) onError,
+}) async {
+  try {
+    UserModel user = UserModel(
+      name: nameController.text,
+      email: _auth.currentUser!.email,
+      profile: photoController.text,
+      phonenumber: int.parse(phoneController.text),
+      password: passwordController.text,
+      id: _auth.currentUser!.uid,
+      pronouns: pronounController.text,
+    );
+    
+    await db.collection("users").doc(_auth.currentUser!.uid).set({
+      ...user.toMap(),
+      'likedPackages': [], // Initialize likedPackages field
+    });
+  } catch (e) {
+    onError("Failed to add user: $e");
   }
+}
+
 
   Future<void> signup({
     required VoidCallback onSuccess,

@@ -139,20 +139,27 @@ class PackageCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      package.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(width: 240,
+                      child: Text(
+                        package.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      'package.location', // Location of the package
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
-                        fontSize: 14,
+                    SizedBox(
+                      width: 150,
+                      child: Text(
+                        overflow: TextOverflow.ellipsis,
+                        package.locations.join(','), // Location of the package
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],
@@ -171,7 +178,7 @@ class PackageCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    '\$${package.offerPrice}', // Price
+                    '\₹${package.offerPrice}', // Price
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
