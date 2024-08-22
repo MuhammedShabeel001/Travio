@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/controller/provider/package_provider.dart';
+import 'package:travio/controller/provider/payment_provider.dart';
 import 'package:travio/controller/provider/search_provider.dart';
 import 'package:travio/core/firebase/firebase_options.dart';
 import 'package:travio/controller/provider/location_provider.dart';
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => SearchProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PaymentProvider(),
         ),
       ],
       child: MaterialApp(

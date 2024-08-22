@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// import 'package:travio/widgets/package/booking_bottom_sheet.dart';
 
 import '../../../../controller/provider/package_provider.dart';
 import '../../../../model/package_model.dart';
 // import '../../../widgets/home/package/bottom_button.dart';
+// import '../../../widgets/home/package/carousel_images.dart';
+import '../../../widgets/home/package/booking_bottom_sheet.dart';
 import '../../../widgets/home/package/bottom_buttom.dart';
 import '../../../widgets/home/package/carousal_images.dart';
-// import '../../../widgets/home/package/carousel_images.dart';
 import '../../../widgets/home/package/likes_review.dart';
 import '../../../widgets/home/package/package_info.dart';
 import '../../../widgets/home/package/review_details.dart';
@@ -77,8 +79,20 @@ class TripPackageDetailPage extends StatelessWidget {
             );
           },
         ),
-        bottomNavigationBar: const BookButton(),
+        bottomNavigationBar: BookButton(
+          onTap: () => _showBookingBottomSheet(context, tripPackage),
+        ),
       ),
+    );
+  }
+
+  void _showBookingBottomSheet(BuildContext context, TripPackageModel tripPackage) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return BookingBottomSheet(tripPackage: tripPackage);
+      },
     );
   }
 }

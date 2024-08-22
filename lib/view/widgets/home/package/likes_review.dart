@@ -12,11 +12,10 @@ class LikesAndReviewsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TripPackageProvider>(
       builder: (context, tripPackageProvider, child) {
-        // Fetch the latest package data from the provider if needed
         final isLiked = tripPackageProvider.isLiked(tripPackage.id);
         final likeCount = tripPackageProvider.package
             .firstWhere((pkg) => pkg.id == tripPackage.id)
-            .likeCount; // Make sure `likeCount` is updated
+            .likeCount;
         final reviewCount = tripPackage.customerReviews.length;
 
         return Row(
@@ -26,11 +25,11 @@ class LikesAndReviewsWidget extends StatelessWidget {
               children: [
                 Icon(
                   Icons.favorite,
-                  color: isLiked ? Colors.red : Colors.grey, // Highlight if liked
+                  color: isLiked ? Colors.red : Colors.grey,
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  '$likeCount Likes', // Update with actual likes count
+                  '$likeCount Likes',
                   style: const TextStyle(color: Colors.black87),
                 ),
               ],
@@ -40,7 +39,7 @@ class LikesAndReviewsWidget extends StatelessWidget {
                 const Icon(Icons.star, color: Colors.amber),
                 const SizedBox(width: 8),
                 Text(
-                  '$reviewCount Reviews', // Display the number of reviews
+                  '$reviewCount Reviews',
                   style: const TextStyle(color: Colors.black87),
                 ),
               ],
