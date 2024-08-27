@@ -5,13 +5,15 @@ class BookingProvider with ChangeNotifier {
   DateTime? _rangeStartDate;
   DateTime? _rangeEndDate;
   int _numberOfPeople = 1;
-  double _pricePerPerson = 0.0; // This will be updated from the trip package
+  double _pricePerPerson = 0.0;
+  String? _packageId; // To track the selected package ID
 
   DateTime? get selectedDate => _selectedDate;
   DateTime? get rangeStartDate => _rangeStartDate;
   DateTime? get rangeEndDate => _rangeEndDate;
   int get numberOfPeople => _numberOfPeople;
   double get totalPrice => _pricePerPerson * _numberOfPeople;
+  String? get packageId => _packageId; // Getter for the package ID
 
   void setSelectedDate(DateTime date) {
     _selectedDate = date;
@@ -38,22 +40,27 @@ class BookingProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateBookingDatesBasedOnPackage(int numberOfDays) {
+    DateTime startDate = _selectedDate ?? DateTime.now();
+    DateTime endDate = startDate.add(Duration(days: numberOfDays - 1));
+
+    _rangeStartDate = startDate;
+    _rangeEndDate = endDate;
+
+    notifyListeners();
+  }
+
   void resetBookingState() {
     _selectedDate = null;
     _rangeStartDate = null;
     _rangeEndDate = null;
     _numberOfPeople = 1;
-    // Optionally reset the price per person if needed
-    // _pricePerPerson = 0.0;
+    _packageId = null; // Reset the package ID when resetting state
     notifyListeners();
   }
 
-  // void resetState() {
-  //   _selectedDate = null;
-  //   _rangeStartDate = null;
-  //   _rangeEndDate = null;
-  //   _numberOfPeople = 1;
-  //   // _pricePerPerson = 0.0;
-  //   notifyListeners();
-  // }
+  void setPackageId(String? id) {
+    _packageId = id;
+    notifyListeners();
+  }
 }

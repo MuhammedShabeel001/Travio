@@ -35,7 +35,7 @@ class _TTnavBarState extends State<TTnavBar> {
             child: _tabs[currentIndex],
           ),
           Positioned(
-            bottom: -15,
+            bottom: -5,
             left: 0,
             right: 0,
             child: DotCurvedBottomNav(

@@ -33,9 +33,9 @@ class PackageInfoWidget extends StatelessWidget {
             IconButton(
               icon: Icon(
                 tripPackageProvider.isLiked(tripPackage.id)
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                color: Colors.red,
+                    ? Icons.bookmark_rounded
+                    : Icons.bookmark_border_rounded,
+                color: Colors.black,
               ),
               onPressed: () async {
                 await tripPackageProvider.toggleLike(tripPackage.id);
@@ -57,7 +57,7 @@ class PackageInfoWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                '\₹${tripPackage.realPrice}',
+                '₹${tripPackage.realPrice}',
                 style: const TextStyle(
                   fontSize: 16,
                   decoration: TextDecoration.lineThrough,
@@ -65,12 +65,25 @@ class PackageInfoWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
-                '\₹${tripPackage.offerPrice}',
-                style: const TextStyle(
-                  fontSize: 28,
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '₹${tripPackage.offerPrice}',
+                      style: const TextStyle(
+                        fontSize: 28,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const TextSpan(
+                      text: ' *per person',
+                      style: TextStyle(
+                        fontSize: 10, // Smaller font size
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -145,6 +158,24 @@ class PackageInfoWidget extends StatelessWidget {
         const Divider(),
         Text(
           tripPackage.transportOptions.join(', '),
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.black54,
+            height: 1.5,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          tripPackage.locations.length <= 1 ? 'Country' : 'Countries',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        const Divider(),
+        Text(
+          tripPackage.locations.join(', '),
           style: const TextStyle(
             fontSize: 16,
             color: Colors.black54,

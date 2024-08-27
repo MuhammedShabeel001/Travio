@@ -6,6 +6,7 @@ import 'package:travio/model/place_model.dart';
 
 import '../../pages/home/locations/location_detail_page.dart';
 
+// ignore: must_be_immutable
 class LocationCard extends StatelessWidget {
   final String image;
   final String label;
@@ -99,7 +100,7 @@ class LocationCard extends StatelessWidget {
                        SizedBox(width: 4),
                       Text(
                         'location.rating',  // Replace with the appropriate field
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,

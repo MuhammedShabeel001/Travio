@@ -10,6 +10,8 @@ import '../../widgets/home/location_card.dart';
 import '../../widgets/home/package/package_card.dart';
 
 class SearchPage extends StatelessWidget {
+  const SearchPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Access the providers
@@ -20,7 +22,7 @@ class SearchPage extends StatelessWidget {
     return GestureDetector(
       child: DraggableHome(
         appBarColor: TTthemeClass().ttLightPrimary,
-        title: ttSearchBar(
+        title: TtSearchBar(
           controller: searchProvider.searchController,
           bgColor: TTthemeClass().ttLightPrimary,
           onSearch: (term) {
@@ -46,7 +48,7 @@ class SearchPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ttSearchBar(
+              TtSearchBar(
                 controller: searchProvider.searchController,
                 bgColor: TTthemeClass().ttSecondary,
                 onSearch: (term) {

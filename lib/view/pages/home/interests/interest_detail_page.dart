@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Add this if you're using SVGs for icons
+import 'package:travio/core/theme/theme.dart';
 
 import '../../../../controller/provider/location_provider.dart';
 import '../../../../controller/provider/package_provider.dart';
-import '../../../widgets/home/location_card.dart';
 import '../../../widgets/home/package/package_card.dart';
 
 class InterestDetailPage extends StatelessWidget {
@@ -21,19 +22,41 @@ class InterestDetailPage extends StatelessWidget {
     locationProvider.getLocationsByInterest(interest);
 
     return Scaffold(
-      appBar: AppBar(title: Text(interest)),
+      appBar: AppBar(
+        title: Text(interest, style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+        backgroundColor: TTthemeClass().ttThird, // Adjust to match your theme
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Packages', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            // Packages Section
+            const Text(
+              'Packages',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 10),
             Expanded(
               child: Consumer<TripPackageProvider>(
                 builder: (context, packageProvider, child) {
                   if (packageProvider.packageByInterest.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/no_data.svg', // Example for SVG icon
+                              color: Colors.grey, // Color can be adjusted
+                              width: 80,
+                              height: 80),
+                          const SizedBox(height: 10),
+                          const Text(
+                            'No Packages Available',
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    );
                   }
                   return ListView.builder(
                     itemCount: packageProvider.packageByInterest.length,
@@ -45,31 +68,6 @@ class InterestDetailPage extends StatelessWidget {
                             : 'assets/images/placeholder.png',
                         label: package.name,
                         package: package,
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 30),
-            const Text('Locations', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            Expanded(
-              child: Consumer<LocationProvider>(
-                builder: (context, locationProvider, child) {
-                  if (locationProvider.locationsByInterest.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return ListView.builder(
-                    itemCount: locationProvider.locationsByInterest.length,
-                    itemBuilder: (context, index) {
-                      final location = locationProvider.locationsByInterest[index];
-                      return LocationCard(
-                        image: location.images.isNotEmpty
-                            ? location.images[0]
-                            : 'assets/images/placeholder.png',
-                        label: location.name,
-                        location: location,
                       );
                     },
                   );

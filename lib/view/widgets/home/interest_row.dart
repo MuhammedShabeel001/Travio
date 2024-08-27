@@ -6,11 +6,11 @@ class InterestRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       // padding: const EdgeInsets.all(8.0),
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15),
 
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InterestTabs(icon: Icons.hiking_rounded, label: 'Hiking'),

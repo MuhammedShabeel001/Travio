@@ -9,9 +9,9 @@ import 'package:travio/core/firebase/firebase_options.dart';
 import 'package:travio/controller/provider/location_provider.dart';
 
 import 'package:travio/controller/provider/auth_provider.dart';
-import 'package:travio/core/theme/theme.dart';
+// import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/pages/Splash/splash_page.dart';
-import 'package:travio/view/widgets/global/navbar.dart';
+// import 'package:travio/view/widgets/global/navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +48,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         // color: TTthemeClass().ttButton,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(),
+        theme: ThemeData(
+          // appBarTheme: AppBarTheme(
+          //   toolbarHeight: 56.0,
+            
+          // )
+        ),
         home: const SplashScreen(),
         // home: const TTnavBar(),
       ),

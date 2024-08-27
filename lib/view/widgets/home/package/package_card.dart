@@ -178,7 +178,7 @@ class PackageCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    '\₹${package.offerPrice}', // Price
+                    '₹${package.offerPrice}', // Price
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,

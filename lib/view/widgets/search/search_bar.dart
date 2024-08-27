@@ -4,14 +4,14 @@ import 'package:travio/view/widgets/search/filter_bottomsheet.dart';
 import '../../../model/package_model.dart'; // Import the package model
 import '../../../model/place_model.dart';   // Import the place model
 
-class ttSearchBar extends StatelessWidget {
+class TtSearchBar extends StatelessWidget {
   final Color? bgColor;
   final TextEditingController controller;
   final void Function(String) onSearch;
   final List<TripPackageModel> allPackages; // Add this to accept packages
   final List<PlaceModel> allPlaces;         // Add this to accept places
 
-  ttSearchBar({
+  const TtSearchBar({super.key, 
     required this.onSearch,
     this.bgColor,
     required this.controller,
@@ -51,14 +51,14 @@ class ttSearchBar extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Container(
             decoration: BoxDecoration(
                 color: bgColor,
                 border: Border.all(color: Colors.grey.shade300),
                 borderRadius: BorderRadius.circular(15)),
             child: IconButton(
-              icon: Icon(Icons.filter_list),
+              icon: const Icon(Icons.filter_list),
               onPressed: () {
                 // Pass the full list of packages and places to the FilterBottomSheet
                 showModalBottomSheet(

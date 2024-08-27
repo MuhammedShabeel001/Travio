@@ -11,14 +11,6 @@ import '../../../widgets/home/package/carousal_images.dart';
 import '../../../widgets/home/package/likes_review.dart';
 import '../../../widgets/home/package/package_info.dart';
 import '../../../widgets/home/package/review_details.dart';
-// import 'controller/provider/booking_provider.dart';
-// import 'controller/provider/package_provider.dart'; // Ensure this is imported
-// import 'model/package_model.dart';
-// import 'widgets/home/package/booking_bottom_sheet.dart';
-// import 'widgets/home/package/carousal_images.dart';
-// import 'widgets/home/package/likes_review.dart';
-// import 'widgets/home/package/package_info.dart';
-// import 'widgets/home/package/review_details.dart';
 
 class TripPackageDetailPage extends StatelessWidget {
   final TripPackageModel tripPackage;
@@ -37,31 +29,53 @@ class TripPackageDetailPage extends StatelessWidget {
               for (var imageUrl in tripPackage.images) {
                 precacheImage(NetworkImage(imageUrl), context);
               }
-      
+
               return DefaultTabController(
                 length: 2,
                 child: NestedScrollView(
                   headerSliverBuilder: (context, innerBoxIsScrolled) {
                     return [
                       SliverAppBar(
+                        toolbarHeight: 12,
+                        backgroundColor: Colors.black,
+                        // collapsedHeight: 30,
+                        automaticallyImplyLeading: false,
                         expandedHeight: 350.0,
                         pinned: true,
-                        automaticallyImplyLeading: false,
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: CarouselWidget(tripPackage: tripPackage),
+                        flexibleSpace: LayoutBuilder(
+                          builder: (BuildContext context,
+                              BoxConstraints constraints) {
+                            // Get the height of the app bar to determine if it's fully collapsed
+                            var top = constraints.biggest.height;
+                            var isCollapsed = top ==
+                                MediaQuery.of(context).padding.top +
+                                    kToolbarHeight;
+
+                            return FlexibleSpaceBar(
+                              centerTitle: true,
+                              title: isCollapsed
+                                  ? Text(
+                                      tripPackage.name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.0,
+                                      ),
+                                    )
+                                  : null,
+                              background:
+                                  CarouselWidget(tripPackage: tripPackage),
+                            );
+                          },
                         ),
                         bottom: const PreferredSize(
-                          preferredSize: Size.fromHeight(100.0),
-                          child: Column(
-                            children: [
-                              TabBar(
-                                indicatorColor: Colors.white,
-                                labelColor: Colors.white,
-                                tabs: [
-                                  Tab(text: "About"),
-                                  Tab(text: "Reviews"),
-                                ],
-                              ),
+                          preferredSize: Size.fromHeight(50.0),
+                          child: TabBar(
+                            
+                            indicatorColor: Colors.white,
+                            labelColor: Colors.white,
+                            tabs: [
+                              Tab(text: "About"),
+                              Tab(text: "Reviews"),
                             ],
                           ),
                         ),
@@ -96,18 +110,19 @@ class TripPackageDetailPage extends StatelessWidget {
     );
   }
 
-  void _showBookingBottomSheet(BuildContext context, TripPackageModel tripPackage) {
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
-    bookingProvider.updatePrice(tripPackage.offerPrice); // Set the price per person here
+  void _showBookingBottomSheet(
+      BuildContext context, TripPackageModel tripPackage) {
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
+    bookingProvider
+        .updatePrice(tripPackage.offerPrice); // Set the price per person here
 
     showModalBottomSheet(
       context: context,
       backgroundColor: TTthemeClass().ttSecondary,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return BookingBottomSheet(
-          // onPackageChange: bookingProvider.resetBookingState,
-          tripPackage: tripPackage);
+        return BookingBottomSheet(tripPackage: tripPackage);
       },
     );
   }

@@ -10,19 +10,15 @@ import 'package:travio/view/pages/auth/sign%20up/sign_up_page.dart';
 import 'package:travio/view/pages/Splash/splash_page.dart';
 import 'package:travio/view/widgets/global/navbar.dart';
 
-Map<String, Widget Function(BuildContext)> routes ={
-  "/SplashPage": (context)=> const SplashScreen(),
-  // "/LandingPage1": (context)=> ,
-  // "/LandingPage2": (context)=> ,
-  // "/LandingPage3": (context)=> ,
-  "/LoginPage": (context)=> const LogInScreen(),
-  "/ForgotPassPage": (context)=> const ResentPassword(),
-  "/SignUpPage": (context)=>  SignUpPage(),
-  "/DetailsPage": (context)=>  DetailsPage(),
-  "/HomePage": (context)=> const HomePage(),
-  "/SearchPage": (context)=>  SearchPage(),
-  "/MyTripsPage": (context)=>  const TripPlanPage(),
-  "/ProfilePage": (context)=>  const ProfilePage(),
-  "/StartPage": (context)=>  const TTnavBar(),
-  // "/MyTripsPage": (context)=>  const AIpage(),
+Map<String, Widget Function(BuildContext)> routes = {
+  "/SplashPage": (context) => const SplashScreen(),
+  "/LoginPage": (context) => const LogInScreen(),
+  "/ForgotPassPage": (context) => const ResentPassword(),
+  "/SignUpPage": (context) => SignUpPage(),
+  "/DetailsPage": (context) => DetailsPage(),
+  "/HomePage": (context) => const HomePage(),
+  "/SearchPage": (context) => SearchPage(),
+  "/MyTripsPage": (context) => const TripPlanPage(),
+  "/ProfilePage": (context) => const ProfilePage(),
+  "/StartPage": (context) => const TTnavBar(),
 };

@@ -32,7 +32,7 @@ class LocationDetailPage extends StatelessWidget {
                     Container(
                       height: 350,
                       clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.vertical(
                           bottom: Radius.circular(30),
                         ),
@@ -50,7 +50,7 @@ class LocationDetailPage extends StatelessWidget {
                           viewportFraction: 1.0,
                           enableInfiniteScroll: true,
                           autoPlay: true,
-                          autoPlayInterval: Duration(seconds: 6), // Adjusted timing
+                          autoPlayInterval: const Duration(seconds: 6), // Adjusted timing
                           onPageChanged: (index, reason) {
                             locationProvider.updateIndex(index);
                           },
@@ -104,7 +104,7 @@ class LocationDetailPage extends StatelessWidget {
                         child: AnimatedSmoothIndicator(
                           activeIndex: locationProvider.currentIndex,
                           count: location.images.length,
-                          effect: ExpandingDotsEffect(
+                          effect: const ExpandingDotsEffect(
                             activeDotColor: Colors.white,
                             dotColor: Colors.grey,
                             dotHeight: 8.0,
@@ -117,8 +117,8 @@ class LocationDetailPage extends StatelessWidget {
                 ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(30)),
@@ -145,11 +145,11 @@ class LocationDetailPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Row(
                           children: [
-                            Icon(Icons.location_on, color: Colors.redAccent),
-                            SizedBox(width: 8),
+                            const Icon(Icons.location_on, color: Colors.redAccent),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 "200 km away", // Hardcoded distance
@@ -161,18 +161,18 @@ class LocationDetailPage extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.map, color: Colors.blueAccent),
+                              icon: const Icon(Icons.map, color: Colors.blueAccent),
                               onPressed: () {
                                 // Navigate to map functionality (if applicable)
                               },
                             ),
                           ],
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(Icons.cloud, color: Colors.blueAccent),
-                            SizedBox(width: 8),
+                            const Icon(Icons.cloud, color: Colors.blueAccent),
+                            const SizedBox(width: 8),
                             Text(
                               "24°C, Cloudy", // Hardcoded weather
                               style: Theme.of(context).textTheme.bodyMedium
@@ -183,7 +183,7 @@ class LocationDetailPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
                           location.description,
                           style: Theme.of(context).textTheme.bodySmall
@@ -193,9 +193,9 @@ class LocationDetailPage extends StatelessWidget {
                             height: 1.5,
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Divider(thickness: 1, color: Colors.grey.shade300),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -211,7 +211,7 @@ class LocationDetailPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   location.country,
                                   style:
@@ -231,7 +231,7 @@ class LocationDetailPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   location.continent,
                                   style:
@@ -241,10 +241,10 @@ class LocationDetailPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Divider(thickness: 1, color: Colors.grey.shade300),
-                        SizedBox(height: 16),
-                        Text(
+                        const SizedBox(height: 16),
+                        const Text(
                           'Activities:',
                           style: TextStyle(
                             fontSize: 20,
@@ -252,7 +252,7 @@ class LocationDetailPage extends StatelessWidget {
                             color: Colors.black87,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Wrap(
                           spacing: 10,
                           runSpacing: 10,
@@ -261,7 +261,7 @@ class LocationDetailPage extends StatelessWidget {
                               .map((activity) => Chip(
                                     label: Text(activity),
                                     backgroundColor: Colors.purpleAccent,
-                                    labelStyle: TextStyle(color: Colors.white),
+                                    labelStyle: const TextStyle(color: Colors.white),
                                   ))
                               .toList(),
                         ),

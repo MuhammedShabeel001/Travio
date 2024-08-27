@@ -3,7 +3,7 @@ import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:travio/view/widgets/global/navbar.dart'; // Make sure this path is correct
+// import 'package:travio/view/widgets/global/navbar.dart'; // Make sure this path is correct
 
 import '../../../controller/provider/auth_provider.dart';
 import '../../../core/theme/theme.dart';
@@ -65,7 +65,7 @@ class _HomeBarState extends State<HomeBar> {
                   color: Colors.white,
                 ),
               ),
-              errorWidget: (context, url, error) => Icon(
+              errorWidget: (context, url, error) => const Icon(
                 Icons.account_circle,
                 size: 40,
                 color: Colors.grey,
@@ -125,7 +125,7 @@ class _HomeBarState extends State<HomeBar> {
                         color: Colors.white,
                       ),
                     ),
-                    errorWidget: (context, url, error) => Icon(
+                    errorWidget: (context, url, error) => const Icon(
                       Icons.account_circle,
                       size: 60,
                       color: Colors.grey,

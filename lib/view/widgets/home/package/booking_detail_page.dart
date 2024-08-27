@@ -11,17 +11,17 @@ class PackageDetailsBottomSheet extends StatelessWidget {
   final BookingProvider bookingProvider;
 
   const PackageDetailsBottomSheet({
-    Key? key,
+    super.key,
     required this.tripPackage,
     required this.bookingProvider,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd-MM-yy');
     final paymentProvider = Provider.of<PaymentProvider>(context);
 
-    void _handlePayment() {
+    void handlePayment() {
       paymentProvider.makePayment(
         amount: tripPackage.offerPrice.toString(),
         contact: '9584847474',
@@ -36,7 +36,7 @@ class PackageDetailsBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Booking Details',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -51,23 +51,23 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                   color: Colors.black.withOpacity(0.1),
                   spreadRadius: 2,
                   blurRadius: 5,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
-            padding: EdgeInsets.all(18),
+            padding: const EdgeInsets.all(18),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Package:',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       ' ${tripPackage.name}',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -75,13 +75,13 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Number of Days:',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       ' ${tripPackage.numberOfDays}',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -89,13 +89,13 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Dates Selected: ',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       '${dateFormat.format(bookingProvider.rangeStartDate!)} - ${dateFormat.format(bookingProvider.rangeEndDate!)}',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -103,13 +103,13 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Number of People: ',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       '${bookingProvider.numberOfPeople}',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
@@ -127,21 +127,21 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                   color: Colors.black.withOpacity(0.1),
                   spreadRadius: 2,
                   blurRadius: 5,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
-            padding: EdgeInsets.all(18),
+            padding: const EdgeInsets.all(18),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Total Amount:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style:  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '\₹${bookingProvider.totalPrice.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  '₹${bookingProvider.totalPrice.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -153,7 +153,7 @@ class PackageDetailsBottomSheet extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _handlePayment,
+                onPressed: handlePayment,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: TTthemeClass().ttButton,
                   padding: const EdgeInsets.symmetric(vertical: 16),

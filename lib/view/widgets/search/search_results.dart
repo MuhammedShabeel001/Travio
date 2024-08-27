@@ -14,8 +14,8 @@ class SearchResults extends StatelessWidget {
   const SearchResults({
     required this.searchTerm,
     required this.filterTerm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
