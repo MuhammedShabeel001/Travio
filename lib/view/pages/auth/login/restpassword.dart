@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
@@ -47,7 +48,7 @@ class ResentPassword extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Form(
-                          // key: _formKey,
+                          
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -64,7 +65,7 @@ class ResentPassword extends StatelessWidget {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your email';
                                   }
-                                  // Email format validation using regex
+                                  
                                   bool validEmail = RegExp(
                                     r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                                     caseSensitive: false,
@@ -109,20 +110,24 @@ class ResentPassword extends StatelessWidget {
                           onPressed: () async {
                             authProvider.resetPassword(
                               onSuccess: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Password reset email sent"),
-                                  ),
-                                );
-                                // Optionally navigate back to login page or another page
-                                // Navigator.pop(context);
+                                
+                                
+                                
+                                
+                                
+      BotToast.showText(text: 'Password reset email sent');
+
+                                
+                                
                               },
                               onError: (message) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(message),
-                                  ),
-                                );
+                                
+                                
+                                
+                                
+                                  
+                                
+                                BotToast.showText(text: message);
                               },
                             );
                           },

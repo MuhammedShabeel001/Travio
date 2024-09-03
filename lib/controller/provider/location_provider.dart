@@ -1,5 +1,3 @@
-// import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travio/controller/provider/package_provider.dart';
@@ -16,6 +14,9 @@ class LocationProvider with ChangeNotifier {
   List<PlaceModel> _locationsByInterest = [];
   List<PlaceModel> get locationsByInterest => _locationsByInterest;
 
+  List<PlaceModel> _locationsInIndia = [];
+  List<PlaceModel> get locationsInIndia => _locationsInIndia;
+
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
 
@@ -24,6 +25,7 @@ class LocationProvider with ChangeNotifier {
 
   LocationProvider(this.searchProvider, this.tripPackageProvider) {
     fetchAllLocations();
+    fetchLocationsInIndia();
   }
 
   void fetchAllLocations() {
@@ -34,6 +36,18 @@ class LocationProvider with ChangeNotifier {
       final packages = tripPackageProvider.package;
 
       searchProvider.applyFilters(packages, _places);
+      notifyListeners();
+    });
+  }
+
+  void fetchLocationsInIndia() {
+    db
+        .collection('places')
+        .where('country', isEqualTo: 'India')
+        .snapshots()
+        .listen((snapshot) {
+      _locationsInIndia =
+          snapshot.docs.map((doc) => PlaceModel.fromMap(doc.data())).toList();
       notifyListeners();
     });
   }

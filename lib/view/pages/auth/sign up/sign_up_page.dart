@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -236,7 +237,7 @@ fast method''',
                                       if (_formKey.currentState!.validate()) {
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(
+                                          CupertinoPageRoute(
                                             builder: (context) => DetailsPage(),
                                           ),
                                         );

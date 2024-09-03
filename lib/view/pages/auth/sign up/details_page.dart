@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
@@ -128,18 +130,16 @@ class DetailsPage extends StatelessWidget {
                                   onSuccess: () {
                                     Navigator.pushAndRemoveUntil(
                                       context,
-                                      MaterialPageRoute(
+                                      CupertinoPageRoute(
                                           builder: (context) => const TTnavBar()),
                                       (route) => false,
                                     );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text("Sign up successful")),
-                                    );
+                                  
+                                    BotToast.showText(text: 'Sign up successful');
                                   },
                                   onError: (message) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(message)),
-                                    );
+                                 
+                                    BotToast.showText(text: message);
                                   },
                                 );
                               } else {

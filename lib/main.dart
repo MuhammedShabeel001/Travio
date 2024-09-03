@@ -11,6 +11,8 @@ import 'package:travio/controller/provider/location_provider.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
 // import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/pages/Splash/splash_page.dart';
+import 'package:travio/view/pages/home/interests/more_interest_page.dart';
+import 'package:travio/view/widgets/global/navbar.dart';
 // import 'package:travio/view/widgets/global/navbar.dart';
 
 void main() async {
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
         ),
         home: const SplashScreen(),
         // home: const TTnavBar(),
+        // home: ActivityCategoriesPage(),
       ),
     );
   }

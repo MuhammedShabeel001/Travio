@@ -38,14 +38,12 @@ class TripPackageDetailPage extends StatelessWidget {
                       SliverAppBar(
                         toolbarHeight: 12,
                         backgroundColor: Colors.black,
-                        // collapsedHeight: 30,
                         automaticallyImplyLeading: false,
                         expandedHeight: 350.0,
                         pinned: true,
                         flexibleSpace: LayoutBuilder(
                           builder: (BuildContext context,
                               BoxConstraints constraints) {
-                            // Get the height of the app bar to determine if it's fully collapsed
                             var top = constraints.biggest.height;
                             var isCollapsed = top ==
                                 MediaQuery.of(context).padding.top +
@@ -62,24 +60,45 @@ class TripPackageDetailPage extends StatelessWidget {
                                       ),
                                     )
                                   : null,
-                              background:
-                                  CarouselWidget(tripPackage: tripPackage),
+                              background: Hero(
+                                tag: 'package',
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    CarouselWidget(tripPackage: tripPackage),
+                                    // Container(
+                                    //   decoration: BoxDecoration(
+                                    //     gradient: LinearGradient(
+                                    //       colors: [
+                                    //         Colors.black.withOpacity(
+                                    //             0.8), // Bottom color (Black)
+                                    //         Colors
+                                    //             .transparent, // Top color (Transparent)
+                                    //       ],
+                                    //       begin: Alignment.bottomCenter,
+                                    //       end: Alignment.topCenter,
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ),
                             );
                           },
                         ),
                         bottom: const PreferredSize(
                           preferredSize: Size.fromHeight(50.0),
                           child: TabBar(
-                            
                             indicatorColor: Colors.white,
                             labelColor: Colors.white,
+                            unselectedLabelColor: Colors.white38,
                             tabs: [
                               Tab(text: "About"),
                               Tab(text: "Reviews"),
                             ],
                           ),
                         ),
-                      ),
+                      )
                     ];
                   },
                   body: TabBarView(

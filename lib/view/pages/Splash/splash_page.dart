@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,14 +50,14 @@ class _SplashState extends State<SplashScreen> {
 
   void navigateToLogin() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LogInScreen()),
+      CupertinoPageRoute(builder: (context) => const LogInScreen()),
     );
   }
 
   void navigateToHome() {
     
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const TTnavBar()),
+      CupertinoPageRoute(builder: (context) => const TTnavBar()),
     );
   }
 

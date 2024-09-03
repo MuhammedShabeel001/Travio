@@ -45,6 +45,7 @@ class _HomeBarState extends State<HomeBar> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
+            // color: white,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             decoration: BoxDecoration(
               border: Border.all(
@@ -91,6 +92,7 @@ class _HomeBarState extends State<HomeBar> {
       centerTitle: false,
       headerExpandedHeight: 0.15,
       backgroundColor: TTthemeClass().ttSecondary,
+      // backgroundColor: Colors.white,
       headerWidget: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 20,

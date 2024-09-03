@@ -1,3 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
@@ -100,7 +102,7 @@ class LoginForm extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                                 builder: (context) => const ResentPassword(),
                               ),
                             );
@@ -130,25 +132,16 @@ class LoginForm extends StatelessWidget {
                             onSuccess: () {
                               Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(
+                                CupertinoPageRoute(
                                   builder: (context) => const TTnavBar(),
                                 ),
                                 (route) => false,
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Successfully signed in"),
-                                ),
-                              );
-                              // Navigate to the next page or home page
-                              // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+
+                              BotToast.showText(text: 'Successfully signed in');
                             },
                             onError: (message) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(message),
-                                ),
-                              );
+                              BotToast.showText(text: message);
                             },
                           );
                           authProvider.loginEmailController.clear();

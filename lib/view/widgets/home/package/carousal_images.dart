@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +51,18 @@ class CarouselWidget extends StatelessWidget {
             );
           }).toList(),
         ),
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.black.withOpacity(0.8), // Bottom color (Black)
+                Colors.transparent, // Top color (Transparent)
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+          ),
+        ),
         Positioned(
           top: 16,
           left: 16,
@@ -57,7 +71,9 @@ class CarouselWidget extends StatelessWidget {
             child: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
+                log('tapped');
                 Navigator.pop(context);
+                log('tapped 2');
               },
             ),
           ),

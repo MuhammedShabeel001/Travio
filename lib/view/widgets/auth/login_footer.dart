@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:travio/core/theme/theme.dart';
@@ -32,7 +33,7 @@ class LoginFooter extends StatelessWidget {
                 ..onTap = () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                       builder: (context) => SignUpPage(
                         // isActive: false,
                       ),

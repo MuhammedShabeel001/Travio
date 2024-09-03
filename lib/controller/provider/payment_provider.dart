@@ -7,9 +7,11 @@ class PaymentProvider with ChangeNotifier {
   bool _isLoading = false;
   String _paymentStatus = '';
   BuildContext? _context; // Store context
+  bool _showResult = false;
 
   bool get isLoading => _isLoading;
   String get paymentStatus => _paymentStatus;
+  bool get showResult => _showResult;
 
   PaymentProvider() {
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentErrorResponse);
@@ -24,6 +26,7 @@ class PaymentProvider with ChangeNotifier {
     required BuildContext context, // Add BuildContext parameter
   }) {
     _isLoading = true;
+    _showResult = false;
     _context = context; // Store the context
     notifyListeners();
 
@@ -48,59 +51,28 @@ class PaymentProvider with ChangeNotifier {
   void _handlePaymentErrorResponse(PaymentFailureResponse response) {
     _isLoading = false;
     _paymentStatus = 'Payment Failed: ${response.message}';
+    _showResult = true;
     notifyListeners();
-
-    if (_context != null) {
-      showPaymentStatusDialog( 'assets/animations/payment_failed.json', Colors.red, _context!); // Show failure dialog
-    }
   }
 
   void _handlePaymentSuccessResponse(PaymentSuccessResponse response) {
     _isLoading = false;
     _paymentStatus = 'Payment Successful: ${response.paymentId}';
+    _showResult = true;
     notifyListeners();
-
-    if (_context != null) {
-      showPaymentStatusDialog( 'assets/animations/payment_success.json', Colors.green, _context!); // Show success dialog
-    }
   }
 
   void _handleExternalWalletSelected(ExternalWalletResponse response) {
     _isLoading = false;
     _paymentStatus = 'External Wallet Selected: ${response.walletName}';
+    _showResult = true;
     notifyListeners();
-
-    if (_context != null) {
-      showPaymentStatusDialog('assets/animations/payment_wallet.json', Colors.orange, _context!); // Show external wallet dialog
-    }
   }
 
-  void showPaymentStatusDialog(String animationPath, Color iconColor, BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Column(
-            children: [
-              Lottie.asset(
-                animationPath,
-                // width: 100,
-                height: 100,
-                fit: BoxFit.fill,
-              ),
-              const SizedBox(height: 16.0),
-              Text(iconColor == Colors.green ? 'Payment Successful' : 'Payment Failed'),
-            ],
-          ),
-          // content: Text(status),
-        );
-      },
-    );
-
-    // Auto close the dialog after 5 seconds
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.of(context).pop(); // Close the dialog
-    });
+  void reset() {
+    _paymentStatus = '';
+    _showResult = false;
+    notifyListeners();
   }
 
   @override

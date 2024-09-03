@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../pages/home/interests/interest_detail_page.dart';
@@ -20,7 +21,7 @@ class InterestTabs extends StatelessWidget {
         // Navigate to InterestDetailPage when tapped
         Navigator.push(
           context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
             builder: (context) => InterestDetailPage(interest: label),
           ),
         );
@@ -32,7 +33,7 @@ class InterestTabs extends StatelessWidget {
                   ),
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(17)),
-              padding: const EdgeInsets.all(13),
+              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 20 ),
               child: Icon(icon, size: 30)),
         ),
         const SizedBox(height: 8),

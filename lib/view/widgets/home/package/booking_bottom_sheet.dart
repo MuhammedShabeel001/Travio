@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -90,13 +91,8 @@ Widget build(BuildContext context) {
                   if (endDate.isAfter(maxAvailableDate)) {
                     bookingProvider.setRangeStartDate(startDate);
                     bookingProvider.setRangeEndDate(maxAvailableDate);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Maximum booking duration is ${tripPackage.numberOfDays} days. End date adjusted to ${dateFormat.format(maxAvailableDate)}.',
-                        ),
-                      ),
-                    );
+                    
+                    BotToast.showText(text: 'Maximum booking duration is ${tripPackage.numberOfDays} days. End date adjusted to ${dateFormat.format(maxAvailableDate)}.');
                   } else {
                     bookingProvider.setRangeStartDate(startDate);
                     bookingProvider.setRangeEndDate(endDate);

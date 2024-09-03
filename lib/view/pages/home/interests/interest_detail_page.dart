@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Add this if you're using SVGs for icons
@@ -23,17 +24,28 @@ class InterestDetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(interest, style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+          ),
+        ),
+        title: Text(interest,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: TTthemeClass().ttThird, // Adjust to match your theme
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(1.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Packages Section
             const Text(
-              'Packages',
+              '  Packages',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
@@ -45,7 +57,8 @@ class InterestDetailPage extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset('assets/icons/no_data.svg', // Example for SVG icon
+                          SvgPicture.asset(
+                              'assets/icons/no_data.svg', // Example for SVG icon
                               color: Colors.grey, // Color can be adjusted
                               width: 80,
                               height: 80),
@@ -62,12 +75,20 @@ class InterestDetailPage extends StatelessWidget {
                     itemCount: packageProvider.packageByInterest.length,
                     itemBuilder: (context, index) {
                       final package = packageProvider.packageByInterest[index];
-                      return PackageCard(
-                        image: package.images.isNotEmpty
-                            ? package.images[0]
-                            : 'assets/images/placeholder.png',
-                        label: package.name,
-                        package: package,
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 12,
+                          ),
+                          PackageCard(
+                            height: 150,
+                            image: package.images.isNotEmpty
+                                ? package.images[0]
+                                : 'assets/images/placeholder.png',
+                            label: package.name,
+                            package: package,
+                          ),
+                        ],
                       );
                     },
                   );
