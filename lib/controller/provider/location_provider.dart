@@ -35,7 +35,7 @@ class LocationProvider with ChangeNotifier {
 
       final packages = tripPackageProvider.package;
 
-      searchProvider.applyFilters(packages, _places);
+      searchProvider.applyFilters(packages);
       notifyListeners();
     });
   }
