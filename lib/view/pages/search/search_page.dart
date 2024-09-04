@@ -137,6 +137,7 @@ class SearchPage extends StatelessWidget {
             (package) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: PackageCard(
+                height: 150,
                 width: double.infinity,
                 image: package.images.isNotEmpty
                     ? package.images[0]

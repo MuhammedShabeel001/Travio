@@ -16,11 +16,12 @@ class FilterBottomSheet extends StatelessWidget {
     final searchProvider = Provider.of<SearchProvider>(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Title
           Text(
             'Filter Options',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -28,17 +29,17 @@ class FilterBottomSheet extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
 
           // Min and Max Price Range Fields
-          const Text('Price Range'),
-          const SizedBox(height: 8),
+          _buildSectionTitle(context, 'Price Range', Icons.attach_money),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: TextFormField(
-                  decoration: const InputDecoration(labelText: 'Min Price'),
-                  keyboardType: TextInputType.number,
+                child: _buildTextField(
+                  context,
+                  label: 'Min Price',
                   initialValue: searchProvider.minPrice.toString(),
                   onChanged: (value) {
                     searchProvider.setMinPrice(double.tryParse(value) ?? 0);
@@ -47,9 +48,9 @@ class FilterBottomSheet extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: TextFormField(
-                  decoration: const InputDecoration(labelText: 'Max Price'),
-                  keyboardType: TextInputType.number,
+                child: _buildTextField(
+                  context,
+                  label: 'Max Price',
                   initialValue: searchProvider.maxPrice.toString(),
                   onChanged: (value) {
                     searchProvider.setMaxPrice(double.tryParse(value) ?? 10000);
@@ -58,37 +59,35 @@ class FilterBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(thickness: 1, height: 32),
+          const SizedBox(height: 24),
+          const Divider(thickness: 1),
 
           // Total Number of Days Dropdown
-          const Text('Total Number of Days'),
+          _buildSectionTitle(context, 'Total Number of Days', Icons.calendar_today),
+          const SizedBox(height: 12),
           DropdownButtonFormField<int>(
-  value: searchProvider.totalDays,
-  items: const [
-    DropdownMenuItem(value: 1, child: Text('1 Day')),
-    DropdownMenuItem(value: 2, child: Text('2 Days')),
-    DropdownMenuItem(value: 3, child: Text('3 Days')),
-    DropdownMenuItem(value: 4, child: Text('4 Days')),
-    DropdownMenuItem(value: 5, child: Text('5 Days')),
-    DropdownMenuItem(value: 6, child: Text('6 Days')),
-    DropdownMenuItem(value: 7, child: Text('1 Week')),
-    DropdownMenuItem(value: 14, child: Text('2 Weeks')),
-    DropdownMenuItem(value: 21, child: Text('3 Weeks')),
-    DropdownMenuItem(value: 30, child: Text('1 Month')),
-  ],
-  onChanged: (value) {
-    if (value != null) {
-      searchProvider.setTotalDays(value);
-    }
-  },
-),
-          const Divider(thickness: 1, height: 32),
+            value: searchProvider.totalDays,
+            items: List.generate(30, (index) {
+              final day = index + 1;
+              final label = day == 7 ? '1 Week' : day == 14 ? '2 Weeks' : day == 30 ? '1 Month' : '$day Day${day > 1 ? 's' : ''}';
+              return DropdownMenuItem(value: day, child: Text(label));
+            }),
+            onChanged: (value) {
+              if (value != null) {
+                searchProvider.setTotalDays(value);
+              }
+            },
+            decoration: _inputDecoration(context),
+          ),
+          const SizedBox(height: 24),
+          const Divider(thickness: 1),
 
           // Sort Order Dropdown
-          const Text('Sort Order'),
+          _buildSectionTitle(context, 'Sort Order', Icons.sort),
+          const SizedBox(height: 12),
           DropdownButtonFormField<bool>(
             value: searchProvider.isAscending,
-            items: const [
+            items: [
               DropdownMenuItem(value: true, child: Text('Ascending')),
               DropdownMenuItem(value: false, child: Text('Descending')),
             ],
@@ -97,40 +96,95 @@ class FilterBottomSheet extends StatelessWidget {
                 searchProvider.setSortOrder(value);
               }
             },
+            decoration: _inputDecoration(context),
           ),
-          const Divider(thickness: 1, height: 32),
+          const SizedBox(height: 24),
 
           // Apply Filters Button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                searchProvider.applyFilters(allPackages);
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: const Text(
-                'Apply Filters',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-
-          // Reset Filters Button
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () {
+          Row(
+            children: [
+          Flexible(
+            child: _buildButton(
+              context,
+              'Reset Filters',
+              Colors.transparent,
+              () {
                 searchProvider.resetFilters();
                 Navigator.pop(context);
               },
+              isOutlined: true,
+            ),
+          ), const SizedBox(width: 12),
+
+          const SizedBox(height: 24),
+              Flexible(
+                child: _buildButton(
+                  context,
+                  'Apply Filters',
+                  Theme.of(context).colorScheme.primary,
+                  () {
+                    searchProvider.applyFilters(allPackages);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+
+
+            ],
+          ),
+         
+
+          // Reset Filters Button
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title, IconData icon) {
+    return Row(
+      children: [
+        Icon(icon, color: Theme.of(context).colorScheme.primary, size: 20),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTextField(BuildContext context, {required String label, required String initialValue, required ValueChanged<String> onChanged}) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: TextFormField(
+        decoration: _inputDecoration(context, label: label),
+        keyboardType: TextInputType.number,
+        initialValue: initialValue,
+        onChanged: onChanged,
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration(BuildContext context, {String? label}) {
+    return InputDecoration(
+      labelText: label,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    );
+  }
+
+  Widget _buildButton(BuildContext context, String text, Color backgroundColor, VoidCallback onPressed, {bool isOutlined = false}) {
+    return SizedBox(
+      width: double.infinity,
+      child: isOutlined
+          ? OutlinedButton(
+              onPressed: onPressed,
               style: OutlinedButton.styleFrom(
                 side: BorderSide(color: Theme.of(context).colorScheme.primary),
                 shape: RoundedRectangleBorder(
@@ -138,14 +192,25 @@ class FilterBottomSheet extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              child: const Text(
-                'Reset Filters',
-                style: TextStyle(color: Colors.black),
+              child: Text(
+                text,
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+            )
+          : ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: backgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              ),
+              child: Text(
+                text,
+                style: TextStyle(color: Colors.white),
               ),
             ),
-          ),
-        ],
-      ),
     );
   }
 }

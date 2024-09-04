@@ -34,7 +34,7 @@ class TtSearchBar extends StatelessWidget {
         hintStyle: TextStyle(color: Colors.grey[600]),
         contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(15.0),
           borderSide: BorderSide(color: Colors.grey[300]!),
         ),
         filled: true,
