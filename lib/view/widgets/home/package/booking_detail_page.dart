@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:travio/view/pages/profile/booked_package_page.dart';
+import 'package:travio/view/widgets/global/navbar.dart';
 import '../../../../controller/provider/booking_provider.dart';
 import '../../../../controller/provider/payment_provider.dart';
 import '../../../../core/theme/theme.dart';
@@ -75,7 +78,8 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'Package:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             ' ${tripPackage.name}',
@@ -89,7 +93,8 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'Dates Selected: ',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '${dateFormat.format(bookingProvider.rangeStartDate!)} - ${dateFormat.format(bookingProvider.rangeEndDate!)}',
@@ -103,7 +108,8 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'Number of Days:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             ' ${tripPackage.numberOfDays}',
@@ -117,7 +123,8 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'Number of People: ',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '${bookingProvider.numberOfPeople}',
@@ -131,7 +138,8 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'Real Price:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '₹${tripPackage.realPrice.toStringAsFixed(2)}',
@@ -145,7 +153,8 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'Offer Price:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '₹${tripPackage.offerPrice.toStringAsFixed(2)}',
@@ -159,11 +168,13 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'Discount:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '-₹${discount.toStringAsFixed(2)}',
-                            style: const TextStyle(fontSize: 16, color: Colors.green),
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.green),
                           ),
                         ],
                       ),
@@ -173,7 +184,8 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                         children: [
                           const Text(
                             'GST (5%):',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             '₹${gstAmount.toStringAsFixed(2)}',
@@ -205,11 +217,13 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                     children: [
                       const Text(
                         'Total Amount:',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         '₹${(bookingProvider.totalPrice + gstAmount).toStringAsFixed(2)}',
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -278,33 +292,40 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                                   : Colors.green,
                             ),
                           ),
-                          
-                          
                         ],
                       ),
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: TTthemeClass().ttButton,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                textStyle: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              onPressed: () {
-                                paymentProvider.reset(); // Reset state
-                                Navigator.pop(context); // Close bottom sheet
-                              },
-                              child: const Text('OK', style: TextStyle(color: Colors.white)),
-                            ),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: TTthemeClass().ttButton,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () {
+                          paymentProvider.reset();
+                          paymentStatus.contains('Failed') // Reset state
+                              ? Navigator.pop(context)
+                              : 
+                              Navigator.pop(context) ;
+                              Navigator.pushReplacement(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => BookedPackagesPage(),
+                                  )); // Close bottom sheet
+                        },
+                        child: const Text('OK',
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
                   ],
                 ),
               ],
