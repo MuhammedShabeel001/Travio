@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:travio/core/theme/theme.dart';
+import 'package:travio/view/widgets/profile/edit_dialog.dart';
+
+import '../../../model/user_model.dart';
 
 class ProfileHeader extends StatelessWidget {
   final user;
@@ -76,9 +79,18 @@ class ProfileHeader extends StatelessWidget {
               ),
             ],
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.edit_rounded,color: Colors.black,))
+          IconButton(onPressed:  () => _showEditProfileDialog(context, user), icon: const Icon(Icons.edit_rounded,color: Colors.black,))
         ],
       ),
+    );
+  }
+
+  void _showEditProfileDialog(BuildContext context, UserModel user) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return EditProfileDialog(user: user);
+      },
     );
   }
 }

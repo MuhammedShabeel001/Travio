@@ -306,13 +306,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travio/model/user_model.dart';
-// import 'package:travio/features/auth/view/pages/login/login_page.dart';
-// import 'package:travio/features/auth/view/pages/sign%20up/details_page.dart';
-// import 'package:travio/core/common/navbar.dart';
 
 class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -348,6 +344,8 @@ class AuthProvider with ChangeNotifier {
     _isChecked = !_isChecked;
     notifyListeners();
   }
+
+  
 
   Future<void> loginWithGoogle({
     required VoidCallback onSuccess,
@@ -417,6 +415,7 @@ class AuthProvider with ChangeNotifier {
       return downloadUrl;
     } catch (e) {
       loading.value = false;
+      log('Error uploading image: $e');
       return null;
     }
   }
@@ -425,8 +424,12 @@ class AuthProvider with ChangeNotifier {
     if (userId != null && userId.isNotEmpty) {
       try {
         DocumentSnapshot userDoc = await db.collection('users').doc(userId).get();
-        _user = UserModel.fromMap(userDoc);
-        notifyListeners();
+        if (userDoc.exists) {
+          _user = UserModel.fromMap(userDoc);
+          notifyListeners();
+        } else {
+          log('User document does not exist');
+        }
       } catch (e) {
         log('Error fetching user data: $e');
       }
@@ -435,44 +438,36 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Future<void> addUser({
-  //   required Function(String) onError,
-  // }) async {
-  //   try {
-  //     UserModel user = UserModel(
-  //       name: nameController.text,
-  //       email: _auth.currentUser!.email,
-  //       profile: photoController.text,
-  //       phonenumber: int.parse(phoneController.text),
-  //       password: passwordController.text,
-  //       id: _auth.currentUser!.uid,
-  //       pronouns: pronounController.text,
-  //       // likedPackages: [],
-  //     );
-  //     await db.collection("users").doc(_auth.currentUser!.uid).set(user.toMap());
-  //   } catch (e) {
-  //     onError("Failed to add user: $e");
-  //   }
-  // }
+    Future<void> updateUserData(UserModel updatedUser) async {
+    await FirebaseFirestore.instance.collection('users').doc(updatedUser.id).update(updatedUser.toMap());
+    _user = updatedUser;
+    notifyListeners();
+  }
 
-  Future<void> addUser({
+
+Future<void> addUser({
   required Function(String) onError,
 }) async {
   try {
-    UserModel user = UserModel(
-      name: nameController.text,
-      email: _auth.currentUser!.email,
-      profile: photoController.text,
-      phonenumber: int.parse(phoneController.text),
-      password: passwordController.text,
-      id: _auth.currentUser!.uid,
-      pronouns: pronounController.text,
-    );
-    
-    await db.collection("users").doc(_auth.currentUser!.uid).set({
-      ...user.toMap(),
-      'likedPackages': [], // Initialize likedPackages field
-    });
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      log('Adding user to Firestore');
+      UserModel user = UserModel(
+        name: nameController.text,
+        email: currentUser.email,
+        profile: photoController.text,
+        phonenumber: int.tryParse(phoneController.text) ?? 0,
+        password: passwordController.text,
+        id: currentUser.uid,
+        pronouns: pronounController.text,
+      );
+
+      await db.collection("users").doc(currentUser.uid).set(user.toMap());
+      log('User added to Firestore successfully');
+    } else {
+      log('No current user to add');
+      onError('No current user to add');
+    }
   } catch (e) {
     onError("Failed to add user: $e");
   }
@@ -480,68 +475,121 @@ class AuthProvider with ChangeNotifier {
 
 
   Future<void> signup({
-    required VoidCallback onSuccess,
-    required Function(String) onError,
-  }) async {
-    try {
-      isLoading = true;
-      notifyListeners();
+  required VoidCallback onSuccess,
+  required Function(String) onError,
+}) async {
+  try {
+    isLoading = true;
+    notifyListeners();
+    log('Creating user with email and password');
+    final userCredential = await _auth.createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
 
-      await _auth.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+    // Fetch the newly created user UID
+    final userId = userCredential.user?.uid;
 
+    if (userId != null) {
+      log('User created, verifying email');
       await verifyEmail(onSuccess: (message) {
         onSuccess();
       });
 
+      log('Adding user to Firestore');
       await addUser(onError: (message) {
         onError(message);
       });
 
-      log(_auth.currentUser!.uid);
-      await fetchUserData(_auth.currentUser!.uid);
+      log('Fetching user data');
+      await fetchUserData(userId);
+
+
+      log('Setting login status');
       await _setLoginStatus(true);
-      isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      isLoading = false;
-      onError("Error: $e");
-      notifyListeners();
+      dispose();
+    } else {
+      log('User ID is null');
+      onError('User ID is null');
     }
+
+    isLoading = false;
+    notifyListeners();
+  } catch (e) {
+    isLoading = false;
+    onError("Error: $e");
+    notifyListeners();
   }
+}
+
+
+  // Future<void> signIn({
+  //   required VoidCallback onSuccess,
+  //   required Function(String) onError,
+  // }) async {
+  //   try {
+  //     loading.value = true;
+  //     log('Signing in with email and password');
+  //     await _auth.signInWithEmailAndPassword(
+  //       email: loginEmailController.text,
+  //       password: loginPasswordController.text,
+  //     );
+  //     await fetchUserData(_auth.currentUser!.uid);
+  //     await _setLoginStatus(true);
+  //     loading.value = false;
+  //     onSuccess();
+  //   } catch (e) {
+  //     onError("Error: $e");
+  //     log("Sign-in error: $e");
+  //     loading.value = false;
+  //   }
+  // }
 
   Future<void> signIn({
-    required VoidCallback onSuccess,
-    required Function(String) onError,
-  }) async {
-    try {
-      loading.value = true;
-      await _auth.signInWithEmailAndPassword(
-        email: loginEmailController.text,
-        password: loginPasswordController.text,
-      );
+  required VoidCallback onSuccess,
+  required Function(String) onError,
+}) async {
+  try {
+    loading.value = true;
+    log('Signing in with email and password');
+    
+    // Attempt to sign in with email and password
+    await _auth.signInWithEmailAndPassword(
+      email: loginEmailController.text,
+      password: loginPasswordController.text,
+    );
+    
+    // Check if the current user is not null before accessing uid
+    if (_auth.currentUser != null) {
       await fetchUserData(_auth.currentUser!.uid);
       await _setLoginStatus(true);
       loading.value = false;
       onSuccess();
-    } catch (e) {
-      onError("Error: $e");
-      log("$e ................................");
-      loading.value = false;
+    } else {
+      throw Exception("User is null after sign-in.");
     }
+    
+  } catch (e) {
+    // Provide better error handling and log more descriptive messages
+    onError("Sign-in failed: $e");
+    log("Sign-in error: $e");
+    loading.value = false;
   }
+}
+
 
   Future<void> signOut({
     required VoidCallback onSuccess,
     required Null Function(dynamic error) onError,
   }) async {
-    final sharedPref = await SharedPreferences.getInstance();
-    await sharedPref.clear();
-    await _auth.signOut();
-
-    onSuccess();
+    try {
+      final sharedPref = await SharedPreferences.getInstance();
+      await sharedPref.clear();
+      await _auth.signOut();
+      onSuccess();
+    } catch (e) {
+      onError(e);
+    }
   }
 
   Future<void> resetPassword({
@@ -550,6 +598,7 @@ class AuthProvider with ChangeNotifier {
   }) async {
     try {
       loading.value = true;
+      log('Sending password reset email');
       await _auth.sendPasswordResetEmail(email: emailController.text);
       onSuccess();
       loading.value = false;

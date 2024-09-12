@@ -8,7 +8,6 @@ class UserModel {
   String? profile;
   int? phonenumber;
   String? pronouns;
-  List<String>? likedPackages;
 
   UserModel({
     this.id,
@@ -18,7 +17,6 @@ class UserModel {
     this.phonenumber,
     this.profile,
     this.pronouns,
-    this.likedPackages,
   });
 
   factory UserModel.fromMap(DocumentSnapshot map) {
@@ -30,7 +28,6 @@ class UserModel {
       profile: map['profile'] as String?,
       phonenumber: map["phonenumber"] as int?,
       pronouns: map["pronouns"] as String?,
-      likedPackages: List<String>.from(map["likedPackages"] ?? []),
     );
   }
 
@@ -43,7 +40,6 @@ class UserModel {
       'profile': profile,
       "phonenumber": phonenumber,
       "pronouns": pronouns,
-      "likedPackages": likedPackages ?? [],
     };
   }
 }

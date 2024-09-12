@@ -1,3 +1,4 @@
+// SignUpPage.dart
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,18 +10,14 @@ import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/widgets/global/welcome_bar.dart';
 
 class SignUpPage extends StatelessWidget {
-  // final bool isActive;
+  SignUpPage({super.key});
 
-  SignUpPage({
-    
-    super.key,
-    //required this.isActive
-  });
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       backgroundColor: TTthemeClass().ttThird,
       body: Column(
@@ -59,6 +56,7 @@ fast method''',
                         const SizedBox(height: 20),
                         Form(
                           key: _formKey,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -118,7 +116,9 @@ fast method''',
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your password';
                                   }
-
+                                  if (value.length < 6) {
+                                    return 'Password must be at least 6 characters';
+                                  }
                                   return null;
                                 },
                                 controller: authProvider.passwordController,
@@ -154,7 +154,10 @@ fast method''',
                                   if (value == null || value.isEmpty) {
                                     return 'Please confirm your password';
                                   }
-
+                                  if (value !=
+                                      authProvider.passwordController.text) {
+                                    return 'Passwords do not match';
+                                  }
                                   return null;
                                 },
                                 obscureText: true,
@@ -268,8 +271,6 @@ fast method''',
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Text(
                             "Already have an account?",

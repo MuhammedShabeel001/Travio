@@ -53,8 +53,16 @@ class PackageInfoWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        Center(
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            // boxShadow: ,
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.white
+          ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 '₹${tripPackage.realPrice}',

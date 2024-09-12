@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import 'package:travio/controller/provider/auth_provider.dart';
+import 'package:travio/view/pages/profile/achieved_package_page.dart';
+import 'package:travio/view/pages/profile/booked_package_page.dart';
 import 'package:travio/view/widgets/global/appbar.dart';
 import 'package:travio/view/widgets/profile/legal_card.dart';
 // import 'package:travio/view/widgets/global/logout_alert.dart';
@@ -11,14 +14,13 @@ import 'package:travio/view/widgets/profile/support_card.dart';
 
 import '../../widgets/profile/profile_header.dart';
 import '../../widgets/profile/section_card.dart';
-
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
-    final String? userId = authProvider.auth?.currentUser?.uid;
+    final String? userId = authProvider.auth?.currentUser!.uid;
 
     return Scaffold(
       body: ttAppBar(
@@ -48,14 +50,31 @@ class ProfilePage extends StatelessWidget {
                 SectionCard(
                     title: 'My Journeys',
                     iconPath: 'assets/icons/journey.svg',
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) =>
+                              ArchivedPackagesPage(userId: userId),
+                        ),
+                      );
+                    }),
                 SectionCard(
                     title: 'Upcoming Itineraries',
                     iconPath: 'assets/icons/upcoming.svg',
-                    onTap: () {}),
-                 SettingsCard(authProvider: authProvider,),
-                 SupportCard(authProvider: authProvider),
-                 LegalCard(authProvider: authProvider)
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) =>
+                              BookedPackagesPage(),
+                              // BookedPackagePage()
+                        ),
+                      );
+                    }),
+                SettingsCard(authProvider: authProvider),
+                SupportCard(authProvider: authProvider),
+                LegalCard(authProvider: authProvider),
               ],
             ),
           );
@@ -64,4 +83,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-

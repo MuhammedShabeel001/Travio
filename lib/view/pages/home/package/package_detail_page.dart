@@ -114,7 +114,7 @@ class TripPackageDetailPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const ReviewsTab(),
+                    ReviewsTab(tripPackage: tripPackage)
                     ],
                   ),
                 ),
