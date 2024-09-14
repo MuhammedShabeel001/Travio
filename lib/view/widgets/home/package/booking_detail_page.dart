@@ -22,7 +22,7 @@ class PackageDetailsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd-MM-yy');
+    final dateFormat = DateFormat('d MMM yyy');
 
     return Consumer<PaymentProvider>(
       builder: (context, paymentProvider, child) {
@@ -39,7 +39,7 @@ class PackageDetailsBottomSheet extends StatelessWidget {
         }
 
         // Calculate GST (5% of the package price)
-        final double gstAmount = tripPackage.offerPrice * 0.05;
+        final double gstAmount = tripPackage.offerPrice * 0.05 * bookingProvider.numberOfPeople;
 
         // Calculate the discount (real price - offer price)
         final double discount = tripPackage.realPrice - tripPackage.offerPrice;
@@ -112,7 +112,7 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            ' ${tripPackage.numberOfDays}',
+                            ' ${tripPackage.numberOfDays} Days',
                             style: const TextStyle(fontSize: 16),
                           ),
                         ],
@@ -126,9 +126,10 @@ class PackageDetailsBottomSheet extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            '${bookingProvider.numberOfPeople}',
-                            style: const TextStyle(fontSize: 16),
+                          Text( bookingProvider.numberOfPeople <= 1 
+                           ? '${bookingProvider.numberOfPeople} Person'
+                           : '${bookingProvider.numberOfPeople} People'
+                            // style: const TextStyle(fontSize: 16),
                           ),
                         ],
                       ),

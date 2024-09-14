@@ -5,6 +5,8 @@ import 'package:travio/model/user_model.dart'; // Ensure this path is correct
 import 'package:travio/controller/provider/auth_provider.dart';
 import 'package:travio/view/widgets/global/appbar.dart';
 
+import '../../../controller/provider/payment_provider.dart';
+
 class TripPlanPage extends StatelessWidget {
   const TripPlanPage({super.key});
 
@@ -12,7 +14,13 @@ class TripPlanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Access AuthProvider to get the userId
     final authProvider = Provider.of<AuthProvider>(context);
-    final String? userId = authProvider.user?.id; // or however you get the userId
+    final String? userId = authProvider.user?.id; 
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Call the moveExpiredBookingsToArchive function here
+      Provider.of<PaymentProvider>(context, listen: false).moveExpiredBookingsToArchive();
+
+    });// or however you get the userId
 
     return Scaffold(
       body: ttAppBar(

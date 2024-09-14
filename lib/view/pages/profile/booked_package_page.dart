@@ -123,7 +123,7 @@ class BookedPackagesPage extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '₹${packageData['offerPrice']}',
+                                          '₹${packageData['offer_price']}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,

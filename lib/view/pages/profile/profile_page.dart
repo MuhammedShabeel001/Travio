@@ -12,13 +12,21 @@ import 'package:travio/view/widgets/profile/legal_card.dart';
 import 'package:travio/view/widgets/profile/settings_card.dart';
 import 'package:travio/view/widgets/profile/support_card.dart';
 
+// import '../../../controller/provider/payment_provider.dart';
 import '../../widgets/profile/profile_header.dart';
 import '../../widgets/profile/section_card.dart';
 class ProfilePage extends StatelessWidget {
+  
   const ProfilePage({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // Call the moveExpiredBookingsToArchive function here
+    //   Provider.of<PaymentProvider>(context, listen: false).moveExpiredBookingsToArchive();
+
+    // });
     final authProvider = Provider.of<AuthProvider>(context);
     final String? userId = authProvider.auth?.currentUser!.uid;
 

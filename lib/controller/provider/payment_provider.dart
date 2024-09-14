@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travio/controller/provider/booking_provider.dart';
 
 class PaymentProvider with ChangeNotifier {
@@ -16,6 +18,8 @@ class PaymentProvider with ChangeNotifier {
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentErrorResponse);
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccessResponse);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWalletSelected);
+
+    // moveExpiredBookingsToArchive();
   }
 
   void makePayment({
@@ -25,7 +29,7 @@ class PaymentProvider with ChangeNotifier {
     required BuildContext context,
   }) {
     isLoading = true;
-    _context = context; // Store the context for later use
+    _context = context;
     notifyListeners();
 
     var options = {
@@ -68,15 +72,41 @@ class PaymentProvider with ChangeNotifier {
     notifyListeners();
   }
 
+// Future<void> addNoteToPackage(String packageId, String note) async {
+//     try {
+//       final FirebaseFirestore firestore = FirebaseFirestore.instance;
+//       final packageRef = firestore.collection('archivedPackages').doc(packageId);
+
+//       await firestore.runTransaction((transaction) async {
+//         final snapshot = await transaction.get(packageRef);
+
+//         if (!snapshot.exists) {
+//           throw Exception('Package does not exist.');
+//         }
+
+//         final existingNotes = snapshot.get('notes') as List<dynamic>? ?? [];
+//         final updatedNotes = List.from(existingNotes)..add(note);
+
+//         transaction.update(packageRef, {
+//           'notes': updatedNotes,
+//         });
+//       });
+
+//       notifyListeners(); // Notify listeners if needed
+//     } catch (e) {
+//       print('Failed to add note: $e');
+//     }
+//   }
+
+
   Future<void> _handleSuccessfulPayment(String paymentId) async {
     try {
-      final bookingProvider = Provider.of<BookingProvider>(_context, listen: false);
+      final bookingProvider =
+          Provider.of<BookingProvider>(_context, listen: false);
 
-      // Fetch the current user's ID from FirebaseAuth
       final User? currentUser = FirebaseAuth.instance.currentUser;
 
       if (currentUser == null) {
-        // If the user is not authenticated, handle the error
         paymentStatus = 'Failed: User not authenticated';
         showResult = true;
         isLoading = false;
@@ -84,23 +114,16 @@ class PaymentProvider with ChangeNotifier {
         return;
       }
 
-      // Use the actual user ID
       final String userId = currentUser.uid;
 
-      // Update the package in Firebase
       await _addPackageToUserCollection(userId, bookingProvider);
 
-      // Update the `bookedCount` field in the package model
       await _incrementBookedCount(bookingProvider.packageId);
-
-      // Schedule package removal after the end date
-      await _schedulePackageRemoval(userId, bookingProvider.packageId, bookingProvider.rangeEndDate);
 
       paymentStatus = 'Success';
       showResult = true;
       isLoading = false;
       notifyListeners();
-
     } catch (e) {
       paymentStatus = 'Failed: $e';
       showResult = true;
@@ -109,17 +132,17 @@ class PaymentProvider with ChangeNotifier {
     }
   }
 
-  Future<void> _addPackageToUserCollection(String userId, BookingProvider bookingProvider) async {
+  Future<void> _addPackageToUserCollection(
+      String userId, BookingProvider bookingProvider) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    // Query Firestore to check if the package has been booked by the user on the same date
-    final existingBooking = await firestore.collection('bookedPackages')
+    final existingBooking = await firestore
+        .collection('bookedPackages')
         .where('userId', isEqualTo: userId)
         .where('packageId', isEqualTo: bookingProvider.packageId)
-        .where('startDate', isEqualTo: bookingProvider.rangeStartDate)  // Assuming you have startDate field
+        .where('startDate', isEqualTo: bookingProvider.rangeStartDate)
         .get();
 
-    // If no existing booking, proceed with adding the package to the user's bookedPackages collection
     if (existingBooking.docs.isEmpty) {
       await firestore.collection('bookedPackages').add({
         'userId': userId,
@@ -129,10 +152,8 @@ class PaymentProvider with ChangeNotifier {
         'bookingDate': DateTime.now(),
       });
 
-      // Update bookedCount for the package
       await _incrementBookedCount(bookingProvider.packageId);
     } else {
-      // Handle case where the package is already booked on the same date
       throw Exception('Package already booked on the same date.');
     }
   }
@@ -153,53 +174,46 @@ class PaymentProvider with ChangeNotifier {
     });
   }
 
-  Future<void> checkForExpiredBookings() async {
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final now = DateTime.now();
+Future<void> moveExpiredBookingsToArchive() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final DateTime now = DateTime.now();
+  log(now.toString());
 
-    // Fetch all bookings where endDate is less than or equal to the current time
-    final expiredBookings = await firestore.collection('bookedPackages')
-        .where('endDate', isLessThanOrEqualTo: now)
+  try {
+    // log('sdcs');
+    // Fetch packages where the end date has passed
+    final QuerySnapshot expiredBookings = await firestore
+        .collection('bookedPackages')
+        .where('endDate', isLessThan: now)
         .get();
 
-    for (var booking in expiredBookings.docs) {
-      final bookingData = booking.data();
-      final String userId = bookingData['userId'];
-      final String packageId = bookingData['packageId'];
+    log(expiredBookings.toString());
 
-      // Remove expired package and move to archive
-      await _removePackageAfterDate(userId, packageId);
-    }
-  }
+    if (expiredBookings.docs.isNotEmpty) {
+      for (var booking in expiredBookings.docs) {
+        // Get booking details
+        final bookingData = booking.data() as Map<String, dynamic>;
 
-  Future<void> _schedulePackageRemoval(String userId, String? packageId, DateTime? endDate) async {
-    // Check for expired bookings at any point in the app lifecycle where it's appropriate.
-    if (packageId != null && endDate != null) {
-      final now = DateTime.now();
-      if (now.isAfter(endDate)) {
-        await _removePackageAfterDate(userId, packageId); // If endDate has passed, remove immediately
-      } else {
-        // Schedule the removal for when the endDate passes
-        final difference = endDate.difference(now);
-        Future.delayed(difference, () async {
-          await _removePackageAfterDate(userId, packageId);
-        });
+        // Add the expired booking to the archived collection
+        await firestore.collection('archivedPackages').add(bookingData);
+
+        // Remove the expired booking from the bookedPackages collection
+        await firestore.collection('bookedPackages').doc(booking.id).delete();
       }
+
+      paymentStatus = 'Expired bookings moved to archive';
+      notifyListeners();
+    } else {
+      paymentStatus = 'No expired bookings found';
+      notifyListeners();
     }
+  } catch (e) {
+    paymentStatus = 'Failed to move expired bookings: $e';
+    notifyListeners();
   }
+}
 
-  Future<void> _removePackageAfterDate(String userId, String packageId) async {
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final bookedPackageRef = firestore.collection('bookedPackages').doc(packageId);
-    final archivedPackageRef = firestore.collection('archivedPackages').doc(packageId);
 
-    final packageData = (await bookedPackageRef.get()).data();
-
-    if (packageData != null) {
-      await archivedPackageRef.set(packageData); // Archive the package
-      await bookedPackageRef.delete(); // Remove from bookedPackages
-    }
-  }
 
   @override
   void dispose() {

@@ -20,7 +20,10 @@ import 'package:travio/view/widgets/global/navbar.dart';
 // import 'package:travio/view/widgets/global/navbar.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(
+    
+  );
+  
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }

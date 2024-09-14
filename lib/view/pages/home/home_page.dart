@@ -10,6 +10,7 @@ import 'package:travio/view/widgets/global/custom_homebar.dart';
 import 'package:travio/view/widgets/home/all_location_card.dart';
 import 'package:travio/view/widgets/home/booked_package.dart';
 
+import '../../../controller/provider/payment_provider.dart';
 import '../../widgets/home/interest_row.dart';
 import '../../widgets/home/location_carousal.dart';
 import '../../widgets/home/package_carousal.dart';
@@ -20,6 +21,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<TripPackageProvider>().initializeData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Call the moveExpiredBookingsToArchive function here
+      Provider.of<PaymentProvider>(context, listen: false).moveExpiredBookingsToArchive();
+
+    });
 
     return const Scaffold(
       body: HomeBar(body: HomeCenter()),

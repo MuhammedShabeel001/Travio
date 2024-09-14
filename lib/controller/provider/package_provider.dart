@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../model/package_model.dart';
-import '../../model/user_review_model.dart';
 
 class TripPackageProvider with ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -17,7 +16,8 @@ class TripPackageProvider with ChangeNotifier {
   List<TripPackageModel> _filteredBookedPackages = [];
   List<TripPackageModel> get filteredBookedPackages => _filteredBookedPackages;
   List<TripPackageModel> _filteredachievedPackages = [];
-  List<TripPackageModel> get filteredachievedPackages => _filteredachievedPackages;
+  List<TripPackageModel> get filteredachievedPackages =>
+      _filteredachievedPackages;
   List<TripPackageModel> _filteredReviewPackages = [];
   List<TripPackageModel> get filteredReviewPackages => _filteredReviewPackages;
 
@@ -30,33 +30,11 @@ class TripPackageProvider with ChangeNotifier {
 
   TextEditingController searchController = TextEditingController();
 
-Future<void> initializeData() async {
+  Future<void> initializeData() async {
     await fetchAllPackages();
     await fetchMostBookedPackages();
     await fetchTopReviewedPackages();
   }
-
-  // TripPackageProvider(){
-
-  // }
-  // In TripPackageProvider
-Future<List<Review>> fetchReviewsForPackage(String packageId) async {
-    try {
-      QuerySnapshot reviewSnapshot = await db
-          .collection('trip_packages')
-          .doc(packageId)
-          .collection('customer_reviews')
-          .get();
-
-      return reviewSnapshot.docs
-          .map((doc) => Review.fromMap(doc.data() as Map<String, dynamic>))
-          .toList();
-    } catch (e) {
-      log('Error fetching reviews: $e');
-      return [];
-    }
-  }
-
 
   Future<void> fetchAllPackages() async {
     try {
@@ -75,44 +53,42 @@ Future<List<Review>> fetchReviewsForPackage(String packageId) async {
   }
 
   Future<void> fetchBookedPackagesByUser(String userId) async {
-  try {
-    // Fetch booked packages for the specific user
-    QuerySnapshot snapshot = await db
-        .collection('bookedPackages')
-        .where('userId', isEqualTo: userId)
-        .get();
+    try {
+      QuerySnapshot snapshot = await db
+          .collection('bookedPackages')
+          .where('userId', isEqualTo: userId)
+          .get();
 
-    List<TripPackageModel> bookedPackages = snapshot.docs
-        .map((doc) =>
-            TripPackageModel.fromMap(doc.data() as Map<String, dynamic>))
-        .toList();
+      List<TripPackageModel> bookedPackages = snapshot.docs
+          .map((doc) =>
+              TripPackageModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
 
-    _filteredBookedPackages = bookedPackages;
-    notifyListeners();
-  } catch (e) {
-    log('Error fetching booked packages for user: $e');
+      _filteredBookedPackages = bookedPackages;
+      notifyListeners();
+    } catch (e) {
+      log('Error fetching booked packages for user: $e');
+    }
   }
-}
 
   Future<void> fetchAchievedPackagesByUser(String userId) async {
-  try {
-    // Fetch booked packages for the specific user
-    QuerySnapshot snapshot = await db
-        .collection('archivedPackages')
-        .where('userId', isEqualTo: userId)
-        .get();
+    try {
+      QuerySnapshot snapshot = await db
+          .collection('archivedPackages')
+          .where('userId', isEqualTo: userId)
+          .get();
 
-    List<TripPackageModel> bookedPackages = snapshot.docs
-        .map((doc) =>
-            TripPackageModel.fromMap(doc.data() as Map<String, dynamic>))
-        .toList();
+      List<TripPackageModel> bookedPackages = snapshot.docs
+          .map((doc) =>
+              TripPackageModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
 
-    _filteredachievedPackages = bookedPackages;
-    notifyListeners();
-  } catch (e) {
-    log('Error fetching achieved packages for user: $e');
+      _filteredachievedPackages = bookedPackages;
+      notifyListeners();
+    } catch (e) {
+      log('Error fetching achieved packages for user: $e');
+    }
   }
-}
 
   Future<void> fetchMostBookedPackages({int limit = 2}) async {
     try {
@@ -139,7 +115,7 @@ Future<List<Review>> fetchReviewsForPackage(String packageId) async {
     try {
       QuerySnapshot snapshot = await db
           .collection('trip_packages')
-          .orderBy('customer_reviews', descending: true) // Assuming `average_rating` field exists
+          .orderBy('customer_reviews', descending: true)
           .limit(limit)
           .get();
 
@@ -154,8 +130,6 @@ Future<List<Review>> fetchReviewsForPackage(String packageId) async {
       log('Error fetching top reviewed packages: $e');
     }
   }
-
-  // Other methods remain the same
 
   void updateSearchTerm(String term) {
     _searchTerm = term.toLowerCase();
@@ -186,7 +160,7 @@ Future<List<Review>> fetchReviewsForPackage(String packageId) async {
       log('Error fetching packages by interest: $e');
     });
   }
-  
+
   bool isLiked(String packageId) {
     return _likedPackages.contains(packageId);
   }

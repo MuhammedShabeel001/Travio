@@ -33,7 +33,7 @@ Widget build(BuildContext context) {
     builder: (context, bookingProvider, child) {
       final minAvailableDate = DateTime.now();
       final maxAvailableDate = minAvailableDate.add(const Duration(days: 365));
-      final dateFormat = DateFormat('dd-MM-yyyy'); // Define date format
+      final dateFormat = DateFormat('d MMM yyyyy'); // Define date format
 
       // Reset dates when a new package is selected
       final startDate = bookingProvider.rangeStartDate ?? minAvailableDate;
