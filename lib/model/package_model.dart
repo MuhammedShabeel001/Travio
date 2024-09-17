@@ -1,3 +1,5 @@
+import 'package:travio/model/review_model.dart';
+
 class TripPackageModel {
   final String id;
   final String name;
@@ -14,9 +16,9 @@ class TripPackageModel {
   final int likeCount;
   final int totalDays;
   final double ratingCount;
-  final Map<String, String> customerReviews;
   final List<String> locations;
   final Set<String> likedByUserIds;
+  List<ReviewModel> reviews; // Add this field to hold reviews fetched from Firestore
 
   TripPackageModel({
     required this.id,
@@ -34,7 +36,7 @@ class TripPackageModel {
     required this.likeCount,
     required this.totalDays,
     required this.ratingCount,
-    required this.customerReviews,
+    this.reviews = const [], // Initialize as an empty list
     required this.locations,
     required this.likedByUserIds,
   });
@@ -70,7 +72,7 @@ class TripPackageModel {
       likeCount: map['like_count'] as int? ?? 0,
       totalDays: map['total_number_of_days'] as int,
       ratingCount: (map['rating_count'] as num?)?.toDouble() ?? 0.0,
-      customerReviews: Map<String, String>.from(map['customer_reviews'] ?? {}),
+      reviews: [], // Initialize reviews as an empty list
       locations: List<String>.from(map['locations'] as List<dynamic>? ?? []),
       likedByUserIds: Set<String>.from(map['liked_by_user_ids'] ?? []),
     );
@@ -93,12 +95,12 @@ class TripPackageModel {
       'like_count': likeCount,
       'total_number_of_days': totalDays,
       'rating_count': ratingCount,
-      'customer_reviews': customerReviews,
       'locations': locations,
       'liked_by_user_ids': likedByUserIds.toList(),
     };
   }
 
+  // Add the copyWith method
   TripPackageModel copyWith({
     String? id,
     String? name,
@@ -115,7 +117,7 @@ class TripPackageModel {
     int? likeCount,
     int? totalDays,
     double? ratingCount,
-    Map<String, String>? customerReviews,
+    List<ReviewModel>? reviews,
     List<String>? locations,
     Set<String>? likedByUserIds,
   }) {
@@ -135,7 +137,7 @@ class TripPackageModel {
       likeCount: likeCount ?? this.likeCount,
       totalDays: totalDays ?? this.totalDays,
       ratingCount: ratingCount ?? this.ratingCount,
-      customerReviews: customerReviews ?? this.customerReviews,
+      reviews: reviews ?? this.reviews,
       locations: locations ?? this.locations,
       likedByUserIds: likedByUserIds ?? this.likedByUserIds,
     );

@@ -61,25 +61,11 @@ class TripPackageDetailPage extends StatelessWidget {
                                     )
                                   : null,
                               background: Hero(
-                                tag: 'package',
+                                tag: tripPackage,
                                 child: Stack(
                                   fit: StackFit.expand,
                                   children: [
                                     CarouselWidget(tripPackage: tripPackage),
-                                    // Container(
-                                    //   decoration: BoxDecoration(
-                                    //     gradient: LinearGradient(
-                                    //       colors: [
-                                    //         Colors.black.withOpacity(
-                                    //             0.8), // Bottom color (Black)
-                                    //         Colors
-                                    //             .transparent, // Top color (Transparent)
-                                    //       ],
-                                    //       begin: Alignment.bottomCenter,
-                                    //       end: Alignment.topCenter,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),

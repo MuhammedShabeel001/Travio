@@ -16,7 +16,7 @@ class LikesAndReviewsWidget extends StatelessWidget {
         final likeCount = tripPackageProvider.package
             .firstWhere((pkg) => pkg.id == tripPackage.id)
             .likeCount;
-        final reviewCount = tripPackage.customerReviews.length;
+        final reviewCount = tripPackage.reviews.length;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

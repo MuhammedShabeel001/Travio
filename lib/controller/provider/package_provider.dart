@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../model/package_model.dart';
+import '../../model/review_model.dart';
 
 class TripPackageProvider with ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -10,6 +11,9 @@ class TripPackageProvider with ChangeNotifier {
 
   List<TripPackageModel> _package = [];
   List<TripPackageModel> get package => _package;
+
+  // List<TripPackageModel> _trippackage = [];
+  // List<TripPackageModel> get trippackage => _trippackage;
 
   List<TripPackageModel> _filteredPackages = [];
   List<TripPackageModel> get filteredPackages => _filteredPackages;
@@ -89,6 +93,33 @@ class TripPackageProvider with ChangeNotifier {
       log('Error fetching achieved packages for user: $e');
     }
   }
+
+Future<void> fetchPackageReviews(String packageId) async {
+  try {
+    QuerySnapshot reviewsSnapshot = await db
+        .collection('trip_packages')
+        .doc(packageId)
+        .collection('reviews')
+        .orderBy('timestamp', descending: true)
+        .get();
+
+    List<ReviewModel> reviews = reviewsSnapshot.docs.map((doc) {
+      return ReviewModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+    }).toList();
+
+    // Find the package and update it
+    int index = _package.indexWhere((pkg) => pkg.id == packageId);
+    if (index != -1) {
+      _package[index] = _package[index].copyWith(reviews: reviews);
+      notifyListeners();
+    }
+  } catch (e) {
+    log('Error fetching reviews: $e');
+  }
+}
+
+
+
 
   Future<void> fetchMostBookedPackages({int limit = 2}) async {
     try {

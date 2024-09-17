@@ -1,11 +1,9 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:travio/controller/provider/payment_provider.dart';
+
+import '../../../controller/provider/review_provider.dart';
 
 class PackageDetailPage extends StatelessWidget {
   final Map<String, dynamic> packageData;
@@ -19,19 +17,13 @@ class PackageDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String packageId = packageData['id'];
     final int numberOfPeople = archivedPackage['numberOfPeople'] ?? 1;
     final double totalAmount = packageData['offer_price'] * numberOfPeople;
     final String shortNote =
         archivedPackage['shortNote'] ?? 'No additional notes about the trip.';
+    final user = FirebaseAuth.instance.currentUser;
 
-    final DateTime startDate =
-        (archivedPackage['startDate'] as Timestamp).toDate();
-    final DateTime endDate = (archivedPackage['endDate'] as Timestamp).toDate();
-    final String formattedStartDate =
-        DateFormat('dd MMM yyyy').format(startDate);
-    final String formattedEndDate = DateFormat('dd MMM yyyy').format(endDate);
-    final String packageId = packageData['id'];
-    log(packageId);
     return Scaffold(
       appBar: AppBar(
         title: Text(packageData['name'] ?? 'Package Detail'),
@@ -42,14 +34,10 @@ class PackageDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Package details
             Text(
               packageData['name'] ?? 'Package Name',
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Dates: $formattedStartDate - $formattedEndDate',
-              style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 16),
             Text(
@@ -72,16 +60,67 @@ class PackageDetailPage extends StatelessWidget {
               style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 16),
-            const SizedBox(height: 16),
-            Text(
-              'Description: ${packageData['description'] ?? 'No description available'}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 16),
-            const SizedBox(height: 8),
+
+            // Add Review Section
+            if (user != null) _buildAddReviewSection(context, packageId, user),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAddReviewSection(BuildContext context, String packageId, User user) {
+    double rating = 3.0;
+    final TextEditingController reviewController = TextEditingController();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Leave a Review',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        RatingBar.builder(
+          initialRating: rating,
+          minRating: 1,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          itemCount: 5,
+          itemBuilder: (context, _) => const Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          onRatingUpdate: (newRating) {
+            rating = newRating;
+          },
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: reviewController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Write a review',
+          ),
+          maxLines: 3,
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: () {
+            Provider.of<ReviewProvider>(context, listen: false).submitReview(
+              packageId: packageId,
+              userId: user.uid,
+              rating: rating,
+              reviewText: reviewController.text,
+            );
+            reviewController.clear();
+          },
+          child: const Text('Submit Review'),
+        ),
+      ],
     );
   }
 }

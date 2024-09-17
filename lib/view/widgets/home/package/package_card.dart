@@ -49,7 +49,7 @@ class PackageCard extends StatelessWidget {
           ],
         ),
         child: Hero(
-          tag: 'package',
+          tag: package,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(18),
             child: Stack(

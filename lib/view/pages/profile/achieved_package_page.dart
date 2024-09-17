@@ -161,16 +161,3 @@ class ArchivedPackagesPage extends StatelessWidget {
     );
   }
 }
-
-// Example conversion method for TripPackageModel
-// extension on TripPackageModel {
-//   static TripPackageModel fromMap(Map<String, dynamic> map) {
-//     return TripPackageModel(
-//       // Assuming your model has these fields; adjust as needed
-//       name: map['name'] ?? '',
-//       offerPrice: map['offerPrice'] ?? 0,
-//       images: List<String>.from(map['images'] ?? []),
-//       // Add other fields as necessary
-//     );
-//   }
-// }

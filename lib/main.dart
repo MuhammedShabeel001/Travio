@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:travio/controller/provider/booking_provider.dart';
 import 'package:travio/controller/provider/package_provider.dart';
 import 'package:travio/controller/provider/payment_provider.dart';
+import 'package:travio/controller/provider/review_provider.dart';
 import 'package:travio/controller/provider/search_provider.dart';
 import 'package:travio/controller/provider/user_provider.dart';
 import 'package:travio/core/firebase/firebase_options.dart';
@@ -53,9 +54,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => BookingProvider(),
         ),
-        // ChangeNotifierProvider(
-        //   create: (context) => ProfileEditProvider(AuthProvider()),
-        // ),
+        ChangeNotifierProvider(
+          create: (context) => ReviewProvider(),
+        ),
       ],
       child: MaterialApp(
         builder: BotToastInit(),
