@@ -19,12 +19,12 @@ class LocationsListPage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Colors.white,
           ),
         ),
-        title: const Text('India locations',style: const TextStyle(
+        title: const Text('India locations',style: TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: TTthemeClass().ttThird,
       ),
@@ -43,7 +43,7 @@ class LocationsListPage extends StatelessWidget {
               return Expanded(
                 child: Column(
                   children: [
-                    SizedBox(height: 12,),
+                    const SizedBox(height: 12,),
                     LocationCard(
                           width: 400,
                           image: location.images.isNotEmpty

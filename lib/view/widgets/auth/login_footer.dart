@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/pages/auth/sign%20up/sign_up_page.dart';
 

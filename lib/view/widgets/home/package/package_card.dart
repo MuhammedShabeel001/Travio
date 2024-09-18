@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:travio/model/package_model.dart';
 import 'package:travio/view/pages/home/package/package_detail_page.dart';
 
+// ignore: must_be_immutable
 class PackageCard extends StatelessWidget {
   final String image;
   final String label;

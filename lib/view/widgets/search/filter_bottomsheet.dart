@@ -87,7 +87,7 @@ class FilterBottomSheet extends StatelessWidget {
           const SizedBox(height: 12),
           DropdownButtonFormField<bool>(
             value: searchProvider.isAscending,
-            items: [
+            items: const [
               DropdownMenuItem(value: true, child: Text('Ascending')),
               DropdownMenuItem(value: false, child: Text('Descending')),
             ],
@@ -208,7 +208,7 @@ class FilterBottomSheet extends StatelessWidget {
               ),
               child: Text(
                 text,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
     );

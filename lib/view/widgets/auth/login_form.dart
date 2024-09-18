@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,46 +125,63 @@ class LoginForm extends StatelessWidget {
           ValueListenableBuilder<bool>(
             valueListenable: authProvider.loading,
             builder: (context, isLoading, child) {
-              return isLoading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          authProvider.signIn(
-                            onSuccess: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => const TTnavBar(),
-                                ),
-                                (route) => false,
-                              );
+              if (isLoading) {
+                return const CircularProgressIndicator();
+              } else {
+                return ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      authProvider.signIn(
+                        onSuccess: () {
+                          log('onSuccess callback started');
 
-                              BotToast.showText(text: 'Successfully signed in');
-                            },
-                            onError: (message) {
-                              BotToast.showText(text: message);
-                            },
-                          );
-                          authProvider.loginEmailController.clear();
-                          authProvider.loginPasswordController.clear();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: TTthemeClass().ttThird,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                      ),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: TTthemeClass().ttLightPrimary,
-                        ),
-                      ),
-                    );
+                         
+                            // Debug output to check if `TTnavBar` is created correctly
+                           
+                            log('Attempting navigation to TTnavBar');
+                           Navigator.of(context).pushAndRemoveUntil(CupertinoPageRoute(builder: (context) => const TTnavBar(),), (route) => false,);
+                           
+                            // Navigator.pushAndRemoveUntil(
+                            //   context,
+                            //   CupertinoPageRoute(
+                            //     builder: (context) => const TTnavBar(),
+                            //   ),
+                            //   (route) => false,
+                            // );
+                          
+
+                         
+
+                          log('onSuccess callback completed');
+                        },
+                        onError: (message) {
+                          // Show error message
+                          BotToast.showText(text: message);
+                          log('Login error: $message');
+                        },
+                      );
+
+                      // Clear text fields after login attempt
+                      authProvider.loginEmailController.clear();
+                      authProvider.loginPasswordController.clear();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: TTthemeClass().ttThird,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: TTthemeClass().ttLightPrimary,
+                    ),
+                  ),
+                );
+              }
             },
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/pages/profile/achieved_details_page.dart';
@@ -125,7 +126,7 @@ class ArchivedPackagesPage extends StatelessWidget {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.arrow_right),
+                                    icon: SvgPicture.asset('assets/icons/navigate.svg',color: Colors.black,height: 20,),
                                     onPressed: () {
                                       // Navigate to TripPackageDetailPage
                                       Navigator.push(

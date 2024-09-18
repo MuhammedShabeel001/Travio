@@ -52,7 +52,7 @@ class SearchPage extends StatelessWidget {
               },
               allPackages: tripPackageProvider.package,
               onSearch: (String) {},
-              allPlaces: [],
+              allPlaces: const [],
             ),
           ),
           Expanded(
@@ -82,76 +82,138 @@ class SearchPage extends StatelessWidget {
     }
   }
 
-  Widget _buildEmptyState(TripPackageProvider provider) {
-    return SingleChildScrollView(
-      child: FutureBuilder(
+  // Widget _buildEmptyState(TripPackageProvider provider) {
+  //   return SingleChildScrollView(
+  //     child: FutureBuilder(
         
-        future: Future.wait([
-          provider.fetchMostBookedPackages(),
-          provider.fetchAllPackages(),
-        ]),
-        builder: (context, snapshot) {
+  //       future: Future.wait([
+  //         provider.fetchMostBookedPackages(),
+  //         provider.fetchAllPackages(),
+  //       ]),
+  //       builder: (context, snapshot) {
           
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return _buildShimmerEffect();
-          }
+  //         if (snapshot.connectionState == ConnectionState.waiting) {
+  //           return _buildShimmerEffect();
+  //         }
       
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildPackageSection(
-                title: 'Most Booked Packages',
-                packages: provider.filteredBookedPackages,
-              ),
-              if (provider.filteredBookedPackages.isEmpty)
-                _buildPackageSection(
-                  title: 'All Packages',
-                  packages: provider.package,
-                ),
-            ],
-          );
-        },
-      ),
-    );
-  }
+  //         return Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             _buildPackageSection(
+  //               title: 'Most Booked Packages',
+  //               packages: provider.filteredBookedPackages,
+  //             ),
+  //             if (provider.filteredBookedPackages.isEmpty)
+  //               _buildPackageSection(
+  //                 title: 'All Packages',
+  //                 packages: provider.package,
+  //               ),
+  //           ],
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
-  Widget _buildPackageSection(
-      {required String title, required List<TripPackageModel> packages}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+  // Widget _buildPackageSection(
+  //     {required String title, required List<TripPackageModel> packages}) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.all(16.0),
+  //         child: Text(
+  //           title,
+  //           style: TextStyle(
+  //             fontSize: 20,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //       ),
+  //       packages.isNotEmpty
+  //           ? ListView.builder(
+  //               shrinkWrap: true,
+  //               physics: NeverScrollableScrollPhysics(),
+  //               itemCount: packages.length,
+  //               itemBuilder: (context, index) {
+  //                 final package = packages[index];
+  //                 return Padding(
+                    
+  //                   padding: const EdgeInsets.all(8.0),
+  //                   child: PackageCard(
+  //                     height: 200,
+  //                       image: package.images[index],
+  //                       label: package.name,
+  //                       package: package),
+  //                 );
+  //               },
+  //             )
+  //           : Center(child: Text('No packages available')),
+  //     ],
+  //   );
+  // }
+
+  Widget _buildEmptyState(TripPackageProvider provider) {
+  return FutureBuilder(
+    future: Future.wait([
+      provider.fetchMostBookedPackages(),
+      provider.fetchAllPackages(),
+    ]),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return _buildShimmerEffect();
+      }
+      
+      return ListView(
+        children: [
+          _buildPackageSection(
+            title: 'Most Booked Packages',
+            packages: provider.filteredBookedPackages,
+          ),
+          if (provider.filteredBookedPackages.isEmpty)
+            _buildPackageSection(
+              title: 'All Packages',
+              packages: provider.package,
             ),
+        ],
+      );
+    },
+  );
+}
+
+Widget _buildPackageSection({
+  required String title,
+  required List<TripPackageModel> packages
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        packages.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: packages.length,
-                itemBuilder: (context, index) {
-                  final package = packages[index];
-                  return Padding(
-                    
-                    padding: const EdgeInsets.all(8.0),
-                    child: PackageCard(
-                      height: 200,
-                        image: package.images[index],
-                        label: package.name,
-                        package: package),
-                  );
-                },
-              )
-            : Center(child: Text('No packages available')),
-      ],
-    );
-  }
+      ),
+      packages.isNotEmpty
+          ? Column(
+              children: packages.map((package) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: PackageCard(
+                  height: 200,
+                  image: package.images.isNotEmpty ? package.images[0] : 'assets/images/placeholder.png',
+                  label: package.name,
+                  package: package,
+                ),
+              )).toList(),
+            )
+          : const Center(child: Text('No packages available')),
+    ],
+  );
+}
 
   Widget _buildShimmerEffect() {
     return ListView.builder(
@@ -180,25 +242,23 @@ class SearchPage extends StatelessWidget {
       itemCount: searchProvider.recentSearches.length,
       itemBuilder: (context, index) {
         final term = searchProvider.recentSearches[index];
-        return Container(
-          child: ListTile(
-            leading: Icon(Icons.history, color: TTthemeClass().ttThird),
-            title: Text(term),
-            trailing: IconButton(
-              icon: Icon(Icons.close, color: Colors.grey),
-              onPressed: () {
-                searchProvider.removeRecentSearch(term);
-              },
-            ),
-            onTap: () {
-              searchProvider.onSearchSubmitted(
-                term,
-                Provider.of<TripPackageProvider>(context, listen: false)
-                    .package,
-              );
-              searchProvider.searchController.text = term;
+        return ListTile(
+          leading: Icon(Icons.history, color: TTthemeClass().ttThird),
+          title: Text(term),
+          trailing: IconButton(
+            icon: const Icon(Icons.close, color: Colors.grey),
+            onPressed: () {
+              searchProvider.removeRecentSearch(term);
             },
           ),
+          onTap: () {
+            searchProvider.onSearchSubmitted(
+              term,
+              Provider.of<TripPackageProvider>(context, listen: false)
+                  .package,
+            );
+            searchProvider.searchController.text = term;
+          },
         );
       },
     );

@@ -26,8 +26,8 @@ class PackageCarousel extends StatelessWidget {
                 options: CarouselOptions(
                   height: 200, // Increased height to accommodate the redesign
                   autoPlay: false,
-                  enlargeCenterPage: true, 
-                  viewportFraction: 0.85, // Show parts of previous/next items
+                  // enlargeCenterPage: true, 
+                  viewportFraction: 0.75, // Show parts of previous/next items
                   enableInfiniteScroll: false,
                   aspectRatio: 0.7,
                   enlargeStrategy: CenterPageEnlargeStrategy.height,

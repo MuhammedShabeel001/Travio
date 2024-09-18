@@ -19,15 +19,16 @@ class UserModel {
     this.pronouns,
   });
 
-  factory UserModel.fromMap(DocumentSnapshot map) {
+  factory UserModel.fromMap(DocumentSnapshot<Map<String, dynamic>> doc) {
+    Map<String, dynamic> data = doc.data() ?? {};
     return UserModel(
-      id: map.id,
-      name: map["name"] as String?,
-      email: map["email"] as String?,
-      password: map["password"] as String?,
-      profile: map['profile'] as String?,
-      phonenumber: map["phonenumber"] as int?,
-      pronouns: map["pronouns"] as String?,
+      id: doc.id,
+      name: data["name"] as String?,
+      email: data["email"] as String?,
+      password: data["password"] as String?,
+      profile: data['profile'] as String?,
+      phonenumber: data["phonenumber"] as int?,
+      pronouns: data["pronouns"] as String?,
     );
   }
 

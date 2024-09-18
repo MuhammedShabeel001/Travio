@@ -7,12 +7,12 @@ class ReviewCard extends StatelessWidget {
   final double rating; // New field to display the rating
 
   const ReviewCard({
-    Key? key,
+    super.key,
     required this.userName,
     // required this.userProfileUrl,
     required this.review,
     required this.rating, // Initialize this
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ReviewCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundImage: AssetImage('assets/images/default_pfpf.jpg'),
                 ),
                 const SizedBox(width: 16.0),
@@ -43,7 +43,7 @@ class ReviewCard extends StatelessWidget {
                       const SizedBox(height: 4.0),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.star,
                             color: Colors.amber,
                             size: 16.0,

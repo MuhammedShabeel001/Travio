@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
 import '../../../model/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditProfileDialog extends StatefulWidget {
   final UserModel user;
@@ -32,7 +31,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      title: Text(
+      title: const Text(
         'Edit Profile',
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
       ),
@@ -49,14 +48,14 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                     ? FileImage(_imageFile!)
                     : (widget.user.profile != null
                         ? NetworkImage(widget.user.profile!)
-                        : AssetImage('assets/default_profile.png'))
+                        : const AssetImage('assets/default_profile.png'))
                             as ImageProvider,
                 child: _imageFile == null && widget.user.profile == null
-                    ? Icon(Icons.camera_alt, size: 30, color: Colors.white)
+                    ? const Icon(Icons.camera_alt, size: 30, color: Colors.white)
                     : null,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Name field
             TextField(
               controller: _nameController,
@@ -67,7 +66,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             // Phone field with validation for 10 digits
             TextField(
               controller: _phoneController,
@@ -95,19 +94,19 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: Colors.grey)),
+          child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
         ),
         ElevatedButton(
           onPressed: () {
           Navigator.pop(context);
           _saveProfileChanges(context);},
-          child: Text('Save'),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           ),
+          child: const Text('Save'),
         ),
       ],
     );
@@ -119,20 +118,20 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take Photo'),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(ImageSource.gallery);
@@ -169,7 +168,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
 
       return downloadUrl;
     } catch (e) {
-      print('Error uploading image: $e');
       return null;
     }
   }

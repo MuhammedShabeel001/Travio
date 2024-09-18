@@ -42,7 +42,7 @@ class ProfilePage extends StatelessWidget {
   Widget listView(
       BuildContext context, AuthProvider authProvider, String? userId) {
     return FutureBuilder(
-      future: authProvider.fetchUserData(userId),
+      future: authProvider.fetchUserData(userId!),
       builder: (context, snapshot) {
         if (authProvider.isLoadingFetchUser) {
           return const Center(child: CircularProgressIndicator());

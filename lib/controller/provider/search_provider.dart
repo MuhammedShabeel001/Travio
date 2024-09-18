@@ -178,7 +178,7 @@ class SearchProvider with ChangeNotifier {
 
   TextEditingController searchController = TextEditingController();
 
-  final Debouncer _debouncer = Debouncer(delay: Duration(milliseconds: 500));
+  final Debouncer _debouncer = Debouncer(delay: const Duration(milliseconds: 500));
 
   String _searchTerm = '';
   String get searchTerm => _searchTerm;

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Add this if you're using SVGs for icons
@@ -28,7 +27,7 @@ class InterestDetailPage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Colors.white,
           ),
@@ -77,7 +76,7 @@ class InterestDetailPage extends StatelessWidget {
                       final package = packageProvider.packageByInterest[index];
                       return Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 12,
                           ),
                           PackageCard(

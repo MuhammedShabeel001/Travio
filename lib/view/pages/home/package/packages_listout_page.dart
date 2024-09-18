@@ -22,11 +22,12 @@ class PackagesListPage extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Colors.white,
           ),
         ),
+        // ignore: unnecessary_const
         title: const Text('Packages',style: const TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: TTthemeClass().ttThird,
@@ -49,7 +50,7 @@ class PackagesListPage extends StatelessWidget {
               final package = packageProvider.package[index];
               return Column(
                 children: [
-                  SizedBox(height: 12,),
+                  const SizedBox(height: 12,),
                   PackageCard(
                     height: 150,
                     image: package.images.isNotEmpty

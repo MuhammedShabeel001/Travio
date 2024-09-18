@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/view/pages/profile/booked_package_page.dart';
-import 'package:travio/view/widgets/global/navbar.dart';
 import '../../../../controller/provider/booking_provider.dart';
 import '../../../../controller/provider/payment_provider.dart';
 import '../../../../core/theme/theme.dart';

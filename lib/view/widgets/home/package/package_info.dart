@@ -55,7 +55,7 @@ class PackageInfoWidget extends StatelessWidget {
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             // boxShadow: ,
             borderRadius: BorderRadius.circular(12),

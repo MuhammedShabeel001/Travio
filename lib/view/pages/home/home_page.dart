@@ -48,7 +48,7 @@ class HomeCenter extends StatelessWidget {
           const SizedBox(height: 30),
            SectionHeader(
             onTap: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) => PackagesListPage(),));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => const PackagesListPage(),));
             },
             title: 'Packages'),
           // const SizedBox(height: 15),
@@ -56,7 +56,7 @@ class HomeCenter extends StatelessWidget {
           const SizedBox(height: 30),
           SectionHeader(
             onTap: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) => IndiaLocationsListPage(),));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => const IndiaLocationsListPage(),));
             },
             title: 'India'),
           // const SizedBox(height: 15),
@@ -74,7 +74,7 @@ class HomeCenter extends StatelessWidget {
            const SizedBox(height: 30),
           SectionHeader(
             onTap: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) => LocationsListPage(),));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => const LocationsListPage(),));
             },
             title: 'All locations'),
           // const SizedBox(height: 15),

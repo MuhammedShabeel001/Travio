@@ -42,12 +42,12 @@ class ActivityCategoriesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Activity Categories'),
+        title: const Text('Activity Categories'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, // 3 items per row
             childAspectRatio: 0.75, // Adjust this for the shape (1.0 for square)
             crossAxisSpacing: 10.0,
@@ -70,7 +70,7 @@ class ActivityCategoriesPage extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
                       blurRadius: 5.0,
@@ -108,7 +108,7 @@ class ActivityCategoriesPage extends StatelessWidget {
                       right: 8.0,
                       child: Text(
                         categories[index].name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

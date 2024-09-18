@@ -6,6 +6,7 @@ import 'package:travio/view/widgets/profile/edit_dialog.dart';
 import '../../../model/user_model.dart';
 
 class ProfileHeader extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final user;
 
   const ProfileHeader({super.key, this.user});

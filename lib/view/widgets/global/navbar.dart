@@ -20,7 +20,7 @@ class _TTnavBarState extends State<TTnavBar> {
 
   final List<Widget> _tabs = [
     const HomePage(),
-     SearchPage(),
+     const SearchPage(),
     const TripPlanPage(),
     // Profile(),
     const ProfilePage()
@@ -56,12 +56,12 @@ class _TTnavBarState extends State<TTnavBar> {
                 SvgPicture.asset(
                   'assets/icons/search.svg',
                 ),
-                SvgPicture.asset(
-                  'assets/icons/add.svg',
-                ),
                 // SvgPicture.asset(
-                //   'assets/icons/ticket.svg',
+                //   'assets/icons/add.svg',
                 // ),
+                SvgPicture.asset(
+                  'assets/icons/ticket.svg',
+                ),
                 SvgPicture.asset(
                   'assets/icons/profile.svg',
                 ),

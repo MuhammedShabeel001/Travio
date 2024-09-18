@@ -9,7 +9,7 @@ import 'package:travio/view/widgets/home/package/review_card.dart';
 class ReviewsTab extends StatelessWidget {
   final TripPackageModel tripPackage;
 
-  const ReviewsTab({Key? key, required this.tripPackage}) : super(key: key);
+  const ReviewsTab({super.key, required this.tripPackage});
 
   @override
   Widget build(BuildContext context) {
