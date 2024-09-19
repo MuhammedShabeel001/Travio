@@ -1,82 +1,91 @@
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../model/review_model.dart';
-// import 'review_model.dart'; // Import your ReviewModel class
 
+/// Provider for managing reviews associated with trip packages.
 class ReviewProvider with ChangeNotifier {
   List<ReviewModel> reviews = [];
 
+  /// Fetches reviews for a given package ID from Firestore.
   Future<void> fetchReviews(String packageId) async {
-  final snapshot = await FirebaseFirestore.instance
-      .collection('trip_packages')
-      .doc(packageId)
-      .collection('reviews')
-      .get();
-      
-  reviews = await Future.wait(snapshot.docs.map((doc) async {
-    final data = doc.data() as Map<String, dynamic>;
-    final userId = data['userId'] as String;
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('trip_packages')
+          .doc(packageId)
+          .collection('reviews')
+          .get();
 
-    // Fetch user data from users collection
-    final userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .get();
+      reviews = await Future.wait(snapshot.docs.map((doc) async {
+        final data = doc.data();
+        final userId = data['userId'] as String;
 
-    final userData = userDoc.data() as Map<String, dynamic>;
+        // Fetch user data from users collection
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .get();
 
-    return ReviewModel.fromMap(
-      {
-        ...data,
-        'userName': userData['name'], // Assuming 'name' is a field in user data
-        // 'profileImageUrl': userData['profileImageUrl'], // Assuming 'profileImageUrl' is a field
-      },
-      doc.id,
-    );
-  }).toList());
+        final userData = userDoc.data() as Map<String, dynamic>;
 
-  notifyListeners();
-}
+        return ReviewModel.fromMap(
+          {
+            ...data,
+            'userName': userData['name'], 
+          },
+          doc.id,
+        );
+      }).toList());
 
-Future<void> submitReview({
-  required String packageId,
-  required String userId,
-  required double rating,
-  required String reviewText,
-}) async {
-  // Fetch user data from the 'users' collection
-  final userDoc = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(userId)
-      .get();
+      notifyListeners();
+    } catch (e) {
+      log('Error fetching reviews: $e');
+    }
+  }
 
-  final userData = userDoc.data() as Map<String, dynamic>;
+  /// Submits a new review to Firestore and adds it to the local list.
+  Future<void> submitReview({
+    required String packageId,
+    required String userId,
+    required double rating,
+    required String reviewText,
+  }) async {
+    try {
+      // Fetch user data from the 'users' collection
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
 
-  // Include userName and profileImageUrl in the reviewData
-  final reviewData = {
-    'userId': userId,
-    'rating': rating,
-    'reviewText': reviewText,
-    'timestamp': FieldValue.serverTimestamp(),
-    'userName': userData['name'], // Assuming 'name' is the user's name
-    // 'profileImageUrl': userData['profileImageUrl'], // Assuming 'profileImageUrl' is the user's profile image
-  };
+      final userData = userDoc.data() as Map<String, dynamic>;
 
-  // Add the review to Firestore
-  final docRef = await FirebaseFirestore.instance
-      .collection('trip_packages')
-      .doc(packageId)
-      .collection('reviews')
-      .add(reviewData);
+      // Prepare review data
+      final reviewData = {
+        'userId': userId,
+        'rating': rating,
+        'reviewText': reviewText,
+        'timestamp': FieldValue.serverTimestamp(),
+        'userName': userData['name'],
+      };
 
-  // Fetch the newly created review document from Firestore
-  final newReview = ReviewModel.fromMap(
-    await docRef.get().then((doc) => doc.data() as Map<String, dynamic>),
-    docRef.id,
-  );
+      // Add the review to Firestore
+      final docRef = await FirebaseFirestore.instance
+          .collection('trip_packages')
+          .doc(packageId)
+          .collection('reviews')
+          .add(reviewData);
 
-  // Add the new review to the list and notify listeners
-  reviews.add(newReview);
-  notifyListeners();
-}
+      // Fetch the newly created review document from Firestore
+      final newReview = ReviewModel.fromMap(
+        await docRef.get().then((doc) => doc.data() as Map<String, dynamic>),
+        docRef.id,
+      );
+
+      // Add the new review to the local list and notify listeners
+      reviews.add(newReview);
+      notifyListeners();
+    } catch (e) {
+      log('Error submitting review: $e');
+    }
+  }
 }

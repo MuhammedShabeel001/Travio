@@ -30,17 +30,17 @@ class PackageInfoWidget extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
-              icon: Icon(
-                tripPackageProvider.isLiked(tripPackage.id)
-                    ? Icons.bookmark_rounded
-                    : Icons.bookmark_border_rounded,
-                color: Colors.black,
-              ),
-              onPressed: () async {
-                await tripPackageProvider.toggleLike(tripPackage.id);
-              },
-            ),
+            // IconButton(
+            //   icon: Icon(
+            //     tripPackageProvider.isLiked(tripPackage.id)
+            //         ? Icons.bookmark_rounded
+            //         : Icons.bookmark_border_rounded,
+            //     color: Colors.black,
+            //   ),
+            //   onPressed: () async {
+            //     await tripPackageProvider.toggleLike(tripPackage.id);
+            //   },
+            // ),
           ],
         ),
         const SizedBox(height: 8),

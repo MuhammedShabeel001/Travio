@@ -32,7 +32,6 @@ class LogInScreen extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsets.all(20),
-              //--------------------------------LOGIN FORM-----------------------------
               child: LoginForm(authProvider: authProvider),
             ),
           )

@@ -18,7 +18,7 @@ class TripPackageModel {
   final double ratingCount;
   final List<String> locations;
   final Set<String> likedByUserIds;
-  List<ReviewModel> reviews; // Add this field to hold reviews fetched from Firestore
+  List<ReviewModel> reviews;
 
   TripPackageModel({
     required this.id,
@@ -36,7 +36,7 @@ class TripPackageModel {
     required this.likeCount,
     required this.totalDays,
     required this.ratingCount,
-    this.reviews = const [], // Initialize as an empty list
+    this.reviews = const [],
     required this.locations,
     required this.likedByUserIds,
   });
@@ -72,7 +72,7 @@ class TripPackageModel {
       likeCount: map['like_count'] as int? ?? 0,
       totalDays: map['total_number_of_days'] as int,
       ratingCount: (map['rating_count'] as num?)?.toDouble() ?? 0.0,
-      reviews: [], // Initialize reviews as an empty list
+      reviews: [],
       locations: List<String>.from(map['locations'] as List<dynamic>? ?? []),
       likedByUserIds: Set<String>.from(map['liked_by_user_ids'] ?? []),
     );
@@ -100,7 +100,6 @@ class TripPackageModel {
     };
   }
 
-  // Add the copyWith method
   TripPackageModel copyWith({
     String? id,
     String? name,

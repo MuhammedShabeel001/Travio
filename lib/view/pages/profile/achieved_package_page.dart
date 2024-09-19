@@ -8,7 +8,6 @@ import 'package:travio/view/pages/profile/achieved_details_page.dart';
 
 import '../../../model/package_model.dart';
 import '../home/package/package_detail_page.dart';
-// import 'trip_package_detail_page.dart'; // Import the TripPackageDetailPage
 
 class ArchivedPackagesPage extends StatelessWidget {
   final String? userId;
@@ -43,9 +42,7 @@ class ArchivedPackagesPage extends StatelessWidget {
                 final packageId = archivedPackage['packageId'] as String?;
 
                 if (packageId == null || packageId.isEmpty) {
-                  return const ListTile(
-                    // title: Text('Invalid package ID.'),
-                  );
+                  return const ListTile();
                 }
 
                 return FutureBuilder<DocumentSnapshot>(
@@ -53,34 +50,48 @@ class ArchivedPackagesPage extends StatelessWidget {
                       .collection('trip_packages')
                       .doc(packageId)
                       .get(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> packageSnapshot) {
-                    if (packageSnapshot.connectionState == ConnectionState.waiting) {
+                  builder: (context,
+                      AsyncSnapshot<DocumentSnapshot> packageSnapshot) {
+                    if (packageSnapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
-                    if (packageSnapshot.hasData && packageSnapshot.data!.exists) {
-                      final packageData = packageSnapshot.data!.data() as Map<String, dynamic>;
+                    if (packageSnapshot.hasData &&
+                        packageSnapshot.data!.exists) {
+                      final packageData =
+                          packageSnapshot.data!.data() as Map<String, dynamic>;
 
-                      final Timestamp? startTimestamp = archivedPackage['startDate'] as Timestamp?;
-                      final Timestamp? endTimestamp = archivedPackage['endDate'] as Timestamp?;
+                      final Timestamp? startTimestamp =
+                          archivedPackage['startDate'] as Timestamp?;
+                      final Timestamp? endTimestamp =
+                          archivedPackage['endDate'] as Timestamp?;
 
                       final String formattedStartDate = startTimestamp != null
-                          ? DateFormat('dd MMM yyyy').format(startTimestamp.toDate())
+                          ? DateFormat('dd MMM yyyy')
+                              .format(startTimestamp.toDate())
                           : 'N/A';
                       final String formattedEndDate = endTimestamp != null
-                          ? DateFormat('dd MMM yyyy').format(endTimestamp.toDate())
+                          ? DateFormat('dd MMM yyyy')
+                              .format(endTimestamp.toDate())
                           : 'N/A';
-
+                      final int numberOfPeople =
+                          archivedPackage['numberOfPeople'] ?? 1;
+                      final double totalAmount =
+                          packageData['offer_price'] * numberOfPeople;
+                      double pricePerPerson = packageData['offer_price'];
+                      double gstPerPerson = pricePerPerson * 0.06;
+                      double totalWithGst =
+                          totalAmount + (gstPerPerson * numberOfPeople);
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 8.0),
                         child: GestureDetector(
                           onTap: () {
-                            // Navigate to detailed page or show more details
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
                                 builder: (context) => PackageDetailPage(
-                                  
                                   packageData: packageData,
                                   archivedPackage: archivedPackage,
                                 ),
@@ -96,9 +107,9 @@ class ArchivedPackagesPage extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        // Package Name
                                         Text(
                                           packageData['name'] ?? 'Package Name',
                                           style: const TextStyle(
@@ -106,17 +117,13 @@ class ArchivedPackagesPage extends StatelessWidget {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         const SizedBox(height: 8),
-
-                                        // Date Range
                                         Text(
                                           'Dates: $formattedStartDate - $formattedEndDate',
                                           style: const TextStyle(fontSize: 14),
                                         ),
                                         const SizedBox(height: 8),
-
-                                        // Price Info
                                         Text(
-                                          'Price: ₹${packageData['offerPrice']}',
+                                          'Price: ₹${totalWithGst.toStringAsFixed(2)}',
                                           style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
@@ -126,14 +133,20 @@ class ArchivedPackagesPage extends StatelessWidget {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: SvgPicture.asset('assets/icons/navigate.svg',color: Colors.black,height: 20,),
+                                    icon: SvgPicture.asset(
+                                      'assets/icons/navigate.svg',
+                                      color: Colors.black,
+                                      height: 20,
+                                    ),
                                     onPressed: () {
-                                      // Navigate to TripPackageDetailPage
                                       Navigator.push(
                                         context,
                                         CupertinoPageRoute(
-                                          builder: (context) => TripPackageDetailPage(
-                                            tripPackage: TripPackageModel.fromMap(packageData),
+                                          builder: (context) =>
+                                              TripPackageDetailPage(
+                                            tripPackage:
+                                                TripPackageModel.fromMap(
+                                                    packageData),
                                           ),
                                         ),
                                       );
@@ -146,9 +159,7 @@ class ArchivedPackagesPage extends StatelessWidget {
                         ),
                       );
                     } else {
-                      return const ListTile(
-                        // title: Text('Package details not found.'),
-                      );
+                      return const ListTile();
                     }
                   },
                 );

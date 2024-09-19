@@ -12,7 +12,7 @@ class LikesAndReviewsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TripPackageProvider>(
       builder: (context, tripPackageProvider, child) {
-        final isLiked = tripPackageProvider.isLiked(tripPackage.id);
+        // final isLiked = tripPackageProvider.isLiked(tripPackage.id);
         final likeCount = tripPackageProvider.package
             .firstWhere((pkg) => pkg.id == tripPackage.id)
             .likeCount;
@@ -23,15 +23,7 @@ class LikesAndReviewsWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.favorite,
-                  color: isLiked ? Colors.red : Colors.grey,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '$likeCount Likes',
-                  style: const TextStyle(color: Colors.black87),
-                ),
+             
               ],
             ),
             Row(

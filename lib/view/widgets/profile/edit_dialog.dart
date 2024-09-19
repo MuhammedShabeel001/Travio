@@ -9,9 +9,10 @@ import '../../../model/user_model.dart';
 class EditProfileDialog extends StatefulWidget {
   final UserModel user;
 
-  EditProfileDialog({required this.user});
+  const EditProfileDialog({super.key, required this.user});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditProfileDialogState createState() => _EditProfileDialogState();
 }
 

@@ -6,6 +6,8 @@ import 'package:intl/intl.dart'; // Import intl package for date formatting
 import '../../../controller/provider/auth_provider.dart';
 
 class BookedPackagesPage extends StatelessWidget {
+  const BookedPackagesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -19,7 +21,7 @@ class BookedPackagesPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Booked Packages')),
+      appBar: AppBar(title: const Text('Upcoming Packages')),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
             .collection('bookedPackages')

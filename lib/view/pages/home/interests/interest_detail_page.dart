@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Add this if you're using SVGs for icons
 import 'package:travio/core/theme/theme.dart';
 
-import '../../../../controller/provider/location_provider.dart';
+// import '../../../../controller/provider/location_provider.dart';
 import '../../../../controller/provider/package_provider.dart';
 import '../../../widgets/home/package/package_card.dart';
 
@@ -15,11 +15,11 @@ class InterestDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final packageProvider = context.read<TripPackageProvider>();
-    final locationProvider = context.read<LocationProvider>();
+    // final locationProvider = context.read<LocationProvider>();
 
     // Fetch data by interest
     packageProvider.getPackagesByInterest(interest);
-    locationProvider.getLocationsByInterest(interest);
+    // locationProvider.getLocationsByInterest(interest);
 
     return Scaffold(
       appBar: AppBar(

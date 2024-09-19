@@ -14,6 +14,7 @@ import '../../../controller/provider/payment_provider.dart';
 import '../../widgets/home/interest_row.dart';
 import '../../widgets/home/location_carousal.dart';
 import '../../widgets/home/package_carousal.dart';
+import '../../widgets/home/section_header.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -86,28 +87,4 @@ class HomeCenter extends StatelessWidget {
   }
 }
 
-class SectionHeader extends StatelessWidget {
-  final String title;
-  final VoidCallback onTap;
 
-  const SectionHeader({required this.title, super.key, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          GestureDetector(
-            onTap: onTap,
-            child: const Text('More')),
-        ],
-      ),
-    );
-  }
-}

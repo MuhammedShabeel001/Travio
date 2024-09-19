@@ -6,7 +6,8 @@ import '../global/logout_alert.dart';
 class SupportCard extends StatelessWidget {
   final AuthProvider authProvider;
   const SupportCard({
-    super.key, required this.authProvider, 
+    super.key,
+    required this.authProvider,
   });
 
   @override
@@ -17,16 +18,14 @@ class SupportCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Support', 
-            style: TextStyle(
-                fontSize: 26, fontWeight: FontWeight.bold),
+            'Support',
+            style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
           ),
           ListTile(
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) =>
-                    tLogOut(context, authProvider),
+                builder: (context) => tLogOut(context, authProvider),
               );
             },
             title: const Text(
@@ -36,35 +35,13 @@ class SupportCard extends StatelessWidget {
             leading: const Icon(Icons.help_outline_rounded),
           ),
           ListTile(
-            onTap: () {
-              // showDialog(
-              //   context: context,
-              //   builder: (context) =>
-              //       tLogOut(context, authProvider),
-              // );
-            },
+            onTap: () {},
             title: const Text(
               'Get in touch',
-              
               style: TextStyle(fontSize: 20),
             ),
             leading: const Icon(Icons.contact_mail_outlined),
           ),
-          // ListTile(
-          //   onTap: () {
-          //     // showDialog(
-          //     //   context: context,
-          //     //   builder: (context) =>
-          //     //       tLogOut(context, authProvider),
-          //     // );
-          //   },
-          //   title: const Text(
-          //     'Version',
-          //     style: TextStyle(fontSize: 20),
-          //   ),
-          //   // leading: SvgPicture.asset(''),
-          //   trailing: Text('1.01.001'),
-          // ),
         ],
       ),
     );

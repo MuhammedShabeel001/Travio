@@ -1,34 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
 import 'package:travio/controller/provider/auth_provider.dart';
 import 'package:travio/view/pages/profile/achieved_package_page.dart';
 import 'package:travio/view/pages/profile/booked_package_page.dart';
 import 'package:travio/view/widgets/global/appbar.dart';
 import 'package:travio/view/widgets/profile/legal_card.dart';
-// import 'package:travio/view/widgets/global/logout_alert.dart';
 import 'package:travio/view/widgets/profile/settings_card.dart';
 import 'package:travio/view/widgets/profile/support_card.dart';
 
-// import '../../../controller/provider/payment_provider.dart';
 import '../../widgets/profile/profile_header.dart';
 import '../../widgets/profile/section_card.dart';
+
 class ProfilePage extends StatelessWidget {
-  
   const ProfilePage({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   // Call the moveExpiredBookingsToArchive function here
-    //   Provider.of<PaymentProvider>(context, listen: false).moveExpiredBookingsToArchive();
-
-    // });
     final authProvider = Provider.of<AuthProvider>(context);
-    final String? userId = authProvider.auth?.currentUser!.uid;
+    final String userId = authProvider.auth.currentUser!.uid;
 
     return Scaffold(
       body: ttAppBar(
@@ -74,9 +64,7 @@ class ProfilePage extends StatelessWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) =>
-                              BookedPackagesPage(),
-                              // BookedPackagePage()
+                          builder: (context) => BookedPackagesPage(),
                         ),
                       );
                     }),

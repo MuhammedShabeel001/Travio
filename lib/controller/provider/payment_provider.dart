@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +6,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travio/controller/provider/booking_provider.dart';
 
+/// Provider for handling payment operations and booking management.
 class PaymentProvider with ChangeNotifier {
   final Razorpay _razorpay = Razorpay();
   bool isLoading = false;
@@ -15,13 +15,17 @@ class PaymentProvider with ChangeNotifier {
   late BuildContext _context;
 
   PaymentProvider() {
+    _initializeRazorpay();
+  }
+
+  /// Initializes Razorpay event listeners.
+  void _initializeRazorpay() {
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentErrorResponse);
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccessResponse);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWalletSelected);
-
-    // moveExpiredBookingsToArchive();
   }
 
+  /// Starts a payment process with Razorpay.
   void makePayment({
     required String amount,
     required String contact,
@@ -42,14 +46,15 @@ class PaymentProvider with ChangeNotifier {
       'retry': {'enabled': true, 'max_count': 1},
       'send_sms_hash': true,
       'prefill': {
-        'contact': contact,
-        'email': email,
+        'contact': '9584847474',
+        'email': 'test@razorpay.com',
       },
     };
 
     _razorpay.open(options);
   }
 
+  /// Handles successful payment response.
   void _handlePaymentSuccessResponse(PaymentSuccessResponse response) {
     isLoading = false;
     paymentStatus = 'Payment Successful: ${response.paymentId}';
@@ -58,6 +63,7 @@ class PaymentProvider with ChangeNotifier {
     _handleSuccessfulPayment(response.paymentId!);
   }
 
+  /// Handles payment error response.
   void _handlePaymentErrorResponse(PaymentFailureResponse response) {
     isLoading = false;
     paymentStatus = 'Payment Failed: ${response.message}';
@@ -65,6 +71,7 @@ class PaymentProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Handles external wallet selection.
   void _handleExternalWalletSelected(ExternalWalletResponse response) {
     isLoading = false;
     paymentStatus = 'External Wallet Selected: ${response.walletName}';
@@ -72,66 +79,30 @@ class PaymentProvider with ChangeNotifier {
     notifyListeners();
   }
 
-// Future<void> addNoteToPackage(String packageId, String note) async {
-//     try {
-//       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-//       final packageRef = firestore.collection('archivedPackages').doc(packageId);
-
-//       await firestore.runTransaction((transaction) async {
-//         final snapshot = await transaction.get(packageRef);
-
-//         if (!snapshot.exists) {
-//           throw Exception('Package does not exist.');
-//         }
-
-//         final existingNotes = snapshot.get('notes') as List<dynamic>? ?? [];
-//         final updatedNotes = List.from(existingNotes)..add(note);
-
-//         transaction.update(packageRef, {
-//           'notes': updatedNotes,
-//         });
-//       });
-
-//       notifyListeners(); // Notify listeners if needed
-//     } catch (e) {
-//       print('Failed to add note: $e');
-//     }
-//   }
-
-
+  /// Processes a successful payment.
   Future<void> _handleSuccessfulPayment(String paymentId) async {
     try {
       final bookingProvider =
           Provider.of<BookingProvider>(_context, listen: false);
-
       final User? currentUser = FirebaseAuth.instance.currentUser;
 
       if (currentUser == null) {
-        paymentStatus = 'Failed: User not authenticated';
-        showResult = true;
-        isLoading = false;
-        notifyListeners();
+        _updatePaymentStatus('Failed: User not authenticated');
         return;
       }
 
       final String userId = currentUser.uid;
 
       await _addPackageToUserCollection(userId, bookingProvider);
-
       await _incrementBookedCount(bookingProvider.packageId);
 
-      paymentStatus = 'Success';
-      showResult = true;
-      isLoading = false;
-      notifyListeners();
+      _updatePaymentStatus('Success');
     } catch (e) {
-      paymentStatus = 'Failed: $e';
-      showResult = true;
-      isLoading = false;
-      notifyListeners();
+      _updatePaymentStatus('Failed: $e');
     }
   }
 
+  /// Adds the package to the user's collection in Firestore.
   Future<void> _addPackageToUserCollection(
       String userId, BookingProvider bookingProvider) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -151,20 +122,19 @@ class PaymentProvider with ChangeNotifier {
         'endDate': bookingProvider.rangeEndDate,
         'bookingDate': DateTime.now(),
       });
-
-      await _incrementBookedCount(bookingProvider.packageId);
     } else {
       throw Exception('Package already booked on the same date.');
     }
   }
 
+  /// Increments the booked count of a package in Firestore.
   Future<void> _incrementBookedCount(String? packageId) async {
     if (packageId == null) return;
 
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     final packageRef = firestore.collection('trip_packages').doc(packageId);
 
-    firestore.runTransaction((transaction) async {
+    await firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(packageRef);
       final currentBookedCount = snapshot.get('booked_count') ?? 0;
 
@@ -174,46 +144,44 @@ class PaymentProvider with ChangeNotifier {
     });
   }
 
-Future<void> moveExpiredBookingsToArchive() async {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final DateTime now = DateTime.now();
-  log(now.toString());
+  /// Moves expired bookings to the archive.
+  Future<void> moveExpiredBookingsToArchive() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final DateTime now = DateTime.now();
+    log('Current DateTime: $now');
 
-  try {
-    // log('sdcs');
-    // Fetch packages where the end date has passed
-    final QuerySnapshot expiredBookings = await firestore
-        .collection('bookedPackages')
-        .where('endDate', isLessThan: now)
-        .get();
+    try {
+      final QuerySnapshot expiredBookings = await firestore
+          .collection('bookedPackages')
+          .where('endDate', isLessThan: now)
+          .get();
 
-    log(expiredBookings.toString());
+      log('Expired Bookings: ${expiredBookings.docs.length} found');
 
-    if (expiredBookings.docs.isNotEmpty) {
-      for (var booking in expiredBookings.docs) {
-        // Get booking details
-        final bookingData = booking.data() as Map<String, dynamic>;
+      if (expiredBookings.docs.isNotEmpty) {
+        for (var booking in expiredBookings.docs) {
+          final bookingData = booking.data() as Map<String, dynamic>;
 
-        // Add the expired booking to the archived collection
-        await firestore.collection('archivedPackages').add(bookingData);
+          await firestore.collection('archivedPackages').add(bookingData);
+          await firestore.collection('bookedPackages').doc(booking.id).delete();
+        }
 
-        // Remove the expired booking from the bookedPackages collection
-        await firestore.collection('bookedPackages').doc(booking.id).delete();
+        _updatePaymentStatus('Expired bookings moved to archive');
+      } else {
+        _updatePaymentStatus('No expired bookings found');
       }
-
-      paymentStatus = 'Expired bookings moved to archive';
-      notifyListeners();
-    } else {
-      paymentStatus = 'No expired bookings found';
-      notifyListeners();
+    } catch (e) {
+      _updatePaymentStatus('Failed to move expired bookings: $e');
     }
-  } catch (e) {
-    paymentStatus = 'Failed to move expired bookings: $e';
+  }
+
+  /// Updates the payment status and notifies listeners.
+  void _updatePaymentStatus(String status) {
+    paymentStatus = status;
+    showResult = true;
+    isLoading = false;
     notifyListeners();
   }
-}
-
-
 
   @override
   void dispose() {
@@ -221,6 +189,7 @@ Future<void> moveExpiredBookingsToArchive() async {
     super.dispose();
   }
 
+  /// Resets the payment provider state.
   void reset() {
     paymentStatus = '';
     showResult = false;

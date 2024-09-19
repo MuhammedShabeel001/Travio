@@ -1,14 +1,9 @@
-import 'dart:developer';
-import 'dart:io';
-import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
 import 'package:travio/core/theme/theme.dart';
-import 'package:travio/view/widgets/global/custom_textfield.dart';
-import 'package:travio/view/widgets/global/welcome_bar.dart';
-import 'package:travio/view/widgets/global/navbar.dart';
+import '../../../widgets/auth/details_widget.dart';
+import '../../../widgets/global/welcome_bar.dart'; // New file for extracted widgets
 
 class DetailsPage extends StatelessWidget {
   DetailsPage({super.key});
@@ -23,7 +18,10 @@ class DetailsPage extends StatelessWidget {
       backgroundColor: TTthemeClass().ttThird,
       body: Column(
         children: [
+          // Welcome bar section at the top
           Flexible(flex: 1, child: tWelcome('')),
+
+          // Main content section with form and profile image
           Flexible(
             flex: 5,
             child: Container(
@@ -40,149 +38,21 @@ class DetailsPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ListView(
-                      padding: const EdgeInsets.only(
-                        top: 15,
-                        left: 20,
-                        right: 20,
-                      ),
+                      padding: const EdgeInsets.all(20),
                       children: [
-                        Center(
-                          child: InkWell(
-                            onTap: () async {
-                              await authProvider
-                                  .getImage(authProvider.imageTemporary);
-                            },
-                            child: ValueListenableBuilder<String?>(
-                              valueListenable: authProvider.imageTemporary,
-                              builder: (context, imagePath, child) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: TTthemeClass().ttThirdHalf,
-                                      style: BorderStyle.solid,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                  height: 100,
-                                  width: 100,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(25),
-                                    child: imagePath != null
-                                        ? Image.file(
-                                            File(imagePath),
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const Image(
-                                            image: AssetImage(
-                                              'assets/images/default_pfpf.jpg',
-                                            ),
-                                          ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        tTextfield(
-                          Labeltext: 'Full Name',
-                          HintText: 'john wick',
-                          controller: authProvider.nameController,
-                        ),
-                        tNumberfield(
-                          Labeltext: 'Number',
-                          controller: authProvider.phoneController,
-                        ),
-                        tDropdownField(
-                          labelText: 'Pronouns',
-                          hintText: 'he/him',
-                          controller: authProvider.pronounController,
-                          items: ['he/him', 'she/her', 'they/them'],
-                        ),
+                        // Profile image upload widget
+                        ProfileImageWidget(authProvider: authProvider),
+
+                        const SizedBox(height: 20),
+
+                        // Form fields (extracted to separate file)
+                        UserInfoForm(authProvider: authProvider, formKey: _formKey),
                       ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    child: ValueListenableBuilder<bool>(
-                      valueListenable: authProvider.loading,
-                      builder: (context, isLoading, child) {
-                        return ElevatedButton(
-                          onPressed: isLoading ? null : () async {
-                            authProvider.loading.value = true;
-                            if (authProvider.imageTemporary.value != null &&
-                                File(authProvider.imageTemporary.value!)
-                                    .existsSync()) {
-                              File imageFile =
-                                  File(authProvider.imageTemporary.value!);
-                              String? imageUrl = await authProvider.uploadImage(
-                                  imageFile, authProvider.loading);
 
-                              if (imageUrl != null) {
-                                authProvider.photoController.text = imageUrl;
-                                log('Image uploaded successfully: $imageUrl');
-
-                                // Perform signup
-                                authProvider.signup(
-                                  onSuccess: () {
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => const TTnavBar()),
-                                      (route) => false,
-                                    );
-                                  
-                                    BotToast.showText(text: 'Sign up successful');
-                                  },
-                                  onError: (message) {
-                                 
-                                    BotToast.showText(text: message);
-                                  },
-                                );
-                              } else {
-                                log('Failed to upload image');
-                              }
-                            } else {
-                              log('No image selected or file does not exist');
-                            }
-
-                            if (_formKey.currentState?.validate() ?? false) {
-                              authProvider.nameController.clear();
-                              authProvider.phoneController.clear();
-                              authProvider.emailController.clear();
-                              authProvider.passwordController.clear();
-                              authProvider.pronounController.clear();
-                              authProvider.photoController.clear();
-                            }
-                            authProvider.loading.value = false;
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: TTthemeClass().ttThird,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          ),
-                          child: isLoading
-                              ? CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    TTthemeClass().ttLightPrimary,
-                                  ),
-                                )
-                              : Text(
-                                  'Start',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: TTthemeClass().ttLightPrimary,
-                                  ),
-                                ),
-                        );
-                      },
-                    ),
-                  ),
+                  // Submit button at the bottom
+                  SubmitButton(authProvider: authProvider, formKey: _formKey),
                 ],
               ),
             ),
@@ -192,4 +62,3 @@ class DetailsPage extends StatelessWidget {
     );
   }
 }
-

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:travio/pages/entry_page.dart';
+
 import 'package:travio/view/pages/auth/login/login_page.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/widgets/global/navbar.dart';
@@ -16,7 +16,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashState extends State<SplashScreen> {
-  
   final String keyValue = 'loggedIn';
 
   @override
@@ -55,7 +54,6 @@ class _SplashState extends State<SplashScreen> {
   }
 
   void navigateToHome() {
-    
     Navigator.of(context).pushReplacement(
       CupertinoPageRoute(builder: (context) => const TTnavBar()),
     );
@@ -70,14 +68,8 @@ class _SplashState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 160, 
-              child: SvgPicture.asset('assets/logo/logo (l mode).svg')),
-            // Image.asset(
-            //   'assets/logo/Logo  (d mode).svg',
-            //   // 'assets/images/lisa image.png',
-            //   height: 180,
-            // ),
-
+                height: 160,
+                child: SvgPicture.asset('assets/logo/logo (l mode).svg')),
           ],
         ),
       ),

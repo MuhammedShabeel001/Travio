@@ -6,28 +6,25 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travio/model/user_model.dart';
 
 class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-  final String keyValue = 'loggedIn';
-
-  String verificationId = '';
-
-  bool _isChecked = false;
-  bool isLoading = false;
-  bool isLoadingFetchUser = false;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final String _keyValue = 'loggedIn';
 
   UserModel? _user;
+  bool _isChecked = false;
+  bool _isLoading = false;
+  final bool _isLoadingFetchUser = false;
+
   UserModel? get user => _user;
-
-  FirebaseAuth? get auth => _auth;
-
+  FirebaseAuth get auth => _auth;
   bool get isChecked => _isChecked;
+  bool get isLoading => _isLoading;
+  bool get isLoadingFetchUser => _isLoadingFetchUser;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -41,40 +38,37 @@ class AuthProvider with ChangeNotifier {
   ValueNotifier<String?> imageTemporary = ValueNotifier<String?>(null);
   ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
+  /// Toggles the state of the checkbox.
   void toggleCheckBox() {
     _isChecked = !_isChecked;
     notifyListeners();
   }
 
+  /// Signs in the user using Google Sign-In.
   Future<void> loginWithGoogle({
     required VoidCallback onSuccess,
     required Function(String) onError,
   }) async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
 
-        final UserCredential userCredential =
-            await _auth.signInWithCredential(credential);
+        final UserCredential userCredential = await _auth.signInWithCredential(credential);
         final User? user = userCredential.user;
 
         if (user != null) {
           log('User logged in: ${user.uid}');
           await fetchUserData(user.uid);
-          final SharedPreferences sharedPref =
-              await SharedPreferences.getInstance();
-          await sharedPref.setBool(keyValue, true);
-
+          final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+          await sharedPref.setBool(_keyValue, true);
           onSuccess();
         } else {
           log('User sign-in failed');
@@ -88,6 +82,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Sends a verification email to the current user.
   Future<void> verifyEmail({
     required Function(String) onSuccess,
   }) async {
@@ -95,24 +90,26 @@ class AuthProvider with ChangeNotifier {
     onSuccess("Verification email sent");
   }
 
+  /// Sets the login status in SharedPreferences.
   Future<void> _setLoginStatus(bool status) async {
     final SharedPreferences sharedPref = await SharedPreferences.getInstance();
-    await sharedPref.setBool(keyValue, status);
+    await sharedPref.setBool(_keyValue, status);
   }
 
+  /// Picks an image from the gallery and sets it in the provided ValueNotifier.
   Future<void> getImage(ValueNotifier<String?> image) async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage == null) return;
-    image.value = pickedImage.path;
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      image.value = pickedImage.path;
+    }
   }
 
+  /// Uploads an image to Firebase Storage and returns its download URL.
   Future<String?> uploadImage(File image, ValueNotifier<bool> loading) async {
     try {
       loading.value = true;
       String fileName = basename(image.path);
-      Reference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child('uploads/$fileName');
+      Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
       UploadTask uploadTask = firebaseStorageRef.putFile(image);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
@@ -125,12 +122,12 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Fetches user data from Firestore and updates the _user property.
   Future<void> fetchUserData(String userId) async {
     log('Fetching user data for userId: $userId');
     if (userId.isNotEmpty) {
       try {
-        DocumentSnapshot<Map<String, dynamic>> userDoc =
-            await db.collection('users').doc(userId).get();
+        DocumentSnapshot<Map<String, dynamic>> userDoc = await _db.collection('users').doc(userId).get();
         log('Document snapshot retrieved');
 
         if (userDoc.exists) {
@@ -154,15 +151,14 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Updates user data in Firestore.
   Future<void> updateUserData(UserModel updatedUser) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(updatedUser.id)
-        .update(updatedUser.toMap());
+    await _db.collection('users').doc(updatedUser.id).update(updatedUser.toMap());
     _user = updatedUser;
     notifyListeners();
   }
 
+  /// Adds a new user to Firestore.
   Future<void> addUser({
     required Function(String) onError,
   }) async {
@@ -180,7 +176,7 @@ class AuthProvider with ChangeNotifier {
           pronouns: pronounController.text,
         );
 
-        await db.collection("users").doc(currentUser.uid).set(user.toMap());
+        await _db.collection("users").doc(currentUser.uid).set(user.toMap());
         log('User added to Firestore successfully');
       } else {
         log('No current user to add');
@@ -191,12 +187,13 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Signs up a new user with email and password.
   Future<void> signup({
     required VoidCallback onSuccess,
     required Function(String) onError,
   }) async {
     try {
-      isLoading = true;
+      _isLoading = true;
       notifyListeners();
       log('Creating user with email and password');
       final userCredential = await _auth.createUserWithEmailAndPassword(
@@ -222,27 +219,27 @@ class AuthProvider with ChangeNotifier {
 
         log('Setting login status');
         await _setLoginStatus(true);
-        dispose();
       } else {
         log('User ID is null');
         onError('User ID is null');
       }
 
-      isLoading = false;
+      _isLoading = false;
       notifyListeners();
     } catch (e) {
-      isLoading = false;
+      _isLoading = false;
       onError("Error: $e");
       notifyListeners();
     }
   }
 
+  /// Signs in an existing user with email and password.
   Future<void> signIn({
     required VoidCallback onSuccess,
     required Function(String) onError,
   }) async {
     try {
-      isLoading = true;
+      _isLoading = true;
       log('Signing in with email and password');
 
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -264,29 +261,21 @@ class AuthProvider with ChangeNotifier {
       await _setLoginStatus(true);
       log('Login status set successfully');
 
-      isLoading = false;
+      _isLoading = false;
       notifyListeners();
-      log('Loading value set to false');
-
-      try {
-        log('Calling onSuccess callback');
-        onSuccess();
-        log('onSuccess callback completed');
-      } catch (e) {
-        log('Error in onSuccess callback: $e');
-        onError('Error after successful sign-in: $e');
-      }
+      onSuccess();
     } catch (e) {
-      loading.value = false;
+      _isLoading = false;
       String errorMessage = "Sign-in failed: ${e.toString()}";
       log(errorMessage);
       onError(errorMessage);
     }
   }
 
+  /// Signs out the current user and clears SharedPreferences.
   Future<void> signOut({
     required VoidCallback onSuccess,
-    required Null Function(dynamic error) onError,
+    required Function(dynamic) onError,
   }) async {
     try {
       final sharedPref = await SharedPreferences.getInstance();
@@ -298,6 +287,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Sends a password reset email to the user.
   Future<void> resetPassword({
     required VoidCallback onSuccess,
     required Function(String) onError,
@@ -315,6 +305,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Navigates to the signup detail page.
   void navigateToSignupDetail(VoidCallback onNavigate) {
     onNavigate();
   }
