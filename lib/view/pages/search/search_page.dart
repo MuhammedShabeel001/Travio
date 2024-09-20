@@ -86,9 +86,9 @@ class SearchPage extends StatelessWidget {
         provider.fetchAllPackages(),
       ]),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const ShimmerEffect();
-        }
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   // return const ShimmerEffect();
+        // }
 
         return ListView(
           children: [

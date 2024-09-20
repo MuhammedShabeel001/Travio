@@ -53,6 +53,7 @@ dependencies:
   image_picker: ^1.1.2
   intl: ^0.19.0
   intl_phone_field: ^3.2.0
+  introduction_screen: ^3.1.14
   lottie: ^3.1.2
   provider: ^6.1.2
   razorpay_flutter: ^1.3.7
@@ -83,6 +84,7 @@ flutter:
     - assets/logo/
     - assets/icons/
     - assets/animations/
+    - assets/onboarding/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -93,10 +95,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: SpaceGrotesk
+      fonts:
+        - asset: assets/font/SpaceGrotesk-Regular.ttf
+        - asset: assets/font/SpaceGrotesk-Bold.ttf
+          weight: 700
+        - asset: assets/font/SpaceGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/font/SpaceGrotesk-SemiBold.ttf
+          weight: 600
+        - asset: assets/font/SpaceGrotesk-Light.ttf
+          weight: 300
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
