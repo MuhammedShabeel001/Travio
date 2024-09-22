@@ -69,7 +69,7 @@ class ProfilePage extends StatelessWidget {
                       );
                     }),
                 SettingsCard(authProvider: authProvider),
-                SupportCard(authProvider: authProvider),
+                // SupportCard(authProvider: authProvider),
                 LegalCard(authProvider: authProvider),
               ],
             ),

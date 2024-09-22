@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:travio/core/theme/theme.dart';
@@ -19,7 +20,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
     await PreferencesService().setOnboardingCompleted();
 
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const LogInScreen()),
+      CupertinoPageRoute(builder: (_) => const LogInScreen()),
     );
   }
 

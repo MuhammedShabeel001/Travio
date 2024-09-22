@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:travio/core/theme/theme.dart';
 import 'package:travio/view/pages/profile/achieved_details_page.dart';
+import 'package:travio/view/widgets/my_trips/shimmer_effect.dart';
 
 import '../../../model/package_model.dart';
 import '../home/package/package_detail_page.dart';
@@ -30,7 +32,7 @@ class ArchivedPackagesPage extends StatelessWidget {
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: ShimmerEffect());
           }
 
           if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
@@ -54,7 +56,7 @@ class ArchivedPackagesPage extends StatelessWidget {
                       AsyncSnapshot<DocumentSnapshot> packageSnapshot) {
                     if (packageSnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(child: ShimmerEffect());
                     }
 
                     if (packageSnapshot.hasData &&

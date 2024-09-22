@@ -39,9 +39,9 @@ android {
     defaultConfig {
         applicationId = "com.shabeel.travio"
         minSdk = 23
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     buildTypes {

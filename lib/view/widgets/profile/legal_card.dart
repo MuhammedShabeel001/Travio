@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
+import 'package:travio/view/pages/profile/privacy_policy.dart';
+import 'package:travio/view/pages/profile/terms_of_use.dart';
 
 import '../global/logout_alert.dart';
 
@@ -25,11 +28,7 @@ class LegalCard extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) =>
-                    tLogOut(context, authProvider),
-              );
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => TermsOfUsePage(),));
             },
             title: const Text(
               'Terms of Use',
@@ -41,11 +40,7 @@ class LegalCard extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              // showDialog(
-              //   context: context,
-              //   builder: (context) =>
-              //       tLogOut(context, authProvider),
-              // );
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => PrivacyPolicyPage(),));
             },
             title: const Text(
               'Privacy Policy',

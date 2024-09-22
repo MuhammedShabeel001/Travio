@@ -8,13 +8,13 @@ import 'package:travio/controller/provider/package_provider.dart';
 import 'package:travio/controller/provider/payment_provider.dart';
 import 'package:travio/controller/provider/review_provider.dart';
 import 'package:travio/controller/provider/search_provider.dart';
+import 'package:travio/controller/provider/version_provider.dart';
 import 'package:travio/core/firebase/firebase_options.dart';
 import 'package:travio/controller/provider/location_provider.dart';
 import 'package:travio/controller/provider/auth_provider.dart';
 import 'package:travio/core/theme/text_theme.dart';
 import 'package:travio/utils/services/preferences_service.dart';
 import 'package:travio/view/pages/Splash/splash_page.dart';
-import 'package:travio/view/pages/onbording/onbording_screens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +57,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ReviewProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => VersionProvider(),
+        ),
       ],
       child: MaterialApp(
         builder: BotToastInit(),
@@ -65,7 +68,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'SpaceGrotesk',  // Apply the Space Grotesk font
         textTheme: AppTextTheme.textTheme,  // Use the separated text theme
         ),
-        home: OnboardingScreen(),
+        home:const SplashScreen(),
       ),
     );
   }

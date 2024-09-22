@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:travio/view/pages/auth/login/login_page.dart';
 import 'package:travio/core/theme/theme.dart';
+import 'package:travio/view/pages/onbording/onbording_screens.dart';
 import 'package:travio/view/widgets/global/navbar.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -49,7 +50,7 @@ class _SplashState extends State<SplashScreen> {
 
   void navigateToLogin() {
     Navigator.of(context).pushReplacement(
-      CupertinoPageRoute(builder: (context) => const LogInScreen()),
+      CupertinoPageRoute(builder: (context) => const OnboardingScreen()),
     );
   }
 
